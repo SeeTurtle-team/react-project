@@ -1,25 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setError(null);
+        setUsers([]);
+        setLoading(true);
+        const response = await axios.get(
+          'https://jsonplaceholder.typicode.com/users'
+        );
+        setUsers(response.data);
+      } catch (error:any) {
+        setError(error);
+      }
+      setLoading(false);
+    };
+
+    fetchUsers();
+  }, []);
+
+  type User = {
+    id: number;
+    username: string;
+    name: string;
+  };
+
+  if (loading) return <div>로딩중..</div>;
+  if (error) return <div>에러가 발생했습니다</div>;
+  if (!users || users.length === 0) return null;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ul>
+      {users.map((user: User) => (
+        <li key={user.id}>
+          {user.username} ({user.name})
+        </li>
+      ))}
+    </ul>
   );
 }
 
