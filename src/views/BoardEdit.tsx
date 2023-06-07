@@ -1,11 +1,11 @@
 import React from 'react';
 
-const routes = () => {
+const BoardEdit = () => {
     return (
         <div>
-            
+            edit
         </div>
     );
 };
 
-export default routes;
+export default BoardEdit;
