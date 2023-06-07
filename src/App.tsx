@@ -1,68 +1,85 @@
 import React, { useState, useEffect } from "react";
-import { TabMenu } from 'primereact/tabmenu';
-import { MenuItem } from 'primereact/menuitem';
-import { Paginator, PaginatorPageChangeEvent  } from 'primereact/paginator';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import axios from 'axios';
+import { InputText } from 'primereact/inputtext';
+import axios from "axios";
+import { DataView } from "primereact/dataview";
+import { Button } from 'primereact/button';
 
-interface todoItem {
-  id:number;
-  todo:string;
+interface board {
+  title: string;
+  contents: string;
+  userId: number;
+  recommand: number;
+  dateTime: string;
+  boardCategoryId: string;
+  nickname: string;
+  img: string;
 }
 
 export default function App() {
-    const items: MenuItem[] = [
-        {label: 'Home', icon: 'pi pi-fw pi-home', url: '/Home' },
-        {label: 'Calendar', icon: 'pi pi-fw pi-calendar', url: '/Calendar'},
-        {label: 'Edit', icon: 'pi pi-fw pi-pencil', url: '/Edit'},
-        {label: 'Documentation', icon: 'pi pi-fw pi-file', url: '/Documentation'},
-        {label: 'Settings', icon: 'pi pi-fw pi-cog', url: '/Settings'}
-    ];
-    const [first, setFirst] = useState<number>(0);
-    const [rows, setRows] = useState<number>(10);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [board, setBoard] = useState<board[]>([]);
+  const [inputSearch, setInputSearch] = useState<string>("");
 
-    const onPageChange = (event: PaginatorPageChangeEvent) => {
-        setFirst(event.first);
-        setRows(event.rows);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setError(null);
+        setBoard([]);
+        setLoading(true);
+        const response = await axios.get("/board");
+        setBoard(response.data);
+      } catch (error: any) {
+        setError(error);
+      }
+      setLoading(false);
     };
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [todo, setTodo] = useState<todoItem[]>([]);
 
-    useEffect(() => {
-      const fetchUsers = async () => {
-        try {
-          setError(null);
-          setTodo([]);
-          setLoading(true);
-          const response = await axios.get(
-            'http://localhost:5000/findAll'
-          );
-          setTodo(response.data);
-        } catch (error:any) {
-          setError(error);
-        }
-        setLoading(false);
-      };
-    
-      fetchUsers();
-    }, []);
+    fetchUsers();
+  }, []);
+  console.log(board)
 
-    if (loading) return <div>로딩중..</div>;
-    if (error) return <div>에러가 발생했습니다</div>;
-    if (!todo || todo.length === 0) return null;
+  if (loading) return <div>로딩중..</div>;
+  if (error) return <div>에러가 발생했습니다</div>;
+  if (!board || board.length === 0) return null;
 
+  const itemTemplate = (board: board) => {
     return (
-        <div className="card">
-            <TabMenu model={items} />
-            <DataTable value={todo} tableStyle={{ minWidth: '50rem' }}>
-                <Column field="id" header="ID"></Column>
-                <Column field="todo" header="TODO"></Column>
-            </DataTable>
-            <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
+      <div className="col-12">
+        <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+          <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+            <div className="flex flex-column align-items-center sm:align-items-start gap-3">
+              <div className="font-semibold">{board.title}</div>
+              <span className="text-2xl font-bold text-800">{board.contents}</span>
+              <div>{board.dateTime}</div>
+              <div>{board.nickname}</div>
+              <div>{board.img}</div>
+            </div>
+          </div>
         </div>
-        
-    )
+      </div>
+    );
+  };
+  const handleSearch = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setInputSearch(e.target.value);
+    console.log(inputSearch);
+  }
+  
+
+
+  return (
+    <div className="card">
+      <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText placeholder="Search" onInput={handleSearch} value={inputSearch} />
+      </span>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span>
+      <Button label="Create"/>&nbsp;
+      <Button label="Edit" severity="warning" raised />&nbsp;
+      <Button label="Delete" severity="danger" raised />
+      </span>
+      <DataView value={board} itemTemplate={itemTemplate} paginator rows={5} />
+    </div>
+  );
 }
-        
