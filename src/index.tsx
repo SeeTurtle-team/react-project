@@ -7,11 +7,17 @@ import 'primeflex/primeflex.css';                                   // css utili
 import './index.css';
 import './flags.css';
 import App from './App';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import BoardCreate from './views/BoardCreate';
+import BoardEdit from './views/BoardEdit';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <BrowserRouter>
-      <App />
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/BoardCreate" element={<BoardCreate />} />
+        <Route path="/BoardEdit" element={<BoardEdit />} />
+      </Routes>
     </BrowserRouter>
 );
