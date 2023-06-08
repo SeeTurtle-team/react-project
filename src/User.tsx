@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function User() {
   const [users, setUsers] = useState([]);
@@ -12,11 +12,9 @@ function User() {
         setError(null);
         setUsers([]);
         setLoading(true);
-        const response = await axios.get(
-          'http://localhost:5000/findAll'
-        );
+        const response = await axios.get("http://localhost:5000/findAll");
         setUsers(response.data);
-      } catch (error:any) {
+      } catch (error: any) {
         setError(error);
       }
       setLoading(false);

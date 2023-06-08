@@ -61,9 +61,7 @@ const BoardList = () => {
   };
 
   return (
-    <div className="card">
-      <DataView value={board} itemTemplate={itemTemplate} paginator rows={5} />
-    </div>
+    <DataView value={board} itemTemplate={itemTemplate} paginator rows={5} />
   );
 };
 
