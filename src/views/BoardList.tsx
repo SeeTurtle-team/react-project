@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DataView } from "primereact/dataview";
-import { useNavigate  } from "react-router-dom";  // Import the useHistory hook
-import { board } from "../interface/BoardList"
+import { useNavigate } from "react-router-dom"; // Import the useHistory hook
+import { board } from "../interface/BoardList";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<board[]>([]);
-  const navigate = useNavigate ();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -25,8 +26,12 @@ const BoardList = () => {
     fetchUsers();
   }, [navigate]);
 
-  if (loading) return <div>로딩중..</div>;
-  if (!board || board.length === 0) return null;
+  if (loading)
+    return (
+      <div className="card flex justify-content-center">
+        <ProgressSpinner />
+      </div>
+    );
 
   const itemTemplate = (board: board) => {
     return (
