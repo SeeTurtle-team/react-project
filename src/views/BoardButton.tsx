@@ -2,8 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
-import BoardCreate from "./BoardCreate";
-import BoardEdit from "./BoardEdit";
 
 const BoardButton = () => {
   const navigate = useNavigate();
