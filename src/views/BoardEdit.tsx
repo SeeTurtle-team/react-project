@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { Toast } from "primereact/toast";
+// import { Toast } from "primereact/toast";
 import { FileUpload } from "primereact/fileupload";
 import BoardHeader from "./BoardHeader";
 
 const BoardEdit = () => {
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState<string|null>("");
   const [value, setValue] = useState<string>("");
 
   return (
@@ -27,7 +27,6 @@ const BoardEdit = () => {
       </span>
       <h2>Content</h2>
       <Editor
-        value={text}
         onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
         style={{ height: "320px" }}
       />
