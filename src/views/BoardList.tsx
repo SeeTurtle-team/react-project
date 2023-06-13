@@ -4,6 +4,7 @@ import { DataView } from "primereact/dataview";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { board } from "../interface/BoardList";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { Button } from "primereact/button";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,15 @@ const BoardList = () => {
         <ProgressSpinner />
       </div>
     );
+  const goToBoardEdit = () => {
+    navigate("/BoardEdit");
+  };
+  const  handleBoardDelete = () =>{
+    axios.post("/board/delete", {
+      id: 1,
+      userId: 2
+    })
+  }
 
   const itemTemplate = (board: board) => {
     return (
@@ -42,6 +52,16 @@ const BoardList = () => {
               <div className="font-semibold">{board.board_title}</div>
               <span className="text-2xl font-bold text-800">
                 {board.user_nickname}
+                &nbsp;
+                <Button
+                  label="Edit"
+                  severity="warning"
+                  raised
+                  onClick={goToBoardEdit}
+                  size="small"
+                />
+                &nbsp;
+                <Button label="Delete" severity="danger" raised size="small" onClick={handleBoardDelete} />
               </span>
               <div>{board.board_dateTime.toString()}</div>
               <div>{board.board_recommand}</div>
