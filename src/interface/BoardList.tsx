@@ -12,6 +12,7 @@
       
 
     export interface board {
+        board_id: number;
         board_title: string;
         board_dateTime: Date;
         board_isDeleted: boolean;
