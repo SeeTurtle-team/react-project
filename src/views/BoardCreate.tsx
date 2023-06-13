@@ -17,8 +17,8 @@ const BoardCreate = () => {
   const handleSubmit = () => {
     console.log("submit");
     axios.post("/board/create", {
-      title: "test",
-      contents: "test",
+      title: value,
+      contents: text,
       userId: 5,
       boardCategoryId: 1,
     })
@@ -48,11 +48,11 @@ const BoardCreate = () => {
       <h2>Content</h2>
       <Editor
         value={text}
-        onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
+        onTextChange={(e: EditorTextChangeEvent) => setText(e.textValue)}
         style={{ height: "320px" }}
       />
       <br />
-      <FileUpload
+      {/* <FileUpload
         name="demo[]"
         url={"/api/upload"}
         multiple
@@ -61,7 +61,7 @@ const BoardCreate = () => {
         emptyTemplate={
           <p className="m-0">Drag and drop files to here to upload.</p>
         }
-      />
+      /> */}
       <br />
       <Button label="Submit" onClick={handleSubmit}/>
     </div>
