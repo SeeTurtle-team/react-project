@@ -14,7 +14,6 @@ const BoardCreate = () => {
 
   }
   const handleSubmit = () => {
-    console.log("submit");
     axios.post("/board/create", {
       title: value,
       contents: text,

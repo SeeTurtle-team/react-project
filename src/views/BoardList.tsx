@@ -38,15 +38,15 @@ const BoardList = () => {
     setBoard({ ...board });
     navigate("/BoardEdit");
   };
-  const  handleBoardDelete = (index:number) =>{
+  const  handleBoardDelete = async (index:number) =>{
     axios.delete("/board/delete", {
       data: {
         id: index,
         userId: 5
       }
     })
-    navigate("/");
-    window.location.reload()
+    const response = await axios.get("/board");
+      setBoard(response.data);
   }
 
   const actionBodyTemplate = (rowData: board) => {
