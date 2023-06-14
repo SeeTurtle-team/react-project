@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { FileUpload } from "primereact/fileupload";
 import BoardHeader from "./BoardHeader";
 import axios from "axios";
 
@@ -51,18 +50,6 @@ const BoardCreate = () => {
         onTextChange={(e: EditorTextChangeEvent) => setText(e.textValue)}
         style={{ height: "320px" }}
       />
-      <br />
-      {/* <FileUpload
-        name="demo[]"
-        url={"/api/upload"}
-        multiple
-        accept="image/*"
-        maxFileSize={1000000}
-        emptyTemplate={
-          <p className="m-0">Drag and drop files to here to upload.</p>
-        }
-      /> */}
-      <br />
       <Button label="Submit" onClick={handleSubmit}/>
     </div>
   );
