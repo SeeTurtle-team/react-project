@@ -8,17 +8,11 @@ const BoardButton = () => {
   const goToBoardCreate = () => {
     navigate("/BoardCreate");
   };
-  const goToBoardEdit = () => {
-    navigate("/BoardEdit");
-  };
+  
   return (
     <span>
       &nbsp;&nbsp;&nbsp;&nbsp;
       <Button label="Create" onClick={goToBoardCreate} />
-      &nbsp;
-      <Button label="Edit" severity="warning" raised onClick={goToBoardEdit} />
-      &nbsp;
-      <Button label="Delete" severity="danger" raised />
     </span>
   );
 };
