@@ -10,7 +10,7 @@ const BoardSearch = () => {
   };
 
   return (
-    <span className="p-input-icon-left">
+    <span className="p-input-icon-left" style={{marginBottom:'1rem'}}>
       <i className="pi pi-search" />
       <InputText
         placeholder="Search"

@@ -10,7 +10,7 @@ const BoardHeader = () => {
   ];
   console.log(activeIndex);
 
-  return <TabMenu model={items} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />;
+  return <TabMenu model={items} style={{marginBottom:'1rem'}} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />;
 };
 
 export default BoardHeader;

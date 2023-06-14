@@ -8,7 +8,6 @@ const App = () => {
   return (
     <div>
       <BoardHeader />
-      <br />
       <BoardSearch />
       <BoardButton />
       <BoardList />
