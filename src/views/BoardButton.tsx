@@ -12,8 +12,7 @@ const BoardButton = () => {
   
   return (
     <span>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <Button label="Create" onClick={goToBoardCreate} />
+      <Button label="Create" style={{marginLeft:'1rem'}} onClick={goToBoardCreate} />
     </span>
   );
 };
