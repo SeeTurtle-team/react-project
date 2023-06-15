@@ -20,7 +20,7 @@ const BoardList = () => {
         const response = await axios.get("/board");
         setBoard(response.data);
       } catch (error: any) {
-        navigate(-1);
+        navigate(-1); // error 발생 시 이전 page 이동
       }
       setLoading(false);
     };
@@ -44,6 +44,7 @@ const BoardList = () => {
         id: index,
         userId: 5
       }
+      // 로그인 기능 생성시 userId user 값 받아서 값 변경해 주기
     })
     const response = await axios.get("/board");
       setBoard(response.data);

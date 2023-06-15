@@ -27,6 +27,7 @@ const BoardCreate = () => {
     setText("");
     navigate("/");
   }
+  // 로그인 기능 및 boardCreate에 category 값 추가하기
 
   return (
     <div className="card">

@@ -8,7 +8,6 @@ const BoardHeader = () => {
     { label: "Home", icon: "pi pi-fw pi-home", url: "/" },
     { label: "BoardCreate", icon: "pi pi-fw pi-calendar", url: "/BoardCreate" },
   ];
-  console.log(activeIndex);
 
   return <TabMenu model={items} style={{marginBottom:'1rem'}} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />;
 };
