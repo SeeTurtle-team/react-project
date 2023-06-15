@@ -35,6 +35,7 @@ const BoardList = () => {
       </div>
     );
   const goToBoardEdit = (index:number) => {
+    console.log(index);
     setBoard({ ...board });
     navigate("/BoardEdit");
   };
