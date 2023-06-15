@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
-import { board } from "../interface/BoardList";
+import { Board } from "../interface/BoardList";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Button } from "primereact/button";
 import { DataTable } from 'primereact/datatable';
@@ -9,7 +9,8 @@ import { Column } from 'primereact/column';
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
-  const [board, setBoard] = useState<board[]>([]);
+  const [board, setBoard] = useState<Board[]>([]);
+  const [row, setRow] = useState<Board[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,10 +35,13 @@ const BoardList = () => {
         <ProgressSpinner />
       </div>
     );
-  const goToBoardEdit = (index:number) => {
-    console.log(index);
+  const goToBoardEdit = (rowData:any) => {
+    console.log(rowData);
     setBoard({ ...board });
-    navigate("/BoardEdit");
+    navigate("/BoardEdit", {
+      state: {
+      }
+    });
   };
   const  handleBoardDelete = async (index:number) =>{
     axios.delete("/board/delete", {
@@ -51,10 +55,10 @@ const BoardList = () => {
       setBoard(response.data);
   }
 
-  const actionBodyTemplate = (rowData: board) => {
+  const actionBodyTemplate = (rowData: Board) => {
     return (
         <React.Fragment>
-            <Button icon="pi pi-pencil" rounded outlined className="mr-2"  onClick={() => goToBoardEdit(rowData.board_id)}/>
+            <Button icon="pi pi-pencil" rounded outlined className="mr-2"  onClick={() => goToBoardEdit(rowData)}/>
             <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => handleBoardDelete(rowData.board_id)} />
         </React.Fragment>
     );

@@ -1,19 +1,39 @@
 import React, { useState } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
+import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-// import { Toast } from "primereact/toast";
-import { FileUpload } from "primereact/fileupload";
 import BoardHeader from "./BoardHeader";
+import { useLocation } from "react-router";
+import axios from "axios";
 
 const BoardEdit = () => {
-  const [text, setText] = useState<string|null>("");
+  const [text, setText] = useState<string>("");
   const [value, setValue] = useState<string>("");
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  console.log(state);
+
+  // 받아와야될 값이 id, value, text
+  const handleSubmit = () => {
+    axios.post("/board/update", {
+      id: 1,
+      title: value,
+      contents: text,
+      userId: 5,
+      boardCategoryId: 1,
+    })
+    .then(res => res.data.body)
+    .then(res=>console.log(res));
+
+    setValue("");
+    setText("");
+    navigate("/");
+  }
 
   return (
     <div className="card">
       <BoardHeader />
-      <br />
       <span className="p-float-label">
         <InputText
           id="Title"
@@ -27,22 +47,11 @@ const BoardEdit = () => {
       </span>
       <h2>Content</h2>
       <Editor
+      value={text}
         onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
         style={{ height: "320px" }}
       />
-      <br />
-      <FileUpload
-        name="demo[]"
-        url={"/api/upload"}
-        multiple
-        accept="image/*"
-        maxFileSize={1000000}
-        emptyTemplate={
-          <p className="m-0">Drag and drop files to here to upload.</p>
-        }
-      />
-      <br />
-      <Button label="Submit" />
+      <Button label="Submit" onClick={handleSubmit} />
     </div>
   );
 };
