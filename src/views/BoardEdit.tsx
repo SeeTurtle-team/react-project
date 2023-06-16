@@ -35,24 +35,23 @@ const BoardEdit = () => {
 
   console.log(board);
 
-
-
   // 받아와야될 값이 id, value, text
   const handleSubmit = () => {
-    axios.post("/board/update", {
-      id: 1,
-      title: value,
-      contents: text,
-      userId: 5,
-      boardCategoryId: 1,
-    })
-    .then(res => res.data.body)
-    .then(res=>console.log(res));
+    axios
+      .post("/board/update", {
+        id: 1,
+        title: value,
+        contents: text,
+        userId: 5,
+        boardCategoryId: 1,
+      })
+      .then((res) => res.data.body)
+      .then((res) => console.log(res));
 
     setValue("");
     setText("");
     navigate("/");
-  }
+  };
 
   return (
     <div className="card">
@@ -70,7 +69,7 @@ const BoardEdit = () => {
       </span>
       <h2>Content</h2>
       <Editor
-      value={text}
+        value={text}
         onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
         style={{ height: "320px" }}
       />

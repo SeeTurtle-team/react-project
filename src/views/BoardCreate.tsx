@@ -10,23 +10,22 @@ const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
   const [text, setText] = useState<string>("");
   const navigate = useNavigate();
-  const handleInputEnter = (e:React.KeyboardEvent<HTMLInputElement>) => {
-
-  }
+  const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
   const handleSubmit = () => {
-    axios.post("/board/create", {
-      title: value,
-      contents: text,
-      userId: 5,
-      boardCategoryId: 1,
-    })
-    .then(res => res.data.body)
-    .then(res=>console.log(res));
+    axios
+      .post("/board/create", {
+        title: value,
+        contents: text,
+        userId: 5,
+        boardCategoryId: 1,
+      })
+      .then((res) => res.data.body)
+      .then((res) => console.log(res));
 
     setValue("");
     setText("");
     navigate("/");
-  }
+  };
   // 로그인 기능 및 boardCreate에 category 값 추가하기
 
   return (
@@ -51,7 +50,7 @@ const BoardCreate = () => {
         onTextChange={(e: EditorTextChangeEvent) => setText(e.textValue)}
         style={{ height: "320px" }}
       />
-      <Button label="Submit" onClick={handleSubmit}/>
+      <Button label="Submit" onClick={handleSubmit} />
     </div>
   );
 };
