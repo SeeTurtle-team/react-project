@@ -7,9 +7,10 @@ import 'primeflex/primeflex.css';                                   // css utili
 import './index.css';
 import './flags.css';
 import App from './App';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 import BoardCreate from './views/BoardCreate';
 import BoardEdit from './views/BoardEdit';
+import BoardList from './views/BoardList';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -17,7 +18,8 @@ root.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/BoardCreate" element={<BoardCreate />} />
-        <Route path="/BoardEdit" element={<BoardEdit />} />
+        <Route path="/BoardEdit/:userId" element={<BoardEdit />} />
+        <Route path="/BoardList" element={<BoardList />} />
       </Routes>
     </BrowserRouter>
 );

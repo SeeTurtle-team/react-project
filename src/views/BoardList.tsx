@@ -6,11 +6,13 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { Button } from "primereact/button";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import BoardHeader from "./BoardHeader";
+import BoardSearch from "./BoardSearch";
+import BoardButton from "./BoardButton";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<Board[]>([]);
-  const [row, setRow] = useState<Board[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,17 +37,11 @@ const BoardList = () => {
         <ProgressSpinner />
       </div>
     );
-  const goToBoardEdit = (rowData:object) => {
-    console.log(rowData);
+  const goToBoardEdit = (userId:number) => {
+    console.log(userId);
     //rowData object 형식으로 받아오는데 object.board_id에서 board_id 부분이 오류
-    setBoard({ ...board });
     // state로 보내고 싶은 데이터 id, title, contents
-    navigate("/BoardEdit", {
-      state: rowData
-        // board_id: rowData.board_id,
-        // board_title: rowData.board_title,
-        // board_contents: rowData.board_contents
-    });
+    navigate(`/BoardEdit/${userId}`);
   };
   const  handleBoardDelete = async (index:number) =>{
     axios.delete("/board/delete", {
@@ -62,7 +58,7 @@ const BoardList = () => {
   const actionBodyTemplate = (rowData: Board) => {
     return (
         <React.Fragment>
-            <Button icon="pi pi-pencil" rounded outlined className="mr-2"  onClick={() => goToBoardEdit(rowData)}/>
+            <Button icon="pi pi-pencil" rounded outlined className="mr-2"  onClick={() => goToBoardEdit(rowData.board_id)}/>
             <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => handleBoardDelete(rowData.board_id)} />
         </React.Fragment>
     );
@@ -70,6 +66,9 @@ const BoardList = () => {
 
   return (
     <div className="card">
+      <BoardHeader />
+      <BoardSearch />
+      <BoardButton />
         <DataTable value={board} tableStyle={{ minWidth: '50rem' }} paginator rows={10}>
             <Column field="board_id" header="ID"></Column>
             <Column field="board_title" header="Title"></Column>
