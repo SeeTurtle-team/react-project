@@ -1,4 +1,4 @@
-export interface board {
+export interface Board {
     board_id: number;
     board_title: string;
     board_contents: string;
