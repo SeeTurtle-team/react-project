@@ -30,7 +30,7 @@ const BoardCreate = () => {
 
   return (
     <div className="card">
-      <BoardHeader />
+      {/* <BoardHeader /> */} {/**이건 도대체 왜 페이지마다 들어가 잇는거죠..??? */}
       <br />
       <span className="p-float-label">
         <InputText

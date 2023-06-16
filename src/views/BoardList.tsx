@@ -78,7 +78,6 @@ const BoardList = () => {
 
   return (
     <div className="card">
-      <BoardHeader />
       <BoardSearch />
       <BoardButton />
       <DataTable
