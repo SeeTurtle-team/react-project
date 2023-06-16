@@ -1,6 +1,4 @@
 import React from "react";
-import BoardSearch from "./views/BoardSearch";
-import BoardButton from "./views/BoardButton";
 import BoardHeader from "./views/BoardHeader";
 import { Route, Routes } from "react-router";
 import BoardCreate from "./views/BoardCreate";

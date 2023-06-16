@@ -6,15 +6,23 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import BoardHeader from "./BoardHeader";
-import BoardSearch from "./BoardSearch";
-import BoardButton from "./BoardButton";
+import { InputText } from "primereact/inputtext";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<Board[]>([]);
   const navigate = useNavigate();
+  const [inputSearch, setInputSearch] = useState<string>("");
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputSearch(e.target.value);
+    console.log(inputSearch);
+  };
+
+  const goToBoardCreate = () => {
+    navigate("/BoardCreate");
+  };
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -78,8 +86,17 @@ const BoardList = () => {
 
   return (
     <div className="card">
-      <BoardSearch />
-      <BoardButton />
+      <span className="p-input-icon-left" style={{marginBottom:'1rem'}}>
+      <i className="pi pi-search" />
+      <InputText
+        placeholder="Search"
+        onInput={handleSearch}
+        value={inputSearch}
+      />
+    </span>
+    <span>
+      <Button label="Create" style={{marginLeft:'1rem' ,marginBottom:'1rem' }} onClick={goToBoardCreate} />
+    </span>
       <DataTable
         value={board}
         tableStyle={{ minWidth: "50rem" }}
