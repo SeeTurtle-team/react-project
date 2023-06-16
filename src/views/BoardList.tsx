@@ -35,12 +35,16 @@ const BoardList = () => {
         <ProgressSpinner />
       </div>
     );
-  const goToBoardEdit = (rowData:any) => {
+  const goToBoardEdit = (rowData:object) => {
     console.log(rowData);
+    //rowData object 형식으로 받아오는데 object.board_id에서 board_id 부분이 오류
     setBoard({ ...board });
+    // state로 보내고 싶은 데이터 id, title, contents
     navigate("/BoardEdit", {
-      state: {
-      }
+      state: rowData
+        // board_id: rowData.board_id,
+        // board_title: rowData.board_title,
+        // board_contents: rowData.board_contents
     });
   };
   const  handleBoardDelete = async (index:number) =>{
