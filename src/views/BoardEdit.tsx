@@ -9,7 +9,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 
 const BoardEdit = () => {
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState<any>("");
   const [value, setValue] = useState<string>("");
   const [board, setBoard] = useState<Board[]>([]);
   const navigate = useNavigate();
