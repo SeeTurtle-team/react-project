@@ -3,7 +3,7 @@ import React from 'react';
 const BoardState = () => {
     return (
         <div>
-            github edit branch commit test
+            github edit branch commit tests
         </div>
     );
 };
