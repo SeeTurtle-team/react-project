@@ -84,6 +84,10 @@ const BoardList = () => {
     );
   };
 
+  const boardState = () => {
+    navigate("/BoardState");
+  }
+
   return (
     <div className="card">
       <span className="p-input-icon-left" style={{marginBottom:'1rem'}}>
@@ -102,6 +106,7 @@ const BoardList = () => {
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}
+        onDoubleClick={boardState}
       >
         <Column field="board_id" header="ID"></Column>
         <Column field="board_title" header="Title"></Column>
