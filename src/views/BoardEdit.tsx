@@ -23,10 +23,18 @@ const BoardEdit = () => {
       const response = await axios.get("/board/read/"+boardId);
       setBoard(response.data);
     } catch (error: any) {
-      alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.'); //에러 핸들링 필수!!!!!
-      navigate(-1); // error 발생 시 이전 page 이동
+      console.log(error)
+      if(error.response.status ===429){
+        alert('과도한 접속으로 이용이 제한 되었습니다. 잠시 후 다시 시도해주세요');
+        navigate('/ErrorPage/'+429);
+      }else{
+        alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.'); //에러 핸들링 필수!!!!!
+        navigate(-1); // error 발생 시 이전 page 이동
+      }
+      
     }
   };
+
 
   useEffect(() => {
     fetchUsers();
