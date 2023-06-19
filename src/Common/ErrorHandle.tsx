@@ -9,7 +9,7 @@ export const errorHandle = (errCode:number) => {
             return 500;
         case 404:
             alert('사용할 수 없는 URL입니다.');
-            break;
+            return 404;
         case 401:
             alert('권한이 인증되지 않았습니다. 관리자에게 문의하세요');
             return 401;
