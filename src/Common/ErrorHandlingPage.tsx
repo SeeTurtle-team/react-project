@@ -39,6 +39,7 @@ const ErrorHandlingPage = () => {
     }
 
     const errStatueCheck = (id: any) => {
+        //에러 발생 시 코드에 따라 case를 추가하시고 위에 함수로 리턴 값을 만들어주시면 됩니다.
         switch (id) {
             case '429':
                 setErrMsg(page429);
