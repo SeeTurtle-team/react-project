@@ -4,7 +4,6 @@ import { Board } from "../interface/BoardList";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import BoardHeader from "./BoardHeader";
 import { useParams } from "react-router";
 import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
@@ -43,7 +42,6 @@ const BoardEdit = () => {
     fetchUsers();
   }, []); // 렌더링 시 데이터를 한번만 불러올 때는 useEffect(()=>{},[])로 한번만 실행되게 합니다. 이렇게 받아온 데이터를 제목이랑 콘텐츠와 뿌려보세요
 
-  
 
   // 받아와야될 값이 id, value, text
   const handleSubmit = () => {
@@ -68,7 +66,7 @@ const BoardEdit = () => {
       <span className="p-float-label">
         <InputText
           id="Title"
-          value={value}
+          value={board.length !== 0 ? board[0].board_title : ''}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setValue(e.target.value)
           }
@@ -78,9 +76,9 @@ const BoardEdit = () => {
       </span>
       <h2>Content</h2>
       <Editor
-        value={text}
+        value={board.length !== 0 ? board[0].board_contents : ''}
         onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
-        style={{ height: "320px" }}
+        style={{ height: "320px", marginBottom:'2rem' }}
       />
       <Button label="Submit" onClick={handleSubmit} />
     </div>

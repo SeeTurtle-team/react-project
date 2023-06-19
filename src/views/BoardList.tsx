@@ -49,9 +49,8 @@ const BoardList = () => {
     // state로 보내고 싶은 데이터 id, title, contents
     navigate(`/BoardEdit/${userId}`);
   };
-  const boardState = (board: any) => {
-    console.log(board);
-    navigate(`/BoardState`);
+  const boardState = (index: any) => {
+    navigate(`/BoardState/${index}`);
   }
   const handleBoardDelete = async (index: number) => {
     axios.delete("/board/delete", {
@@ -65,9 +64,14 @@ const BoardList = () => {
     setBoard(response.data);
   };
 
-  const actionBodyTemplate = (rowData: Board) => {
+  const actionBodyTemplate = (rowData: Board, props: any) => {
     return (
       <React.Fragment>
+        <Button
+          label="게시글이동"
+          onClick={() => boardState(board[props.rowIndex].board_id)}
+          style={{marginRight:'1rem'}}
+        />
         <Button
           icon="pi pi-pencil"
           rounded
@@ -86,9 +90,8 @@ const BoardList = () => {
     );
   };
   const filterSearch = board.filter((Board:any) => {
-    return Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
+    return  Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
   })
-  console.log(filterSearch);
 
   return (
     <div className="card">
@@ -108,7 +111,7 @@ const BoardList = () => {
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}
-        onDoubleClick={() => boardState(board)}
+        // onDoubleClick={() => boardState(board)}
       >
         <Column field="board_id" header="ID"></Column>
         <Column field="board_title" header="Title"></Column>

@@ -18,7 +18,7 @@ const App = () => {
           <Route path="/BoardCreate" element={<BoardCreate />} />
           <Route path="/BoardEdit/:boardId" element={<BoardEdit />} />  {/**boardId를 넘겨야 게시글을 가져올 수 있겠죠? */}
           <Route path="/BoardList" element={<BoardList />} />
-          <Route path="/BoardState" element={<BoardState />} />
+          <Route path="/BoardState/:index" element={<BoardState />} />
           <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />   
         </Routes>
       </BrowserRouter>
