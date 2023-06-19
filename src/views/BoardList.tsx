@@ -16,7 +16,6 @@ const BoardList = () => {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);
-    console.log(inputSearch);
   };
 
   const goToBoardCreate = () => {
@@ -86,7 +85,10 @@ const BoardList = () => {
       </React.Fragment>
     );
   };
-
+  const filterSearch = board.filter((Board:any) => {
+    return Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
+  })
+  console.log(filterSearch);
 
   return (
     <div className="card">
@@ -102,7 +104,7 @@ const BoardList = () => {
       <Button label="Create" style={{marginLeft:'1rem' ,marginBottom:'1rem' }} onClick={goToBoardCreate} />
     </span>
       <DataTable
-        value={board}
+        value={filterSearch}
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}
