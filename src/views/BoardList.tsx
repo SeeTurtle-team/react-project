@@ -46,11 +46,14 @@ const BoardList = () => {
       </div>
     );
   const goToBoardEdit = (userId: number) => {
-    console.log(userId);
     //rowData object 형식으로 받아오는데 object.board_id에서 board_id 부분이 오류
     // state로 보내고 싶은 데이터 id, title, contents
     navigate(`/BoardEdit/${userId}`);
   };
+  const boardState = (board: any) => {
+    console.log(board);
+    navigate(`/BoardState`);
+  }
   const handleBoardDelete = async (index: number) => {
     axios.delete("/board/delete", {
       data: {
@@ -84,9 +87,6 @@ const BoardList = () => {
     );
   };
 
-  const boardState = () => {
-    navigate("/BoardState");
-  }
 
   return (
     <div className="card">
@@ -106,7 +106,7 @@ const BoardList = () => {
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}
-        onDoubleClick={boardState}
+        onDoubleClick={() => boardState(board)}
       >
         <Column field="board_id" header="ID"></Column>
         <Column field="board_title" header="Title"></Column>
