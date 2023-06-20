@@ -69,11 +69,11 @@ const BoardList = () => {
   const actionBodyTemplate = (rowData: Board, props: any) => {
     return (
       <React.Fragment>
-        <Button
+        {/* <Button
           label="게시글이동"
           onClick={() => boardState(board[props.rowIndex].board_id)}
           style={{ marginRight: "1rem" }}
-        />
+        /> */}
         <Button
           icon="pi pi-pencil"
           rounded
@@ -117,7 +117,7 @@ const BoardList = () => {
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}
-        onRowClick={boardState}
+        onRowDoubleClick={boardState}
       >
         <Column field="board_id" header="ID"></Column>
         <Column field="board_title" header="Title"></Column>
