@@ -37,17 +37,18 @@ const BoardEdit = () => {
     }
   };
 
-
   useEffect(() => {
     fetchUsers();
   }, []); // 렌더링 시 데이터를 한번만 불러올 때는 useEffect(()=>{},[])로 한번만 실행되게 합니다. 이렇게 받아온 데이터를 제목이랑 콘텐츠와 뿌려보세요
+
+  // setValue(board.length !== 0 ? board[0].board_title : '');
 
 
   // 받아와야될 값이 id, value, text
   const handleSubmit = () => {
     axios
-      .post("/board/update", {
-        id: 1,
+      .patch("/board/update", {
+        id: Number(boardId),
         title: value,
         contents: text,
         userId: 5,
@@ -58,7 +59,7 @@ const BoardEdit = () => {
 
     setValue("");
     setText("");
-    navigate("/");
+    navigate("/BoardList");
   };
 
   return (
@@ -66,13 +67,13 @@ const BoardEdit = () => {
       <span className="p-float-label">
         <InputText
           id="Title"
-          value={board.length !== 0 ? board[0].board_title : ''}
+          value={value}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setValue(e.target.value)
           }
           size={80}
         />
-        <label htmlFor="Title">Title</label>
+        <label htmlFor="Title">{board.length !== 0 ? board[0].board_title : ''}</label>
       </span>
       <h2>Content</h2>
       <Editor

@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import BoardHeader from "./BoardHeader";
 import axios from "axios";
+import { errorHandle } from "../Common/ErrorHandle";
 
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
@@ -12,6 +13,7 @@ const BoardCreate = () => {
   const navigate = useNavigate();
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
   const handleSubmit = () => {
+    try{
     axios
       .post("/board/create", {
         title: value,
@@ -21,10 +23,15 @@ const BoardCreate = () => {
       })
       .then((res) => res.data.body)
       .then((res) => console.log(res));
-
     setValue("");
     setText("");
-    navigate("/");
+    navigate("/BoardList");
+    }
+    catch (error: any) {
+      console.log(error)
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    }
   };
   // 로그인 기능 및 boardCreate에 category 값 추가하기
 
