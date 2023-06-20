@@ -7,6 +7,7 @@ import BoardList from "./views/BoardList";
 import { BrowserRouter } from "react-router-dom";
 import BoardState from "./views/BoardState";
 import ErrorHandlingPage from "./Common/ErrorHandlingPage";
+import Login from "./views/Login";
 
 const App = () => {
   return (
@@ -19,7 +20,8 @@ const App = () => {
           <Route path="/BoardEdit/:boardId" element={<BoardEdit />} />  {/**boardId를 넘겨야 게시글을 가져올 수 있겠죠? */}
           <Route path="/BoardList" element={<BoardList />} />
           <Route path="/BoardState/:index" element={<BoardState />} />
-          <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />   
+          <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />
+          <Route path="/Login" element={<Login />} /> 
         </Routes>
       </BrowserRouter>
     </div>

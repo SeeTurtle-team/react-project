@@ -7,6 +7,7 @@ const BoardHeader = () => {
   const items: MenuItem[] = [
     { label: "Home", icon: "pi pi-fw pi-home", url: "/" },
     { label: "Board", icon: "pi pi-fw pi-calendar", url: "/BoardList" },
+    { label: "Login", icon: "pi pi-sign-in", url: "/Login" },
   ];
 
   return <TabMenu model={items} style={{marginBottom:'1rem'}} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />;
