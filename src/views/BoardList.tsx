@@ -21,7 +21,7 @@ const BoardList = () => {
   const goToBoardCreate = () => {
     navigate("/BoardCreate");
   };
-  
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -51,7 +51,7 @@ const BoardList = () => {
   };
   const boardState = (index: any) => {
     navigate(`/BoardState/${index}`);
-  }
+  };
   const handleBoardDelete = async (index: number) => {
     axios.delete("/board/delete", {
       data: {
@@ -70,7 +70,7 @@ const BoardList = () => {
         <Button
           label="게시글이동"
           onClick={() => boardState(board[props.rowIndex].board_id)}
-          style={{marginRight:'1rem'}}
+          style={{ marginRight: "1rem" }}
         />
         <Button
           icon="pi pi-pencil"
@@ -89,23 +89,27 @@ const BoardList = () => {
       </React.Fragment>
     );
   };
-  const filterSearch = board.filter((Board:any) => {
-    return  Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
-  })
+  const filterSearch = board.filter((Board: any) => {
+    return Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
+  });
 
   return (
     <div className="card">
-      <span className="p-input-icon-left" style={{marginBottom:'1rem'}}>
-      <i className="pi pi-search" />
-      <InputText
-        placeholder="Search"
-        onInput={handleSearch}
-        value={inputSearch}
-      />
-    </span>
-    <span>
-      <Button label="Create" style={{marginLeft:'1rem' ,marginBottom:'1rem' }} onClick={goToBoardCreate} />
-    </span>
+      <span className="p-input-icon-left" style={{ marginBottom: "1rem" }}>
+        <i className="pi pi-search" />
+        <InputText
+          placeholder="Search"
+          onInput={handleSearch}
+          value={inputSearch}
+        />
+      </span>
+      <span>
+        <Button
+          label="Create"
+          style={{ marginLeft: "1rem", marginBottom: "1rem" }}
+          onClick={goToBoardCreate}
+        />
+      </span>
       <DataTable
         value={filterSearch}
         tableStyle={{ minWidth: "50rem" }}
