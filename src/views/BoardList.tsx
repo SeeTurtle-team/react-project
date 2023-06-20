@@ -49,7 +49,9 @@ const BoardList = () => {
     // state로 보내고 싶은 데이터 id, title, contents
     navigate(`/BoardEdit/${userId}`);
   };
-  const boardState = (index: any) => {
+  const boardState = (event:any) => {
+    console.log(event.data);
+    const index = event.data.board_id;
     navigate(`/BoardState/${index}`);
   };
   const handleBoardDelete = async (index: number) => {
@@ -115,7 +117,7 @@ const BoardList = () => {
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}
-        // onDoubleClick={() => boardState(board)}
+        onRowClick={boardState}
       >
         <Column field="board_id" header="ID"></Column>
         <Column field="board_title" header="Title"></Column>
