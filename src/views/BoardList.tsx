@@ -111,7 +111,7 @@ const BoardList = () => {
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}
-        // onDoubleClick={() => boardState(board)} 
+        // onDoubleClick={() => boardState(board)}
       >
         <Column field="board_id" header="ID"></Column>
         <Column field="board_title" header="Title"></Column>
