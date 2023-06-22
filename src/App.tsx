@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import BoardState from "./views/BoardState";
 import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import Login from "./views/Login";
+import CreateUser from "./views/CreateUser";
 
 const App = () => {
   return (
@@ -21,7 +22,8 @@ const App = () => {
           <Route path="/BoardList" element={<BoardList />} />
           <Route path="/BoardState/:index" element={<BoardState />} />
           <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />
-          <Route path="/Login" element={<Login />} /> 
+          <Route path="/Login" element={<Login />} />
+          <Route path="/CreateUser" element={<CreateUser />} />
         </Routes>
       </BrowserRouter>
     </div>
