@@ -98,6 +98,7 @@ const CreateUser = () => {
         userLoginType: "d",
         userGradeId: 2,
       });
+      alert('회원가입에 성공했습니다. 다시 로그인 해주세요');
       navigate("/Login");
     } catch (error: any) {
       console.log(error);
