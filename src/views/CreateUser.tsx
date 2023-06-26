@@ -26,11 +26,11 @@ const CreateUser = () => {
 
     const handleId = (e: React.ChangeEvent<HTMLInputElement>) => {
         setId(e.target.value);
-        if (e.target.value.length < 2 || e.target.value.length > 10) {
-            setIdMessage('2글자 이상 10글자 미만으로 입력해주세요.')
+        if (e.target.value.length < 4 || e.target.value.length > 10) {
+            setIdMessage('4글자 이상 10글자 미만으로 입력해주세요.')
             setIsId(false)
           } else {
-            setIdMessage('올바른 이름 형식입니다 :)')
+            setIdMessage('올바른 아이디 형식입니다 :)')
             setIsId(true)
           }
     }
@@ -48,8 +48,8 @@ const CreateUser = () => {
     }
     const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
-        if (e.target.value.length < 4 || e.target.value.length > 5) {
-            setNameMessage('4글자 이상 5글자 미만으로 입력해주세요.')
+        if (e.target.value.length < 2 || e.target.value.length > 5) {
+            setNameMessage('2글자 이상 5글자 미만으로 입력해주세요.')
             setIsName(false)
           } else {
             setNameMessage('올바른 이름 형식입니다 :)')
