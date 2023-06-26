@@ -12,6 +12,9 @@ const CreateUser = () => {
   const [password, setPassword] = useState<string>(""); // 숫자+영어+특수문자
   const [passwordMessage, setPasswordMessage] = useState<string>("");
   const [isPassword, setIsPassword] = useState<boolean>(false);
+  const [passwordCheck, setPasswordCheck] = useState<string>("");
+  const [passwordCheckMessage, setPasswordCheckMessage] = useState<string>("");
+  const [isPasswordCheck, setIsPasswordCheck] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [nameMessage, setNameMessage] = useState<string>("");
   const [isName, setIsName] = useState<boolean>(false);
@@ -85,6 +88,21 @@ const CreateUser = () => {
       setIsEmail(true);
     }
   };
+  const handlePasswordCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordRegex =
+        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    const passwordCurrent = e.target.value;
+    setPasswordCheck(passwordCurrent);
+    if (!passwordRegex.test(passwordCurrent) && password !== passwordCheck) {
+        setPasswordCheckMessage(
+        "비밀번호가 같은지 확인해주세요!"
+        );
+        setIsPasswordCheck(false);
+    } else {
+        setPasswordCheckMessage("비밀번호 확인이 완료되었습니다. : )");
+        setIsPasswordCheck(true);
+    }
+  }
 
   const handleSubmit = async () => {
     try {
@@ -138,7 +156,7 @@ const CreateUser = () => {
       <div className="flex flex-wrap gap-3 mb-4">
         <div className="flex-auto">
           <label htmlFor="number" className="font-bold block mb-2">
-            비번
+            비밀번호
           </label>
           <InputText
             id="password"
@@ -151,6 +169,26 @@ const CreateUser = () => {
           {password.length > 0 && (
             <span className={`message ${isPassword ? "success" : "error"}`}>
               {passwordMessage}
+            </span>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-3 mb-4">
+        <div className="flex-auto">
+          <label htmlFor="number" className="font-bold block mb-2">
+            비밀번호 확인
+          </label>
+          <InputText
+            id="passwordCheck"
+            keyfilter={/[^s]/}
+            className="w-full"
+            onInput={handlePasswordCheck}
+            value={passwordCheck}
+            type="password"
+          />
+          {passwordCheck.length > 0 && (
+            <span className={`message ${isPasswordCheck ? "success" : "error"}`}>
+              {passwordCheckMessage}
             </span>
           )}
         </div>
