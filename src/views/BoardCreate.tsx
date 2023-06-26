@@ -3,7 +3,6 @@ import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import BoardHeader from "./BoardHeader";
 import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
 
