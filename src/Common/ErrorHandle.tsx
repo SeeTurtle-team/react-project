@@ -13,6 +13,9 @@ export const errorHandle = (errCode:number) => {
         case 401:
             alert('권한이 인증되지 않았습니다. 관리자에게 문의하세요');
             return 401;
+        case 400:
+            alert('잘못된 요청입니다');
+            return 400;
     }
 }
 

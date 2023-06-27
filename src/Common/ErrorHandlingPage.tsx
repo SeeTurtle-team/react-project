@@ -34,6 +34,15 @@ const ErrorHandlingPage = () => {
         );
     }
 
+    const page400 = () => {
+        return (
+            <div>
+                <h1>잘못된 요청입니다</h1>
+                <h1>다시 시도해주세요</h1>
+            </div>
+        );
+    }
+
     const page401 = () => {
         window.history.go(-2);
     }
@@ -52,6 +61,9 @@ const ErrorHandlingPage = () => {
                 break;
             case '401':
                 setErrMsg(page401);
+                break;
+            case '400':
+                setErrMsg(page400);
                 break;
         }
     }
