@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
-import { Board } from "../interface/BoardList";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useParams } from "react-router";
 import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
-import { BoardUpdateDte } from "../interface/BoardUpdateDto";
+import { BoardUpdateDto } from "../interface/BoardUpdateDto";
 
 const BoardEdit = () => {
   const [text, setText] = useState<any>("");
   const [value, setValue] = useState<string>("");
-  const [board, setBoard] = useState<BoardUpdateDte>(); //어차피 하나의 데이터만 받을텐데 왜 배열로 받죠?
+  const [board, setBoard] = useState<BoardUpdateDto>(); //어차피 하나의 데이터만 받을텐데 왜 배열로 받죠?
   const navigate = useNavigate();
   const {boardId} = useParams(); //이렇게 하면 App.tsx에 있는 <Route path="/BoardEdit/:boardId" element={<BoardEdit />} /> 이부분에서 boardId 파라미터를 가져올 수 있습니다
  
@@ -32,14 +31,6 @@ const BoardEdit = () => {
       console.log(error)
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
-      // if(error.response.status ===429){
-      //   alert('과도한 접속으로 이용이 제한 되었습니다. 잠시 후 다시 시도해주세요');
-      //   navigate('/ErrorPage/'+429);
-      // }else{
-      //   alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.'); //에러 핸들링 필수!!!!!
-      //   navigate(-1); // error 발생 시 이전 page 이동
-      // }
-      
     }
   };
 

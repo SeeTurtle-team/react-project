@@ -1,4 +1,4 @@
-export interface BoardUpdateDte{
+export interface BoardUpdateDto{
     id : number;
     title : string;
     contents : string;

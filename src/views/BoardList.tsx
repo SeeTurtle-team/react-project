@@ -7,6 +7,7 @@ import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
+import { errorHandle } from "../Common/ErrorHandle";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
@@ -61,16 +62,22 @@ const BoardList = () => {
   };
 
   const handleBoardDelete = async (index: number) => {
-    axios.delete("/board/delete", {
-      data: {
-        id: index,
-        userId: 5,
-      },
-      // 로그인 기능 생성시 userId user 값 받아서 값 변경해 주기
-    });
-    const response = await axios.get("/board");
-    setBoard(response.data);
-  };
+      try{
+        axios.delete("/board/delete", {
+          data: {
+            id: index,
+            userId: 5,
+          },
+          // 로그인 기능 생성시 userId user 값 받아서 값 변경해 주기
+        });
+        const response = await axios.get("/board");
+        setBoard(response.data);
+      } catch (error: any) {
+        console.log(error)
+        const errCode = errorHandle(error.response.status);
+        navigate(`/ErrorPage/${errCode}`);
+    };
+  }
 
   const actionBodyTemplate = (rowData: Board, props: any) => {
     return (
