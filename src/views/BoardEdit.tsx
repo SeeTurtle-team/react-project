@@ -7,11 +7,12 @@ import { Button } from "primereact/button";
 import { useParams } from "react-router";
 import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
+import { BoardUpdateDte } from "../interface/BoardUpdateDto";
 
 const BoardEdit = () => {
   const [text, setText] = useState<any>("");
   const [value, setValue] = useState<string>("");
-  const [board, setBoard] = useState<Board[]>([]);
+  const [board, setBoard] = useState<BoardUpdateDte>(); //어차피 하나의 데이터만 받을텐데 왜 배열로 받죠?
   const navigate = useNavigate();
   const {boardId} = useParams(); //이렇게 하면 App.tsx에 있는 <Route path="/BoardEdit/:boardId" element={<BoardEdit />} /> 이부분에서 boardId 파라미터를 가져올 수 있습니다
  
@@ -19,8 +20,13 @@ const BoardEdit = () => {
   // console.log(board[parmasUserId].board_contents);
   const fetchUsers = async () => {
     try {
-      setBoard([]);
-      const response = await axios.get("/board/read/"+boardId);
+      setBoard(undefined);
+      const boardIdNumber  = typeChangeStringToNumber(boardId);
+      const response = await axios.post("/board/getUpdate",{
+        boardId : boardIdNumber,
+        userId : 5
+      });
+      console.log(response.data)
       setBoard(response.data);
     } catch (error: any) {
       console.log(error)
@@ -36,6 +42,10 @@ const BoardEdit = () => {
       
     }
   };
+
+  const typeChangeStringToNumber = (changeVar : any) => {
+    if(typeof(changeVar)=='string'){return parseInt(changeVar);}
+  }
 
   useEffect(() => {
     fetchUsers();
@@ -73,11 +83,11 @@ const BoardEdit = () => {
           }
           size={80}
         />
-        <label htmlFor="Title">{board.length !== 0 ? board[0].board_title : ''}</label>
+        <label htmlFor="Title">{board?.title}</label>
       </span>
       <h2>Content</h2>
       <Editor
-        value={board.length !== 0 ? board[0].board_contents : ''}
+        value={board?.contents }
         onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
         style={{ height: "320px", marginBottom:'2rem' }}
       />

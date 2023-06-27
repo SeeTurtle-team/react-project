@@ -44,16 +44,22 @@ const BoardList = () => {
         <ProgressSpinner />
       </div>
     );
-  const goToBoardEdit = (userId: number) => {
+
+
+  const goToBoardEdit = (boardId: number) => {
     //rowData object 형식으로 받아오는데 object.board_id에서 board_id 부분이 오류
     // state로 보내고 싶은 데이터 id, title, contents
-    navigate(`/BoardEdit/${userId}`);
+    navigate(`/BoardEdit/${boardId}`);
   };
+
+
+
   const boardState = (event:any) => {
     console.log(event.data);
     const index = event.data.board_id;
     navigate(`/BoardState/${index}`);
   };
+
   const handleBoardDelete = async (index: number) => {
     axios.delete("/board/delete", {
       data: {
@@ -91,9 +97,14 @@ const BoardList = () => {
       </React.Fragment>
     );
   };
+
+
+
   const filterSearch = board.filter((Board: any) => {
     return Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
   });
+
+  
 
   return (
     <div className="card">
