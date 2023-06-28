@@ -14,7 +14,6 @@ const BoardList = () => {
   const [board, setBoard] = useState<Board[]>([]);
   const navigate = useNavigate();
   const [inputSearch, setInputSearch] = useState<string>("");
-  const [like, setLike] = useState<boolean>(false);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);
@@ -47,46 +46,48 @@ const BoardList = () => {
       </div>
     );
 
-
   const goToBoardEdit = (boardId: number) => {
     //rowData object 형식으로 받아오는데 object.board_id에서 board_id 부분이 오류
     // state로 보내고 싶은 데이터 id, title, contents
     navigate(`/BoardEdit/${boardId}`);
   };
 
-  const boardState = (event:any) => {
+  const boardState = (event: any) => {
     console.log(event.data);
     const index = event.data.board_id;
     navigate(`/BoardState/${index}`);
   };
 
   const handleBoardDelete = async (index: number) => {
-      try{
-        axios.delete("/board/delete", {
-          data: {
-            id: index,
-            userId: 5,
-          },
-          // 로그인 기능 생성시 userId user 값 받아서 값 변경해 주기
-        });
-        const response = await axios.get("/board");
-        setBoard(response.data);
-      } catch (error: any) {
-        console.log(error)
-        const errCode = errorHandle(error.response.status);
-        navigate(`/ErrorPage/${errCode}`);
-    };
-  }
-  const handleBoardLike = (rowData:any) => {
-    console.log(rowData.board_recommend);
-    if(!like){
-      setLike(false);
-      rowData.board_recommend -= 1;
-    } else{
-      setLike(true);
-      rowData.board_recommend += 1;
+    try {
+      axios.delete("/board/delete", {
+        data: {
+          id: index,
+          userId: 5,
+        },
+        // 로그인 기능 생성시 userId user 값 받아서 값 변경해 주기
+      });
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
     }
-  }
+  };
+  const handleBoardLike = async (board_id:number) => {
+    try {
+      axios
+        .post("/board/recommend", {
+          userId: 5,
+          boardId: board_id,
+        })
+      const response = await axios.get("/board");
+      setBoard(response.data);
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    }
+  };
 
   const actionBodyTemplate = (rowData: Board, props: any) => {
     return (
@@ -96,7 +97,7 @@ const BoardList = () => {
           rounded
           outlined
           className="mr-2"
-          onClick={() => handleBoardLike(rowData)}
+          onClick={() => handleBoardLike(rowData.board_id)}
           style={{ marginRight: "1rem" }}
         />
         <Button
@@ -117,13 +118,9 @@ const BoardList = () => {
     );
   };
 
-
-
   const filterSearch = board.filter((Board: any) => {
     return Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
   });
-
-  
 
   return (
     <div className="card">
