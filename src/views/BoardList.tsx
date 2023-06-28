@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
-import { Board } from "../interface/BoardList";
+import { Board } from "../interface/BoardListDto";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
@@ -14,6 +14,7 @@ const BoardList = () => {
   const [board, setBoard] = useState<Board[]>([]);
   const navigate = useNavigate();
   const [inputSearch, setInputSearch] = useState<string>("");
+  const [like, setLike] = useState<boolean>(false);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);
@@ -53,8 +54,6 @@ const BoardList = () => {
     navigate(`/BoardEdit/${boardId}`);
   };
 
-
-
   const boardState = (event:any) => {
     console.log(event.data);
     const index = event.data.board_id;
@@ -78,15 +77,28 @@ const BoardList = () => {
         navigate(`/ErrorPage/${errCode}`);
     };
   }
+  const handleBoardLike = (rowData:any) => {
+    console.log(rowData.board_recommend);
+    if(!like){
+      setLike(false);
+      rowData.board_recommend -= 1;
+    } else{
+      setLike(true);
+      rowData.board_recommend += 1;
+    }
+  }
 
   const actionBodyTemplate = (rowData: Board, props: any) => {
     return (
       <React.Fragment>
-        {/* <Button
-          label="게시글이동"
-          onClick={() => boardState(board[props.rowIndex].board_id)}
+        <Button
+          icon="pi pi-thumbs-up"
+          rounded
+          outlined
+          className="mr-2"
+          onClick={() => handleBoardLike(rowData)}
           style={{ marginRight: "1rem" }}
-        /> */}
+        />
         <Button
           icon="pi pi-pencil"
           rounded
@@ -140,6 +152,7 @@ const BoardList = () => {
         <Column field="board_id" header="ID"></Column>
         <Column field="board_title" header="Title"></Column>
         <Column field="board_dateTime" header="Time"></Column>
+        <Column field="board_recommend" header="Recommend"></Column>
         <Column
           body={actionBodyTemplate}
           exportable={false}
