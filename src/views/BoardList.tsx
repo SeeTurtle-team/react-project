@@ -126,7 +126,7 @@ const BoardList = () => {
       <span>
         <Button
           label="Create"
-          style={{ marginLeft: "1rem", marginBottom: "1rem" }}
+          style={{ marginLeft: "57rem", marginBottom: "1rem" }}
           onClick={goToBoardCreate}
         />
       </span>
@@ -135,7 +135,7 @@ const BoardList = () => {
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}
-        onRowDoubleClick={boardState}
+        onRowClick={boardState}
       >
         <Column field="board_id" header="ID"></Column>
         <Column field="board_title" header="Title"></Column>
