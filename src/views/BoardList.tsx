@@ -8,12 +8,22 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { errorHandle } from "../Common/ErrorHandle";
+import { Dropdown } from 'primereact/dropdown';
+import { SearchOptioninterface } from "../interface/SearchOption";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<Board[]>([]);
   const navigate = useNavigate();
   const [inputSearch, setInputSearch] = useState<string>("");
+  const [selectedSearchOption, setSelectedSearchOption] = useState<SearchOptioninterface>();
+
+
+  const searchOptions = [
+    { name: 'Title', code: 't' },
+    { name: 'User', code: 'u' },
+  
+  ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);
@@ -108,16 +118,24 @@ const BoardList = () => {
 
 
   const filterSearch = board.filter((Board: any) => {
-    return Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
+    console.log(selectedSearchOption)
+    if(selectedSearchOption?.code==='u'){
+      return Board.user_nickname.toLowerCase().includes(inputSearch.toLowerCase());
+    }else{
+      return Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
+    }
   });
 
   
 
   return (
     <div className="card">
+      <Dropdown value={selectedSearchOption} onChange={(e) => setSelectedSearchOption(e.value)} options={searchOptions} optionLabel="name" 
+                placeholder="Title" className="w-full md:w-14rem" />
       <span className="p-input-icon-left" style={{ marginBottom: "1rem" }}>
         <i className="pi pi-search" />
         <InputText
+          style ={{marginLeft:'0.5rem'}}
           placeholder="Search"
           onInput={handleSearch}
           value={inputSearch}
