@@ -28,19 +28,23 @@ const BoardState = () => {
   }, []);
 
   const handleBoardLike = async () => {
+    console.log(board);
     try {
       axios
         .post("/board/recommend", {
           userId: 5,
           boardId: Number(index),
         })
-      const response = await axios.get("/board/read/" + index);
-      setBoard(response.data);
-    } catch (error: any) {
+    console.log(board);
+  } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
     }
+  }
+  const boardUpdate = async () => {
+    const response = await axios.get("/board/read/" + index);
+    setBoard(response.data);
   }
 
   return (
@@ -71,6 +75,7 @@ const BoardState = () => {
           작성일: {board?.dateTime}
         </p>
       </span>
+      <Button label="Update" onClick={boardUpdate}></Button>
     </div>
   );
 };
