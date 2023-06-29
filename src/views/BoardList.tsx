@@ -37,7 +37,8 @@ const BoardList = () => {
     };
 
     fetchUsers();
-  }, [navigate]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (loading)
     return (
@@ -75,33 +76,10 @@ const BoardList = () => {
       navigate(`/ErrorPage/${errCode}`);
     }
   };
-  const handleBoardLike = async (board_id:number) => {
-    try {
-      axios
-        .post("/board/recommend", {
-          userId: 5,
-          boardId: board_id,
-        })
-      const response = await axios.get("/board");
-      setBoard(response.data);
-    } catch (error: any) {
-      console.log(error);
-      const errCode = errorHandle(error.response.status);
-      navigate(`/ErrorPage/${errCode}`);
-    }
-  };
 
   const actionBodyTemplate = (rowData: Board, props: any) => {
     return (
       <React.Fragment>
-        <Button
-          icon="pi pi-thumbs-up"
-          rounded
-          outlined
-          className="mr-2"
-          onClick={() => handleBoardLike(rowData.board_id)}
-          style={{ marginRight: "1rem" }}
-        />
         <Button
           icon="pi pi-pencil"
           rounded
