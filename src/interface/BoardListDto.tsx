@@ -5,7 +5,7 @@ export interface Board {
     board_dateTime: Date;
     board_isDeleted: boolean;
     board_isModified: boolean;
-    board_recommand: number;
+    board_recommend: number;
     user_nickname: string;
     boardCategoryId: number;
 }
