@@ -10,6 +10,7 @@ import { InputText } from "primereact/inputtext";
 import { errorHandle } from "../Common/ErrorHandle";
 import { Dropdown } from 'primereact/dropdown';
 import { SearchOptioninterface } from "../interface/SearchOption";
+import { dateFormatFunc } from "../Common/DateFormat";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
@@ -43,6 +44,10 @@ const BoardList = () => {
       } catch (error: any) {
         navigate(-1); // error 발생 시 이전 page 이동
       }
+
+      // board.forEach(element => {
+      //   element.board_dateTime = dateFormatFunc(element.board_dateTime)
+      // });
       setLoading(false);
     };
 

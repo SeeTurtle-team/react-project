@@ -41,7 +41,7 @@ const Login = () => {
    
     return (
         <div className="card">
-          <div style={{marginLeft:'40rem'}}>
+          <div style={{marginLeft:'43rem'}}>
             <div className="flex flex-wrap:wrap">
                   <div className="flex flex-wrap gap-3 mb-4" text-align="center">
                       <label htmlFor="integer" className="font-bold block mb-2">
