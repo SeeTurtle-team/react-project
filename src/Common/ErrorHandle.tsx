@@ -16,6 +16,7 @@ export const errorHandle = (errCode:number) => {
         case 400:
             alert('잘못된 요청입니다');
             return 400;
+        
     }
 }
 

@@ -47,6 +47,13 @@ const ErrorHandlingPage = () => {
         window.history.go(-2);
     }
 
+    const undefinedUrl = () => {
+        alert('알 수 없는 에러가 발생했습니다')
+        window.history.go(-2);
+
+    }
+    
+
     const errStatueCheck = (id: any) => {
         //에러 발생 시 코드에 따라 case를 추가하시고 위에 함수로 리턴 값을 만들어주시면 됩니다.
         switch (id) {
@@ -64,6 +71,12 @@ const ErrorHandlingPage = () => {
                 break;
             case '400':
                 setErrMsg(page400);
+                break;
+            case '401.1':
+                setErrMsg(page401);
+                break;
+            case 'undefined' :
+                setErrMsg(undefinedUrl);
                 break;
         }
     }

@@ -25,8 +25,19 @@ const BoardEdit = () => {
         boardId : boardIdNumber,
         userId : 5
       });
+
       console.log(response.data)
-      setBoard(response.data);
+      console.log(response.data.success)
+
+      if(!response.data.success){
+        alert('권한이 없습니다');
+        window.history.go(-1);
+        return;
+        
+      }else{
+        setBoard(response.data);
+      }
+     
     } catch (error: any) {
       console.log(error)
       const errCode = errorHandle(error.response.status);

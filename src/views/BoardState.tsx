@@ -7,11 +7,14 @@ import { errorHandle } from "../Common/ErrorHandle";
 import axios from "axios";
 import { BoardUpdateDto } from "../interface/BoardUpdateDto";
 import { Button } from "primereact/button";
+import { dateFormatFunc } from "../Common/DateFormat";
 
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
   const { index } = useParams();
   const navigate = useNavigate();
+
+
   const fetchUsers = async () => {
     try {
       const response = await axios.get("/board/read/" + index);
@@ -22,6 +25,9 @@ const BoardState = () => {
       navigate(`/ErrorPage/${errCode}`);
     }
   };
+
+
+
   useEffect(() => {
     fetchUsers();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,6 +48,8 @@ const BoardState = () => {
       navigate(`/ErrorPage/${errCode}`);
     }
   }
+
+
   const boardUpdate = async () => {
     const response = await axios.get("/board/read/" + index);
     setBoard(response.data);
@@ -54,11 +62,14 @@ const BoardState = () => {
           {board?.title}
         </p>
       </Card>
+
+
       <Panel header="Content" style={{ marginBottom: "2rem" }}>
         <p className="m-0">
           {board?.contents}
         </p>
       </Panel>
+
       <span>
         <Button
           icon="pi pi-thumbs-up"
@@ -72,9 +83,10 @@ const BoardState = () => {
           추천수: {board?.recommend}
         </p>
         <p className="m-0" style={{ marginRight: "2rem" }}>
-          작성일: {board?.dateTime}
+          작성일: {dateFormatFunc(board?.dateTime)}
         </p>
       </span>
+
       <Button label="Update" onClick={boardUpdate}></Button>
     </div>
   );
