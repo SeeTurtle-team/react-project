@@ -9,11 +9,15 @@ import KakaoLogin from "react-kakao-login";
 import { Password } from 'primereact/password';
 
 import kakao from "../kakao_login_small.png"
+import axios from "axios";
 const Login = () => {
     const navigate = useNavigate();
     const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+    
+    const clientID =`${ process.env.REACT_APP_GOOGLE_LOGIN}`;
+    
     const handleCreateUser = () => {
         navigate("/CreateUser");
     };
@@ -24,6 +28,17 @@ const Login = () => {
     const loginHandler = () => {
         window.location.href = link;
     };
+
+    //google login
+    const googleLogin = async (token?:string) => {
+        try{
+            axios.post('/user/google',{
+                token : token
+            })
+        }catch(err){
+            console.log(err)
+        }
+    }
 
 
     //https://stack94.tistory.com/entry/React-%EC%B9%B4%EC%B9%B4%EC%98%A4Kakao-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0
@@ -73,10 +88,11 @@ const Login = () => {
                   <div style={{display:'block',marginTop:'0.5rem'}}>
                   {/* 구글 로그인 참조 블로그
                   https://stack94.tistory.com/entry/React-%EA%B5%AC%EA%B8%80-%EB%A1%9C%EA%B7%B8%EC%9D%B8Google-Login-%EB%A6%AC%EC%95%A1%ED%8A%B8React%EC%97%90%EC%84%9C-%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EC%9E%90 */}
-                    <GoogleOAuthProvider clientId={''}>
+                    <GoogleOAuthProvider clientId={clientID}>
                         <GoogleLogin
                             onSuccess={(res) => {
-                                console.log(res);
+                                console.log(res)
+                                googleLogin(res.credential)
                             }}
                             
                         />
