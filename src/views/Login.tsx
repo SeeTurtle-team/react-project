@@ -32,9 +32,11 @@ const Login = () => {
     //google login
     const googleLogin = async (token?:string) => {
         try{
-            axios.post('/user/google',{
+            const response = axios.post('/user/google',{
                 token : token
-            })
+            });
+
+            console.log(response)
         }catch(err){
             console.log(err)
         }
