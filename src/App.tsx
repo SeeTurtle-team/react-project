@@ -10,8 +10,8 @@ import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import Login from "./views/Login";
 import CreateUser from "./views/CreateUser";
 
-import UserLoginProvider, { UserLoginContext } from './context/UserLoginContext';
-import ActiveIndexProvider, {ActiveIndexContext} from "./context/ActiveIndex";
+import UserLoginProvider from './context/UserLoginContext';
+import ActiveIndexProvider from "./context/ActiveIndexContext";
 
 
 
@@ -19,13 +19,14 @@ import ActiveIndexProvider, {ActiveIndexContext} from "./context/ActiveIndex";
 const App = () => {
   // const UserLoginContext = React.createContext(false);
   // const ActiveIndexContext = React.createContext(0);
-  const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  // const [isLogin, setIsLogin] = useState<boolean>(false);
+  // const [activeIndex, setActiveIndex] = useState<number>(0);
   // const value = {isLogin, setIsLogin};
 
   return (
     <div>
       <UserLoginProvider>
+      <ActiveIndexProvider>
       <BrowserRouter>
         <BoardHeader />
         <Routes>
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/CreateUser" element={<CreateUser />} />
         </Routes>
       </BrowserRouter>
+      </ActiveIndexProvider>
       </UserLoginProvider>
     </div>
   );

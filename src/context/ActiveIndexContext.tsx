@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, createContext, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, createContext, useState } from "react";
 
 export interface ActiveIndexContextProviderProps {
     activeIndex: number;
@@ -7,7 +7,7 @@ export interface ActiveIndexContextProviderProps {
 
 const ActiveIndexContextDefaultValue ={
     activeIndex: 0,
-    setActiveIndex: (isLogin) => {}
+    setActiveIndex: (activeIndex:number) => {}
   } as ActiveIndexContextProviderProps
   
 
@@ -15,7 +15,7 @@ export const ActiveIndexContext = createContext(ActiveIndexContextDefaultValue);
 
 
 type ActiveIndexProvideProps = {
-    children: React.ReactNode
+    children: ReactNode
 }
 
 export default function ActiveIndexProvider({children} : ActiveIndexProvideProps)

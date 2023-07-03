@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { Board } from "../interface/BoardListDto";
@@ -11,7 +11,7 @@ import { errorHandle } from "../Common/ErrorHandle";
 import { Dropdown } from 'primereact/dropdown';
 import { SearchOptioninterface } from "../interface/SearchOption";
 import { dateFormatFunc } from "../Common/DateFormat";
-import { ActiveIndexContext } from "../context/ActiveIndex";
+import { ActiveIndexContext } from "../context/ActiveIndexContext";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
@@ -19,9 +19,7 @@ const BoardList = () => {
   const navigate = useNavigate();
   const [inputSearch, setInputSearch] = useState<string>("");
   const [selectedSearchOption, setSelectedSearchOption] = useState<SearchOptioninterface>();
-  const {activeIndex, setActiveIndex}:any = ActiveIndexContext;
-
-  setActiveIndex(1);
+  const {activeIndex, setActiveIndex}:any = useContext(ActiveIndexContext);
 
   const searchOptions = [
     { name: 'Title', code: 't' },
@@ -40,7 +38,7 @@ const BoardList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        setBoard([]);
+        setActiveIndex(1);
         setLoading(true);
         const response = await axios.get("/board");
         setBoard(response.data);
