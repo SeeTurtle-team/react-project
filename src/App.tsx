@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useState, Dispatch, SetStateAction } from "react";
 import BoardHeader from "./views/BoardHeader";
 import { Route, Routes, Navigate } from "react-router";
 import BoardCreate from "./views/BoardCreate";
@@ -10,9 +10,23 @@ import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import Login from "./views/Login";
 import CreateUser from "./views/CreateUser";
 
+import UserLoginProvider from './context/UserLoginContext';
+import ActiveIndexProvider from "./context/ActiveIndexContext";
+
+
+
+
 const App = () => {
+  // const UserLoginContext = React.createContext(false);
+  // const ActiveIndexContext = React.createContext(0);
+  // const [isLogin, setIsLogin] = useState<boolean>(false);
+  // const [activeIndex, setActiveIndex] = useState<number>(0);
+  // const value = {isLogin, setIsLogin};
+
   return (
     <div>
+      <UserLoginProvider>
+      <ActiveIndexProvider>
       <BrowserRouter>
         <BoardHeader />
         <Routes>
@@ -26,6 +40,8 @@ const App = () => {
           <Route path="/CreateUser" element={<CreateUser />} />
         </Routes>
       </BrowserRouter>
+      </ActiveIndexProvider>
+      </UserLoginProvider>
     </div>
   );
 };

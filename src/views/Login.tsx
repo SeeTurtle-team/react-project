@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom"; // Import the useHistory hook
@@ -10,20 +10,38 @@ import { Password } from 'primereact/password';
 
 import kakao from "../kakao_login_small.png"
 import axios from "axios";
+import { errorHandle } from "../Common/ErrorHandle";
+import { UserLoginContext } from "../context/UserLoginContext"
+
 const Login = () => {
     const navigate = useNavigate();
     const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-    
     const clientID =`${ process.env.REACT_APP_GOOGLE_LOGIN}`;
+
+    const [id, setId] = useState("");
+    const [password, setPassword] = useState("");
+    const {isLogin, setIsLogin} = useContext(UserLoginContext);
     
     const handleCreateUser = () => {
         navigate("/CreateUser");
     };
     const handleLogin = () => {
+        try{
+            axios.post("/auth",{
+                userId: id,
+                password: password
+            })
+            setIsLogin(true);
+            alert('로그인에 성공했습니다');
+        } catch (error: any) {
+            console.log(error);
+            const errCode = errorHandle(error.response.status);
+            navigate(`/ErrorPage/${errCode}`);
+          }
+        
         navigate("/");
-
     }
     const loginHandler = () => {
         window.location.href = link;
@@ -64,7 +82,7 @@ const Login = () => {
                       <label htmlFor="integer" className="font-bold block mb-2">
                           아이디
                       </label>
-                      <InputText id="userid" keyfilter="alphanum" style={{width:'12rem'}} className="w-full"/>
+                      <InputText id="userid" keyfilter="alphanum" style={{width:'12rem'}} className="w-full" value={id} onChange={(e) => setId(e.target.value)} />
                   </div>
               </div>
               <div >
@@ -72,7 +90,7 @@ const Login = () => {
                       <label htmlFor="number" className="font-bold block mb-2">
                           비번
                       </label>
-                      <Password keyfilter="alphanum"  style={{width:'25rem'}}/>
+                      <Password keyfilter={/[^s]/}  style={{width:'25rem'}} value={password} onChange={(e) => setPassword(e.target.value)} maxLength={15}/>
                   </div>
               </div>
 

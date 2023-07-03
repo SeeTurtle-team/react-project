@@ -166,6 +166,8 @@ const CreateUser = () => {
             onInput={handlePassword}
             value={password}
             type="password"
+            maxLength={15}
+
           />
           {password.length > 0 && (
             <span className={`message ${isPassword ? "success" : "error"}`}>
@@ -186,6 +188,8 @@ const CreateUser = () => {
             onInput={handlePasswordCheck}
             value={passwordCheck}
             type="password"
+            maxLength={15}
+
           />
           {passwordCheck.length > 0 && (
             <span className={`message ${isPasswordCheck ? "success" : "error"}`}>
