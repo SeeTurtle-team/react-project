@@ -11,13 +11,15 @@ import { errorHandle } from "../Common/ErrorHandle";
 import { Dropdown } from 'primereact/dropdown';
 import { SearchOptioninterface } from "../interface/SearchOption";
 import { dateFormatFunc } from "../Common/DateFormat";
+import { ActiveIndexContext } from "../context/ActiveIndex";
 
-const BoardList = ({activeIndex, setActiveIndex}:any) => {
+const BoardList = () => {
   const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<Board[]>([]);
   const navigate = useNavigate();
   const [inputSearch, setInputSearch] = useState<string>("");
   const [selectedSearchOption, setSelectedSearchOption] = useState<SearchOptioninterface>();
+  const {activeIndex, setActiveIndex}:any = ActiveIndexContext;
 
   setActiveIndex(1);
 

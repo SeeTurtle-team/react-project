@@ -11,22 +11,14 @@ import Login from "./views/Login";
 import CreateUser from "./views/CreateUser";
 
 import UserLoginProvider, { UserLoginContext } from './context/UserLoginContext';
+import ActiveIndexProvider, {ActiveIndexContext} from "./context/ActiveIndex";
 
-// interface UserLoginContext {
-//   isLogin: boolean | null;
-//   setIsLogin: Dispatch<SetStateAction<boolean | null>>;
-// }
-
-// export const UserLoginContextDefaultValue:UserLoginContext = {
-//   isLogin: false,
-//   setIsLogin: () => {}
-// }
-// const UserLoginContext = createContext<UserLoginContext>(UserLoginContextDefaultValue);
 
 
 
 const App = () => {
-  const UserLoginContext = React.createContext(false);
+  // const UserLoginContext = React.createContext(false);
+  // const ActiveIndexContext = React.createContext(0);
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   // const value = {isLogin, setIsLogin};
@@ -35,15 +27,15 @@ const App = () => {
     <div>
       <UserLoginProvider>
       <BrowserRouter>
-        <BoardHeader activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+        <BoardHeader />
         <Routes>
           <Route path="/" element={<Navigate to="/" />} />
           <Route path="/BoardCreate" element={<BoardCreate />} />
           <Route path="/BoardEdit/:boardId" element={<BoardEdit />} />  {/**boardId를 넘겨야 게시글을 가져올 수 있겠죠? */}
-          <Route path="/BoardList" element={<BoardList activeIndex={activeIndex} setActiveIndex={setActiveIndex} />} />
+          <Route path="/BoardList" element={<BoardList />} />
           <Route path="/BoardState/:index" element={<BoardState />} />
           <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />
-          <Route path="/Login" element={<Login isLogin={isLogin} setIsLogin={setIsLogin}/>} />
+          <Route path="/Login" element={<Login />} />
           <Route path="/CreateUser" element={<CreateUser />} />
         </Routes>
       </BrowserRouter>

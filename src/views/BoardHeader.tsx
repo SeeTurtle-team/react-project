@@ -2,9 +2,10 @@ import React, { useContext, useState } from "react";
 import { TabMenu } from "primereact/tabmenu";
 import { MenuItem } from "primereact/menuitem";
 import { UserLoginContext } from "../context/UserLoginContext";
+import { ActiveIndexContext } from "../context/ActiveIndex";
 
-function BoardHeader({ activeIndex, setActiveIndex}:any) {
-  // const [activeIndex, setActiveIndex] = useState<number>(0);
+function BoardHeader() {
+  const {activeIndex, setActiveIndex}:any = ActiveIndexContext;
   const {isLogin, setIsLogin}:any = UserLoginContext;
   const items: MenuItem[] = [
     { label: "Home", icon: "pi pi-fw pi-home", url: "/" },

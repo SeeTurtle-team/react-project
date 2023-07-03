@@ -13,7 +13,7 @@ import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
 import { UserLoginContext } from "../context/UserLoginContext"
 
-const Login = ( {isLogin, setIsLogin}:any ) => {
+const Login = () => {
     const navigate = useNavigate();
     const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
@@ -22,7 +22,7 @@ const Login = ( {isLogin, setIsLogin}:any ) => {
 
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    // const {isLogin, setIsLogin} = useContext(UserLoginContext);
+    const {isLogin, setIsLogin} = useContext(UserLoginContext);
     
     const handleCreateUser = () => {
         navigate("/CreateUser");
