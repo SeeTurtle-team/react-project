@@ -3,7 +3,7 @@ export interface BoardUpdateDto{
     title : string;
     contents : string;
     ban : boolean;
-    dateTime : string;
+    dateTime : Date;
     isDeleted : boolean;
     isModified : boolean;
     recommend : number;

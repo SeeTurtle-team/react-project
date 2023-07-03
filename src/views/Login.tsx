@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom"; // Import the useHistory hook
@@ -10,7 +10,10 @@ import { Password } from 'primereact/password';
 
 import kakao from "../kakao_login_small.png"
 import axios from "axios";
-const Login = () => {
+import { errorHandle } from "../Common/ErrorHandle";
+import { UserLoginContext } from "../context/UserLoginContext"
+
+const Login = ( {isLogin, setIsLogin}:any ) => {
     const navigate = useNavigate();
     const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
@@ -19,15 +22,25 @@ const Login = () => {
 
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+    // const {isLogin, setIsLogin} = useContext(UserLoginContext);
     
     const handleCreateUser = () => {
         navigate("/CreateUser");
     };
     const handleLogin = () => {
-        axios.post("/auth",{
-            userId: id,
-            password: password
-        })
+        try{
+            axios.post("/auth",{
+                userId: id,
+                password: password
+            })
+            setIsLogin(true);
+            alert('로그인에 성공했습니다');
+        } catch (error: any) {
+            console.log(error);
+            const errCode = errorHandle(error.response.status);
+            navigate(`/ErrorPage/${errCode}`);
+          }
+        
         navigate("/");
     }
     const loginHandler = () => {
@@ -77,7 +90,7 @@ const Login = () => {
                       <label htmlFor="number" className="font-bold block mb-2">
                           비번
                       </label>
-                      <Password keyfilter="alphanum"  style={{width:'25rem'}} value={password} onChange={(e) => setPassword(e.target.value)}/>
+                      <Password keyfilter={/[^s]/}  style={{width:'25rem'}} value={password} onChange={(e) => setPassword(e.target.value)} maxLength={15}/>
                   </div>
               </div>
 
