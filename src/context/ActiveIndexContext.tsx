@@ -28,3 +28,6 @@ export default function ActiveIndexProvider({children} : ActiveIndexProvideProps
         </ActiveIndexContext.Provider>
     )
 }
+
+
+// https://www.youtube.com/watch?v=D6kj5dgakz8 참고 영상

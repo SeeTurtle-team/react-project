@@ -6,11 +6,13 @@ import { useParams } from "react-router";
 import { errorHandle } from "../Common/ErrorHandle";
 import axios from "axios";
 import { BoardUpdateDto } from "../interface/BoardUpdateDto";
+import { BoardCommentDto } from "../interface/BoardComment.Dto";
 import { Button } from "primereact/button";
 import { dateFormatFunc } from "../Common/DateFormat";
 
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
+  const [comment, setCommenet] = useState<BoardCommentDto>();
   const { index } = useParams();
   const navigate = useNavigate();
 
@@ -24,9 +26,15 @@ const BoardState = () => {
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
     }
+    try{
+      const response = await axios.get("/board/comment/" + index);
+      setCommenet(response.data);
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    }
   };
-
-
 
   useEffect(() => {
     fetchUsers();
@@ -86,7 +94,6 @@ const BoardState = () => {
           작성일: {dateFormatFunc(board?.dateTime)}
         </p>
       </span>
-
       <Button label="Update" onClick={boardUpdate}></Button>
     </div>
   );
