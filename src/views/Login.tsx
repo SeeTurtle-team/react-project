@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom"; // Import the useHistory hook
@@ -15,15 +15,20 @@ const Login = () => {
     const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-    
     const clientID =`${ process.env.REACT_APP_GOOGLE_LOGIN}`;
+
+    const [id, setId] = useState("");
+    const [password, setPassword] = useState("");
     
     const handleCreateUser = () => {
         navigate("/CreateUser");
     };
     const handleLogin = () => {
+        axios.post("/auth",{
+            userId: id,
+            password: password
+        })
         navigate("/");
-
     }
     const loginHandler = () => {
         window.location.href = link;
@@ -64,7 +69,7 @@ const Login = () => {
                       <label htmlFor="integer" className="font-bold block mb-2">
                           아이디
                       </label>
-                      <InputText id="userid" keyfilter="alphanum" style={{width:'12rem'}} className="w-full"/>
+                      <InputText id="userid" keyfilter="alphanum" style={{width:'12rem'}} className="w-full" value={id} onChange={(e) => setId(e.target.value)} />
                   </div>
               </div>
               <div >
@@ -72,7 +77,7 @@ const Login = () => {
                       <label htmlFor="number" className="font-bold block mb-2">
                           비번
                       </label>
-                      <Password keyfilter="alphanum"  style={{width:'25rem'}}/>
+                      <Password keyfilter="alphanum"  style={{width:'25rem'}} value={password} onChange={(e) => setPassword(e.target.value)}/>
                   </div>
               </div>
 
