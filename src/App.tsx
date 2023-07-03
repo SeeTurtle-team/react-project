@@ -10,7 +10,7 @@ import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import Login from "./views/Login";
 import CreateUser from "./views/CreateUser";
 
-import { UserLoginContext } from './context/UserLoginContext';
+import UserLoginProvider, { UserLoginContext } from './context/UserLoginContext';
 
 // interface UserLoginContext {
 //   isLogin: boolean | null;
@@ -33,9 +33,9 @@ const App = () => {
 
   return (
     <div>
-      {/* <UserLoginContext.Provider value={{isLogin, setIsLogin}}> */}
+      <UserLoginProvider>
       <BrowserRouter>
-        <BoardHeader isLogin={isLogin} setIsLogin={setIsLogin} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+        <BoardHeader activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
         <Routes>
           <Route path="/" element={<Navigate to="/" />} />
           <Route path="/BoardCreate" element={<BoardCreate />} />
@@ -47,7 +47,7 @@ const App = () => {
           <Route path="/CreateUser" element={<CreateUser />} />
         </Routes>
       </BrowserRouter>
-      {/* </UserLoginContext.Provider> */}
+      </UserLoginProvider>
     </div>
   );
 };

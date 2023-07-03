@@ -3,9 +3,9 @@ import { TabMenu } from "primereact/tabmenu";
 import { MenuItem } from "primereact/menuitem";
 import { UserLoginContext } from "../context/UserLoginContext";
 
-function BoardHeader({isLogin, setIsLogin, activeIndex, setActiveIndex}:any) {
+function BoardHeader({ activeIndex, setActiveIndex}:any) {
   // const [activeIndex, setActiveIndex] = useState<number>(0);
-  // const {isLogin, setIsLogin} = UserLoginContext;
+  const {isLogin, setIsLogin}:any = UserLoginContext;
   const items: MenuItem[] = [
     { label: "Home", icon: "pi pi-fw pi-home", url: "/" },
     { label: "Board", icon: "pi pi-fw pi-calendar", url: "/BoardList" },

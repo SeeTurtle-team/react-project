@@ -1,11 +1,30 @@
-import { Dispatch, SetStateAction, createContext } from "react";
-interface UserLoginContext {
-    isLogin: boolean | null;
-    setIsLogin: Dispatch<SetStateAction<boolean | null>>;
-  }
-export const UserLoginContextDefaultValue = createContext<UserLoginContext>({
-    isLogin: false,
-    setIsLogin: () => {}
-  })
+import { Dispatch, SetStateAction, createContext, useState } from "react";
 
-export const UserLoginContext = createContext(null);
+export interface UserLoginContextProviderProps {
+    isLogin: boolean;
+    setIsLogin: Dispatch<SetStateAction<boolean>>;
+  }
+
+const UserLoginContextDefaultValue ={
+    isLogin: false,
+    setIsLogin: (isLogin) => {}
+  } as UserLoginContextProviderProps
+  
+
+export const UserLoginContext = createContext(UserLoginContextDefaultValue);
+
+
+type UserLoginProvideProps = {
+    children: React.ReactNode
+}
+
+export default function UserLoginProvider({children} : UserLoginProvideProps)
+{
+    const [isLogin, setIsLogin] = useState(false);
+
+    return(
+        <UserLoginContext.Provider value={{isLogin, setIsLogin}}>
+            {children}
+        </UserLoginContext.Provider>
+    )
+}
