@@ -44,6 +44,8 @@ const BoardState = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(boardComment);
+
   const handleBoardLike = async () => {
     console.log(board);
     try {
@@ -79,11 +81,39 @@ const BoardState = () => {
       navigate(`/ErrorPage/${errCode}`);
     }
   }
-  const handleCommentEdit = (index:number) => {
-    console.log(index);
+  const handleCommentEdit = (i:number) => {
+    try{
+      axios.patch("/board/comment/update",{
+        id: i,
+        contents: "test",
+        userId: 11,
+        boardId: index
+      })
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    }
   }
-  const handleCommentDelete = (index:number) => {
-    console.log(index);
+  const handleCommentDelete = (i:number) => {
+    const userId = 5; // 로그인 후 아이디 값 받아오기
+    try{
+      axios.delete("/board/comment/delete", {
+        data: {
+          id: boardComment[i].boardComment_id,
+          userId: userId,
+        },
+      });
+      if(userId === boardComment[i].userId){
+        alert('댓글이 삭제 되었습니다.');
+      } else {
+        alert('댓글 작성자만 삭제할 수 있습니다.');
+      }
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    }
   }
 
   return (
@@ -121,8 +151,8 @@ const BoardState = () => {
       <div style={{ marginBottom: "1rem" }}>
       <Button label="Update" onClick={boardUpdate}></Button>
       </div>
-      {boardComment.map((comment,index) => 
-        <Fieldset key={index}>
+      {boardComment.map((comment,i) => 
+        <Fieldset key={i}>
           <div style={{ marginBottom: "1rem" }}>
           아이디:{comment.user_nickname} <br/>
           내용:{comment.boardComment_contents} <br/>
@@ -134,13 +164,13 @@ const BoardState = () => {
           severity="warning"
           icon="pi pi-pencil"
           style={{ marginRight: "1rem" }}
-          onClick={() => handleCommentEdit(index)}
+          onClick={() => handleCommentEdit(i)}
           />
           <Button 
           label="삭제"
           severity="danger"
           icon="pi pi-trash"
-          onClick={() => handleCommentDelete(index)}
+          onClick={() => handleCommentDelete(i)}
           />
           </div>
         </Fieldset>
