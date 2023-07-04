@@ -9,10 +9,13 @@ import { BoardUpdateDto } from "../interface/BoardUpdateDto";
 import { BoardCommentDto } from "../interface/BoardComment.Dto";
 import { Button } from "primereact/button";
 import { dateFormatFunc } from "../Common/DateFormat";
-
+import { InputTextarea } from "primereact/inputtextarea";
+import { Fieldset } from 'primereact/fieldset';
+import { kMaxLength } from "buffer";
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
-  const [comment, setCommenet] = useState<BoardCommentDto>();
+  const [boardComment, setBoardCommenet] = useState<BoardCommentDto[]>([]);
+  const [comment, setComment] = useState<string>("");
   const { index } = useParams();
   const navigate = useNavigate();
 
@@ -28,7 +31,7 @@ const BoardState = () => {
     }
     try{
       const response = await axios.get("/board/comment/" + index);
-      setCommenet(response.data);
+      setBoardCommenet(response.data);
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
@@ -62,6 +65,26 @@ const BoardState = () => {
     const response = await axios.get("/board/read/" + index);
     setBoard(response.data);
   }
+  const handleSubmit = () => {
+    try{
+      axios.post("/board/comment/create", {
+        contents: comment,
+        userId: 5,
+        boardId: Number(index),
+      })
+      setComment("");
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    }
+  }
+  const handleCommentEdit = (index:number) => {
+    console.log(index);
+  }
+  const handleCommentDelete = (index:number) => {
+    console.log(index);
+  }
 
   return (
     <div className="card">
@@ -77,7 +100,7 @@ const BoardState = () => {
           {board?.contents}
         </p>
       </Panel>
-
+      <div style={{ marginBottom: "1rem" }}>
       <span>
         <Button
           icon="pi pi-thumbs-up"
@@ -94,7 +117,51 @@ const BoardState = () => {
           작성일: {dateFormatFunc(board?.dateTime)}
         </p>
       </span>
+      </div>
+      <div style={{ marginBottom: "1rem" }}>
       <Button label="Update" onClick={boardUpdate}></Button>
+      </div>
+      {boardComment.map((comment,index) => 
+        <Fieldset key={index}>
+          <div style={{ marginBottom: "1rem" }}>
+          아이디:{comment.user_nickname} <br/>
+          내용:{comment.boardComment_contents} <br/>
+          작성일:{String(comment.boardComment_dateTime)}
+          </div>
+          <div>
+          <Button 
+          label="수정"
+          severity="warning"
+          icon="pi pi-pencil"
+          style={{ marginRight: "1rem" }}
+          onClick={() => handleCommentEdit(index)}
+          />
+          <Button 
+          label="삭제"
+          severity="danger"
+          icon="pi pi-trash"
+          onClick={() => handleCommentDelete(index)}
+          />
+          </div>
+        </Fieldset>
+      )}
+      <div style={{ marginBottom: "1rem" }}>
+        <span style={{ marginRight: "1rem" }}>
+          <InputTextarea 
+            rows={3}
+            cols={50}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)
+          }
+          />
+        </span>
+        <span>
+        <Button 
+          label="댓글 작성"
+          onClick={handleSubmit}
+        />
+        </span>
+      </div>
     </div>
   );
 };
