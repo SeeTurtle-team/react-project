@@ -50,11 +50,11 @@ const Login = () => {
     //google login
     const googleLogin = async (token?:string) => {
         try{
-            const response = axios.post('/user/google',{
+            const response = await axios.post('/user/google',{
                 token : token
             });
 
-            console.log(response)
+            console.log(response.data.access_token)
         }catch(err){
             console.log(err)
         }
