@@ -55,8 +55,10 @@ const Login = () => {
             });
 
             console.log(response.data.access_token)
-        }catch(err){
-            console.log(err)
+        }catch(error:any){
+            console.log(error)
+            const errCode = errorHandle(error.response.status);
+            navigate(`/ErrorPage/${errCode}`);
         }
     }
 
