@@ -3,8 +3,7 @@ export interface BoardUpdateDto{
     title : string;
     contents : string;
     dateTime : Date;
-    userId:number;
-    boardCategoryId:number;
-    recommendCount : string;
-
+    userId: number;
+    boaardCategoryId: number;
+    recommendCount: number;
 }
