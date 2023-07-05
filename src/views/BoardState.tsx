@@ -12,7 +12,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Fieldset } from "primereact/fieldset";
 import { kMaxLength } from "buffer";
 import { InputText } from "primereact/inputtext";
-import BoardComment from "./BoardComment";
+import { BoardCommentDto } from "../interface/BoardComment.Dto";
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
   const [boardComment, setBoardCommenet] = useState<BoardCommentDto[]>([]);
@@ -121,7 +121,7 @@ const BoardState = () => {
   };
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
 
-
+  }
 
   return (
     <div className="card">
