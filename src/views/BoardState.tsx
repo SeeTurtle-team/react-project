@@ -54,6 +54,7 @@ const BoardState = () => {
         userId: 5,
         boardId: Number(index),
       });
+      fetchUsers();
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
@@ -64,6 +65,8 @@ const BoardState = () => {
   const boardUpdate = async () => {
     fetchUsers();
   };
+
+
   const handleSubmit = () => {
     try {
       axios.post("/board/comment/create", {
@@ -78,6 +81,8 @@ const BoardState = () => {
       navigate(`/ErrorPage/${errCode}`);
     }
   };
+
+
   const handleCommentEdit = (i: number) => {
     if (boardComment[i].boardComment_isDeleted) {
       try{
@@ -99,6 +104,8 @@ const BoardState = () => {
     }
     setBoardCommentBoolean(!boardCommentBoolean);
   };
+
+
   const handleCommentDelete = (i: number) => {
     const userId = 5; // 로그인 후 아이디 값 받아오기
     try {
@@ -119,6 +126,8 @@ const BoardState = () => {
       navigate(`/ErrorPage/${errCode}`);
     }
   };
+
+
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
 
   };
@@ -142,7 +151,7 @@ const BoardState = () => {
             onClick={() => handleBoardLike()}
             style={{ marginRight: "1rem" }}
           />
-          <p className="m-0">추천수: {board?.recommend}</p>
+          <p className="m-0">추천수: {board?.recommendCount==null? 0 : board?.recommendCount}</p>
           <p className="m-0" style={{ marginRight: "2rem" }}>
             작성일: {dateFormatFunc(board?.dateTime)}
           </p>
