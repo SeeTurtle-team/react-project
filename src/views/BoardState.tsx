@@ -18,6 +18,7 @@ const BoardState = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get("/board/read/" + index);
+      console.log(response.data)
       setBoard(response.data);
     } catch (error: any) {
       console.log(error);
@@ -37,6 +38,7 @@ const BoardState = () => {
         userId: 5,
         boardId: Number(index),
       });
+      fetchUsers();
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
@@ -67,7 +69,7 @@ const BoardState = () => {
             onClick={() => handleBoardLike()}
             style={{ marginRight: "1rem" }}
           />
-          <p className="m-0">추천수: {board?.recommendCount}</p>
+          <p className="m-0">추천수: {board?.recommendCount ==null ? 0 : board?.recommendCount}</p>
           <p className="m-0" style={{ marginRight: "2rem" }}>
             작성일: {dateFormatFunc(board?.dateTime)}
           </p>
