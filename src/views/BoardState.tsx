@@ -6,13 +6,13 @@ import { useParams } from "react-router";
 import { errorHandle } from "../Common/ErrorHandle";
 import axios from "axios";
 import { BoardUpdateDto } from "../interface/BoardUpdateDto";
-import { BoardCommentDto } from "../interface/BoardComment.Dto";
 import { Button } from "primereact/button";
 import { dateFormatFunc } from "../Common/DateFormat";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Fieldset } from "primereact/fieldset";
 import { kMaxLength } from "buffer";
 import { InputText } from "primereact/inputtext";
+import { BoardCommentDto } from "../interface/BoardComment.Dto";
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
   const [boardComment, setBoardCommenet] = useState<BoardCommentDto[]>([]);
@@ -130,7 +130,7 @@ const BoardState = () => {
 
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
 
-  };
+  }
 
   return (
     <div className="card">
