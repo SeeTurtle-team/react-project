@@ -1,14 +1,12 @@
-import React, { Dispatch, SetStateAction, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom"; // Import the useHistory hook
-import {Image} from 'primereact/image';
 import {GoogleLogin} from "@react-oauth/google";
 import {GoogleOAuthProvider} from "@react-oauth/google";
 import KakaoLogin from "react-kakao-login";
 import { Password } from 'primereact/password';
 
-import kakao from "../kakao_login_small.png"
 import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
 import { UserLoginContext } from "../context/UserLoginContext"
