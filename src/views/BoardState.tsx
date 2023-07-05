@@ -37,8 +37,16 @@ const BoardState = () => {
       axios.post("/board/recommend", {
         userId: 5,
         boardId: Number(index),
+      }).then(response => {
+        console.log(response.data)
+        if(response.data.success==true){
+          fetchUsers();
+        }else{
+          alert(response.data.msg);
+          return;
+        }
       });
-      fetchUsers();
+      
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
