@@ -6,5 +6,6 @@ export interface BoardUpdateDto{
     userId:number;
     boardCategoryId:number;
     recommendCount : string;
-
+    nickname:string;
+    category:string;
 }
