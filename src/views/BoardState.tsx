@@ -13,12 +13,10 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Fieldset } from "primereact/fieldset";
 import { kMaxLength } from "buffer";
 import { InputText } from "primereact/inputtext";
+import BoardComment from "./BoardComment";
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
-  const [boardComment, setBoardCommenet] = useState<BoardCommentDto[]>([]);
-  const [comment, setComment] = useState<string>("");
-  const [boardCommentEdit, setBoardCommentEdit] = useState<string>("");
-  const [boardCommentBoolean, setBoardCommentBoolean] = useState<boolean>(false);
+
   const { index } = useParams();
   const navigate = useNavigate();
 
@@ -31,22 +29,12 @@ const BoardState = () => {
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
     }
-    try {
-      const response = await axios.get("/board/comment/" + index);
-      setBoardCommenet(response.data);
-    } catch (error: any) {
-      console.log(error);
-      const errCode = errorHandle(error.response.status);
-      navigate(`/ErrorPage/${errCode}`);
-    }
   };
 
   useEffect(() => {
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log(boardComment);
 
   const handleBoardLike = async () => {
     try {
@@ -64,64 +52,8 @@ const BoardState = () => {
   const boardUpdate = async () => {
     fetchUsers();
   };
-  const handleSubmit = () => {
-    try {
-      axios.post("/board/comment/create", {
-        contents: comment,
-        userId: 5,
-        boardId: Number(index),
-      });
-      setComment("");
-    } catch (error: any) {
-      console.log(error);
-      const errCode = errorHandle(error.response.status);
-      navigate(`/ErrorPage/${errCode}`);
-    }
-  };
-  const handleCommentEdit = (i: number) => {
-    if (boardComment[i].boardComment_isDeleted) {
-      try{
-        axios.patch("/board/comment/update",{
-          id: boardComment[i].boardComment_id,
-          contents: boardCommentEdit,
-          userId: 5,
-          boardId: Number(index)
-        })
-      } catch (error: any) {
-        console.log(error);
-        const errCode = errorHandle(error.response.status);
-        navigate(`/ErrorPage/${errCode}`);
-      }
-      setBoardCommentEdit("");
-      boardComment[i].boardComment_isDeleted = false;
-    } else {
-      boardComment[i].boardComment_isDeleted = true;
-    }
-    setBoardCommentBoolean(!boardCommentBoolean);
-  };
-  const handleCommentDelete = (i: number) => {
-    const userId = 5; // 로그인 후 아이디 값 받아오기
-    try {
-      axios.delete("/board/comment/delete", {
-        data: {
-          id: boardComment[i].boardComment_id,
-          userId: userId,
-        },
-      });
-      if (userId === boardComment[i].userId) {
-        alert("댓글이 삭제 되었습니다.");
-      } else {
-        alert("댓글 작성자만 삭제할 수 있습니다.");
-      }
-    } catch (error: any) {
-      console.log(error);
-      const errCode = errorHandle(error.response.status);
-      navigate(`/ErrorPage/${errCode}`);
-    }
-  };
-  const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
 
-  };
+
 
   return (
     <div className="card">
@@ -142,7 +74,7 @@ const BoardState = () => {
             onClick={() => handleBoardLike()}
             style={{ marginRight: "1rem" }}
           />
-          <p className="m-0">추천수: {board?.recommend}</p>
+          <p className="m-0">추천수: {board?.recommendCount}</p>
           <p className="m-0" style={{ marginRight: "2rem" }}>
             작성일: {dateFormatFunc(board?.dateTime)}
           </p>
@@ -151,54 +83,7 @@ const BoardState = () => {
       <div style={{ marginBottom: "1rem" }}>
         <Button label="Update" onClick={boardUpdate}></Button>
       </div>
-      {boardComment.map((comment, i) => (
-        <Fieldset key={i}>
-          <div style={{ marginBottom: "1rem" }}>
-            아이디:{comment.user_nickname} <br />
-            내용:
-            {boardComment[i].boardComment_isDeleted === false ? (
-              comment.boardComment_contents
-            ) : (
-              <InputText 
-                value={boardCommentEdit}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBoardCommentEdit(e.target.value)}
-                onKeyDown={handleInputEnter}
-                placeholder={boardComment[i].boardComment_contents}
-              />
-            )}
-            <br />
-            작성일:{String(comment.boardComment_dateTime)}
-          </div>
-          <div>
-            <Button
-              label="수정"
-              severity="warning"
-              icon="pi pi-pencil"
-              style={{ marginRight: "1rem" }}
-              onClick={() => handleCommentEdit(i)}
-            />
-            <Button
-              label="삭제"
-              severity="danger"
-              icon="pi pi-trash"
-              onClick={() => handleCommentDelete(i)}
-            />
-          </div>
-        </Fieldset>
-      ))}
-      <div style={{ marginBottom: "1rem" }}>
-        <span style={{ marginRight: "1rem" }}>
-          <InputTextarea
-            rows={3}
-            cols={50}
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-        </span>
-        <span>
-          <Button label="댓글 작성" onClick={handleSubmit} />
-        </span>
-      </div>
+      <BoardComment index={index}/>
     </div>
   );
 };
