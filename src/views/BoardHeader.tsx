@@ -3,17 +3,16 @@ import { TabMenu } from "primereact/tabmenu";
 import { MenuItem } from "primereact/menuitem";
 import { UserLoginContext } from "../context/UserLoginContext";
 import { ActiveIndexContext } from "../context/ActiveIndexContext";
-import { ActiveIndexDTO, IsLoginDTO } from "../interface/UseContextDTO";
+import { ActiveIndexContextProviderProps, UserLoginContextProviderProps } from "../interface/UseContextDTO";
 
 function BoardHeader() {
-  const {activeIndex, setActiveIndex}:ActiveIndexDTO = useContext(ActiveIndexContext);
-  const {isLogin, setIsLogin}:IsLoginDTO = useContext(UserLoginContext);
+  const {activeIndex, setActiveIndex}:ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
+  const {isLogin, setIsLogin}:UserLoginContextProviderProps = useContext(UserLoginContext);
   const items: MenuItem[] = [
     { label: "Home", icon: "pi pi-fw pi-home", url: "/" },
     { label: "Board", icon: "pi pi-fw pi-calendar", url: "/BoardList" },
-    isLogin
+    (isLogin)
       ? { label: "Logout", icon: "pi pi-sign-in", url: "/" }
-      : (activeIndex === 2 && isLogin === false ) ? { label: "Logout", icon: "pi pi-sign-in", url: "/" }
       : { label: "Login", icon: "pi pi-sign-in", url: "/Login" }
   ];
   console.log(activeIndex);
