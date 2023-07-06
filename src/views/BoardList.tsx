@@ -12,6 +12,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { SearchOptioninterface } from "../interface/SearchOption";
 import { dateFormatFunc } from "../Common/DateFormat";
 import { ActiveIndexContext } from "../context/ActiveIndexContext";
+import { ActiveIndexDTO } from "../interface/UseContextDTO";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ const BoardList = () => {
   const navigate = useNavigate();
   const [inputSearch, setInputSearch] = useState<string>("");
   const [selectedSearchOption, setSelectedSearchOption] = useState<SearchOptioninterface>();
-  const {activeIndex, setActiveIndex}:any = useContext(ActiveIndexContext);
+  const {activeIndex, setActiveIndex}:ActiveIndexDTO = useContext(ActiveIndexContext);
 
   const searchOptions = [
     { name: 'Title', code: 't' },

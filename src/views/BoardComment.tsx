@@ -9,7 +9,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 
-import { BoardCommentDto } from '../interface/BoardComment.Dto';
+import { BoardCommentDto } from '../interface/BoardCommentDto';
 
 const customStyles = {
     content: {
@@ -22,7 +22,11 @@ const customStyles = {
     },
   };
 
-const BoardComment = ({index}:any) => {
+  type Props = {
+    index: string;
+  }
+
+const BoardComment = ({index}:Props) => {
     const [boardComment, setBoardCommenet] = useState<BoardCommentDto[]>([]);
     const [comment, setComment] = useState<string>("");
     const [boardCommentEdit, setBoardCommentEdit] = useState<string>("");

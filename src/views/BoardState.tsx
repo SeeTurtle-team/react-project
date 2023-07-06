@@ -39,7 +39,7 @@ const BoardState = () => {
         boardId: Number(index),
       }).then(response => {
         console.log(response.data)
-        if(response.data.success==true){
+        if(response.data.success===true){
           fetchUsers();
         }else{
           alert(response.data.msg);

@@ -1,12 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { TabMenu } from "primereact/tabmenu";
 import { MenuItem } from "primereact/menuitem";
 import { UserLoginContext } from "../context/UserLoginContext";
 import { ActiveIndexContext } from "../context/ActiveIndexContext";
+import { ActiveIndexDTO, IsLoginDTO } from "../interface/UseContextDTO";
 
 function BoardHeader() {
-  const {activeIndex, setActiveIndex}:any = useContext(ActiveIndexContext);
-  const {isLogin, setIsLogin}:any = useContext(UserLoginContext);
+  const {activeIndex, setActiveIndex}:ActiveIndexDTO = useContext(ActiveIndexContext);
+  const {isLogin, setIsLogin}:IsLoginDTO = useContext(UserLoginContext);
   const items: MenuItem[] = [
     { label: "Home", icon: "pi pi-fw pi-home", url: "/" },
     { label: "Board", icon: "pi pi-fw pi-calendar", url: "/BoardList" },

@@ -12,6 +12,7 @@ import { errorHandle } from "../Common/ErrorHandle";
 import { UserLoginContext } from "../context/UserLoginContext"
 import "../css/Login.css";
 import { ActiveIndexContext } from "../context/ActiveIndexContext";
+import { ActiveIndexDTO, IsLoginDTO } from "../interface/UseContextDTO";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -22,8 +23,8 @@ const Login = () => {
 
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    const {isLogin, setIsLogin} = useContext(UserLoginContext);
-    const {activeIndex, setActiveIndex}:any = useContext(ActiveIndexContext);
+    const {isLogin, setIsLogin}:IsLoginDTO = useContext(UserLoginContext);
+    const {activeIndex, setActiveIndex}:ActiveIndexDTO = useContext(ActiveIndexContext);
     
     setActiveIndex(2);
 
