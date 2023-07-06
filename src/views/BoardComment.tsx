@@ -23,7 +23,7 @@ const customStyles = {
   };
 
   type Props = {
-    index: string;
+    index: string | undefined;
   }
 
 const BoardComment = ({index}:Props) => {
