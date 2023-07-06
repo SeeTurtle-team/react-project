@@ -1,18 +1,22 @@
-import React from "react";
+import React, { lazy } from "react";
 import BoardHeader from "./views/BoardHeader";
 import { Route, Routes, Navigate } from "react-router";
-import BoardCreate from "./views/BoardCreate";
-import BoardEdit from "./views/BoardEdit";
-import BoardList from "./views/BoardList";
 import { BrowserRouter } from "react-router-dom";
-import BoardState from "./views/BoardState";
-import ErrorHandlingPage from "./Common/ErrorHandlingPage";
+
+// import BoardCreate from "./views/BoardCreate";
+// import BoardEdit from "./views/BoardEdit";
+// import BoardList from "./views/BoardList";
+// import BoardState from "./views/BoardState";
 import Login from "./views/Login";
 import CreateUser from "./views/CreateUser";
-
+import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import UserLoginProvider from './context/UserLoginContext';
 import ActiveIndexProvider from "./context/ActiveIndexContext";
 
+const BoardList = lazy(() => import("./views/BoardList"));
+const BoardState = lazy(() => import("./views/BoardState"));
+const BoardCreate = lazy(() => import("./views/BoardCreate"));
+const BoardEdit = lazy(() => import("./views/BoardEdit"));
 
 const App = () => {
 
