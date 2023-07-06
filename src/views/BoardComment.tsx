@@ -59,6 +59,14 @@ const BoardComment = ({index}:Props) => {
             contents: comment,
             userId: userId,
             boardId: Number(index),
+          }).then(response => {
+            console.log(response.data)
+            if(response.data.success===true){
+              fetchUsers();
+            }else{
+              alert(response.data.msg);
+              return;
+            }
           });
           setComment("");
         } catch (error: any) {
