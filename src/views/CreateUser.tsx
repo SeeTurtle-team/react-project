@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
@@ -37,21 +37,43 @@ const CreateUser = () => {
       setIsId(true);
     }
   };
-  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const passwordRegex =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     const passwordCurrent = e.target.value;
     setPassword(passwordCurrent);
     if (!passwordRegex.test(passwordCurrent)) {
       setPasswordMessage(
-        "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!"
+        "숫자+영문자+특수문자 조합으로 8자리 이상 15 이하로 입력해주세요!"
       );
       setIsPassword(false);
     } else {
       setPasswordMessage("안전한 비밀번호에요 : )");
       setIsPassword(true);
     }
-  };
+  }, []);
+  const handlePasswordCheck = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    // const passwordRegex =
+    //     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    const passwordCurrent = e.target.value;
+    setPasswordCheck(passwordCurrent);
+    console.log(password, passwordCurrent);
+    if (password === passwordCurrent) {
+        setPasswordCheckMessage("비밀번호 확인이 완료되었습니다. : )");
+
+        setIsPasswordCheck(true);
+    } 
+    if (password !== passwordCurrent) {
+        setPasswordCheckMessage(
+        "비밀번호가 같은지 확인해주세요!"
+        );
+        setIsPasswordCheck(false);
+    }
+    // else {
+    //     setPasswordCheckMessage("비밀번호 확인이 완료되었습니다. : )");
+    //     setIsPasswordCheck(true);
+    // }
+  }, [password, passwordCheck])
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
     if (e.target.value.length < 2 || e.target.value.length > 5) {
@@ -88,21 +110,6 @@ const CreateUser = () => {
       setIsEmail(true);
     }
   };
-  const handlePasswordCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const passwordRegex =
-        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    const passwordCurrent = e.target.value;
-    setPasswordCheck(passwordCurrent);
-    if (!passwordRegex.test(passwordCurrent) && password !== passwordCheck) {
-        setPasswordCheckMessage(
-        "비밀번호가 같은지 확인해주세요!"
-        );
-        setIsPasswordCheck(false);
-    } else {
-        setPasswordCheckMessage("비밀번호 확인이 완료되었습니다. : )");
-        setIsPasswordCheck(true);
-    }
-  }
 
   const handleSubmit = async () => {
     try {
@@ -115,9 +122,29 @@ const CreateUser = () => {
         email: email,
         userLoginType: "d",
         userGradeId: 2,
+      }).then(response => {
+        console.log(response.data)
+        if(response.data.success===true){
+            alert('회원가입에 성공했습니다. 다시 로그인 해주세요');
+            navigate("/Login");
+        }
+        if(response.data.msg === '아이디 중복'){
+            alert(response.data.msg + " 다른 아이디를 입력해주세요!");
+            setId("");
+        }
+        if(response.data.msg === '닉네임 중복'){
+            alert(response.data.msg + " 다른 닉네임을 입력해주세요!");
+            setNickname("");
+        }
+        if(response.data.msg === '이메일 중복'){
+            alert(response.data.msg + " 다른 이메일을 입력해주세요!");
+            setEmail("");
+        }
+        else{
+          alert(response.data.msg);
+          return;
+        }
       });
-      alert('회원가입에 성공했습니다. 다시 로그인 해주세요');
-      navigate("/Login");
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
@@ -161,7 +188,7 @@ const CreateUser = () => {
           </label>
           <InputText
             id="password"
-            keyfilter={/[^s]/}
+            keyfilter={/[^]/}
             className="w-full"
             onInput={handlePassword}
             value={password}
@@ -183,7 +210,7 @@ const CreateUser = () => {
           </label>
           <InputText
             id="passwordCheck"
-            keyfilter={/[^s]/}
+            keyfilter={/[^]/}
             className="w-full"
             onInput={handlePasswordCheck}
             value={passwordCheck}
@@ -260,7 +287,7 @@ const CreateUser = () => {
           </label>
           <InputText
             id="email"
-            keyfilter={/[^s]/}
+            keyfilter={/[^]/}
             className="w-full"
             onInput={handleEmail}
             value={email}
