@@ -10,6 +10,8 @@ import { Password } from 'primereact/password';
 import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
 import { UserLoginContext } from "../context/UserLoginContext"
+import "../css/Login.css";
+import { ActiveIndexContext } from "../context/ActiveIndexContext";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -21,7 +23,10 @@ const Login = () => {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const {isLogin, setIsLogin} = useContext(UserLoginContext);
+    const {activeIndex, setActiveIndex}:any = useContext(ActiveIndexContext);
     
+    setActiveIndex(2);
+
     const handleCreateUser = () => {
         navigate("/CreateUser");
     };
@@ -76,25 +81,29 @@ const Login = () => {
    
     return (
         <div className="card">
-          <div style={{marginLeft:'43rem'}}>
-            <div className="flex flex-wrap:wrap">
-                  <div className="flex flex-wrap gap-3 mb-4" text-align="center">
-                      <label htmlFor="integer" className="font-bold block mb-2">
-                          아이디
-                      </label>
-                      <InputText id="userid" keyfilter="alphanum" style={{width:'12rem'}} className="w-full" value={id} onChange={(e) => setId(e.target.value)} />
+          <div className="login-box">
+            <div>
+                  <div className="login-box-id">
+                      <InputText id="userid" keyfilter="alphanum" style={{width:'12rem'}} className="w-full" value={id} onChange={(e) => setId(e.target.value)} placeholder="ID" />
                   </div>
               </div>
               <div >
-                  <div style={{width:'25rem'}}>
-                      <label htmlFor="number" className="font-bold block mb-2">
-                          비번
-                      </label>
-                      <Password keyfilter={/[^s]/}  style={{width:'25rem'}} value={password} onChange={(e) => setPassword(e.target.value)} maxLength={15}/>
+                  <div className="login-box-pw">
+                      <Password keyfilter={/[^s]/}  style={{width:'25rem'}} value={password} onChange={(e) => setPassword(e.target.value)} maxLength={15} placeholder="PASSWORD" />
                   </div>
               </div>
-
-              <div style={{width:'16rem', marginTop:'0.5rem'}}>
+              <div className="login-box-content">
+                <Button
+                    label="로그인"
+                    outlined 
+                    style={{
+                        marginRight: "2rem",
+                        marginTop:'0.5rem'
+                    }}
+                    onClick={handleLogin}/>
+                <Button label="회원가입" outlined onClick={handleCreateUser}/>
+              </div>
+              <div className="login-box-content">
                   <div >
                       <KakaoLogin
                           token={kakaoClientId}
@@ -105,7 +114,7 @@ const Login = () => {
 
                       
                   </div>
-                  <div style={{display:'block',marginTop:'0.5rem'}}>
+                  <div className="login-box-content" style={{display:'block',marginTop:'0.5rem'}}>
                   {/* 구글 로그인 참조 블로그
                   https://stack94.tistory.com/entry/React-%EA%B5%AC%EA%B8%80-%EB%A1%9C%EA%B7%B8%EC%9D%B8Google-Login-%EB%A6%AC%EC%95%A1%ED%8A%B8React%EC%97%90%EC%84%9C-%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EC%9E%90 */}
                     <GoogleOAuthProvider clientId={clientID}>
@@ -123,18 +132,6 @@ const Login = () => {
                     
                   </div>
               </div>
-              <div style={{marginLeft:'0.75rem'}}>
-                <Button
-                    label="로그인"
-                    outlined 
-                    style={{
-                        marginRight: "2rem",
-                        marginTop:'0.5rem'
-                    }}
-                    onClick={handleLogin}/>
-                <Button label="회원가입" outlined onClick={handleCreateUser}/>
-              </div>
-             
           </div>
         </div>
         
