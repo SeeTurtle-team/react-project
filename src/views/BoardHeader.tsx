@@ -15,8 +15,6 @@ function BoardHeader() {
       ? { label: "Logout", icon: "pi pi-sign-in", url: "/" }
       : { label: "Login", icon: "pi pi-sign-in", url: "/Login" }
   ];
-  console.log(activeIndex);
-  console.log(isLogin);
 
   return (
     <TabMenu
