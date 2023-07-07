@@ -168,9 +168,9 @@ const BoardComment = ({ index }: Props) => {
 
 
 
-            <span className='to-right' style={{ marginTop: '0.25rem' ,marginLeft:'87%'}}>작성일:{dateFormatFunc(comment.boardComment_dateTime)}</span>
+            <span className='to-right' style={{ marginTop: '0.25rem' ,marginLeft:'91%'}}>작성일:{dateFormatFunc(comment.boardComment_dateTime)}</span>
           </div>
-          <div className='to-right' style={{marginLeft:'77%'}}>
+          <div className='to-right' style={{marginLeft:'83%'}}>
             <Button
               label="수정"
               severity="warning"
