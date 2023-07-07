@@ -4,6 +4,7 @@ import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { errorHandle } from "../Common/ErrorHandle";
 import axios from "axios";
+import { number } from "yargs";
 
 const CreateUser = () => {
   const [id, setId] = useState<string>("");
@@ -25,6 +26,12 @@ const CreateUser = () => {
   const [email, setEmail] = useState<string>(""); // @ 포함
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [emailMessage, setEmailMessage] = useState<string>("");
+  const [isEmailCheck, setIsEmailCheck] = useState<boolean>(false);
+  const [emailCheckMessage, setEmailCheckMessage] = useState<string>("");
+  const [emailCode, setEmailCode] = useState<string>("");
+  const [emailCodeMessage, setEmailCodeMessage] = useState<string>("");
+  const [isEmailSendCode, setIsEmailSendCode] = useState<boolean>(false);
+  const [isEmailCode, setIsEmailCode] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,43 +44,47 @@ const CreateUser = () => {
       setIsId(true);
     }
   };
-  const handlePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    const passwordCurrent = e.target.value;
-    setPassword(passwordCurrent);
-    if (!passwordRegex.test(passwordCurrent)) {
-      setPasswordMessage(
-        "숫자+영문자+특수문자 조합으로 8자리 이상 15 이하로 입력해주세요!"
-      );
-      setIsPassword(false);
-    } else {
-      setPasswordMessage("안전한 비밀번호에요 : )");
-      setIsPassword(true);
-    }
-  }, []);
-  const handlePasswordCheck = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    // const passwordRegex =
-    //     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    const passwordCurrent = e.target.value;
-    setPasswordCheck(passwordCurrent);
-    console.log(password, passwordCurrent);
-    if (password === passwordCurrent) {
+  const handlePassword = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const passwordRegex =
+        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+      const passwordCurrent = e.target.value;
+      setPassword(passwordCurrent);
+      if (!passwordRegex.test(passwordCurrent)) {
+        setPasswordMessage(
+          "숫자+영문자+특수문자 조합으로 8자리 이상 15 이하로 입력해주세요!"
+        );
+        setIsPassword(false);
+      } else {
+        setPasswordMessage("안전한 비밀번호에요 : )");
+        setIsPassword(true);
+      }
+    },
+    []
+  );
+  const handlePasswordCheck = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      // const passwordRegex =
+      //     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+      const passwordCurrent = e.target.value;
+      setPasswordCheck(passwordCurrent);
+      console.log(password, passwordCurrent);
+      if (password === passwordCurrent) {
         setPasswordCheckMessage("비밀번호 확인이 완료되었습니다. : )");
 
         setIsPasswordCheck(true);
-    } 
-    if (password !== passwordCurrent) {
-        setPasswordCheckMessage(
-        "비밀번호가 같은지 확인해주세요!"
-        );
+      }
+      if (password !== passwordCurrent) {
+        setPasswordCheckMessage("비밀번호가 같은지 확인해주세요!");
         setIsPasswordCheck(false);
-    }
-    // else {
-    //     setPasswordCheckMessage("비밀번호 확인이 완료되었습니다. : )");
-    //     setIsPasswordCheck(true);
-    // }
-  }, [password, passwordCheck])
+      }
+      // else {
+      //     setPasswordCheckMessage("비밀번호 확인이 완료되었습니다. : )");
+      //     setIsPasswordCheck(true);
+      // }
+    },
+    [password, passwordCheck]
+  );
   const handleName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
     if (e.target.value.length < 2 || e.target.value.length > 5) {
@@ -113,49 +124,77 @@ const CreateUser = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("/user/signup", {
-        userId: id,
-        password: password,
-        name: name,
-        birth: birth,
-        nickname: nickname,
-        email: email,
-        userLoginType: "d",
-        userGradeId: 2,
-      }).then(response => {
-        console.log(response.data)
-        if(response.data.success===true){
-            alert('회원가입에 성공했습니다. 다시 로그인 해주세요');
+      await axios
+        .post("/user/signup", {
+          userId: id,
+          password: password,
+          name: name,
+          birth: birth,
+          nickname: nickname,
+          email: email,
+          userLoginType: "d",
+          userGradeId: 2,
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.success === true) {
+            alert("회원가입에 성공했습니다. 다시 로그인 해주세요");
             navigate("/Login");
-        }
-        if(response.data.msg === '아이디 중복'){
+          }
+          if (response.data.msg === "아이디 중복") {
             alert(response.data.msg + " 다른 아이디를 입력해주세요!");
             setId("");
-        }
-        if(response.data.msg === '닉네임 중복'){
+          }
+          if (response.data.msg === "닉네임 중복") {
             alert(response.data.msg + " 다른 닉네임을 입력해주세요!");
             setNickname("");
-        }
-        if(response.data.msg === '이메일 중복'){
+          }
+          if (response.data.msg === "이메일 중복") {
             alert(response.data.msg + " 다른 이메일을 입력해주세요!");
             setEmail("");
-        }
-        else{
-          alert(response.data.msg);
-          return;
-        }
-      });
+          } else {
+            alert(response.data.msg);
+            return;
+          }
+        });
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
-      // if(error.response.status ===429){
-      //   alert('과도한 접속으로 이용이 제한 되었습니다. 잠시 후 다시 시도해주세요');
-      //   navigate('/ErrorPage/'+429);
-      // }else{
-      //   alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.'); //에러 핸들링 필수!!!!!
-      //   navigate(-1); // error 발생 시 이전 page 이동
-      // }
+    }
+  };
+  const handleEmailCheck = async () => {
+    try {
+      await axios.post("/user/resendcode", {
+        email: email,
+      });
+      setIsEmailSendCode(true);
+      setEmailCheckMessage("이메일이 발송되었습니다");
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+      setEmailCheckMessage("에러 발생");
+    }
+  };
+  const handleCodeCheck = () => {
+    try{
+        axios.post("/user/checkcode",{
+            email: email,
+            code: emailCode
+        }).then((response) => {
+            setIsEmailCode(true);
+            if(response.data.success === true){
+                setEmailCodeMessage("✔")
+            } else {
+                setEmailCodeMessage("✘")
+            }
+        })
+        console.log("code Checked");
+    } catch (error: any) {
+        console.log(error);
+        const errCode = errorHandle(error.response.status);
+        navigate(`/ErrorPage/${errCode}`);
     }
   };
 
@@ -194,7 +233,6 @@ const CreateUser = () => {
             value={password}
             type="password"
             maxLength={15}
-
           />
           {password.length > 0 && (
             <span className={`message ${isPassword ? "success" : "error"}`}>
@@ -216,10 +254,11 @@ const CreateUser = () => {
             value={passwordCheck}
             type="password"
             maxLength={15}
-
           />
           {passwordCheck.length > 0 && (
-            <span className={`message ${isPasswordCheck ? "success" : "error"}`}>
+            <span
+              className={`message ${isPasswordCheck ? "success" : "error"}`}
+            >
               {passwordCheckMessage}
             </span>
           )}
@@ -245,7 +284,7 @@ const CreateUser = () => {
           )}
         </div>
       </div>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3" style={{ marginBottom: "1rem" }}>
         <div className="flex-auto">
           <label htmlFor="integer" className="font-bold block mb-2">
             닉네임
@@ -266,7 +305,7 @@ const CreateUser = () => {
         </div>
       </div>
       <div className="flex flex-wrap gap-3">
-        <div className="flex-auto">
+        <div className="flex-auto" style={{ marginBottom: "1rem" }}>
           <label htmlFor="hex" className="font-bold block mb-2">
             생년월일
           </label>
@@ -285,25 +324,68 @@ const CreateUser = () => {
           <label htmlFor="integer" className="font-bold block mb-2">
             이메일
           </label>
-          <InputText
-            id="email"
-            keyfilter={/[^]/}
-            className="w-full"
-            onInput={handleEmail}
-            value={email}
+          <span>
+            <InputText
+              id="email"
+              keyfilter={/[^]/}
+              onInput={handleEmail}
+              value={email}
+              style={{ marginBottom: "1rem", marginRight: "1rem" }}
+              size={40}
+            />
+          </span>
+          <Button
+            label="이메일 인증"
+            onClick={handleEmailCheck}
+            style={{ marginBottom: "1rem" }}
           />
+          <div style={{ marginBottom: "1rem" }}>
           {email.length > 0 && (
-            <span className={`message ${isEmail ? "success" : "error"}`}>
+            <div
+              className={`message ${isEmail ? "success" : "error"}`}
+              style={{ marginBottom: "1rem" }}
+            >
               {emailMessage}
-            </span>
+            </div>
           )}
+            {<span
+            className={`message ${isEmailSendCode ? "success" : "error"}`}
+            style={{ marginBottom: "1rem" }}
+          >
+            {emailCheckMessage}
+          </span>}
+          </div>
+          <div>
+          <InputText
+            keyfilter="num"
+            placeholder="인증코드"
+            value={emailCode}
+            onChange={(e) => setEmailCode(e.target.value)}
+            style={{ marginRight: "1rem" }}
+            maxLength={6}
+            size={8}
+          />
+          <Button 
+          label="코드 확인" 
+          onClick={handleCodeCheck} 
+          style={{ marginRight: "1rem" }}
+          />
+          {<span
+            className={`message ${isEmailCode ? "success" : "error"}`}
+            style={{ marginBottom: "1rem" }}
+          >
+            {emailCodeMessage}
+          </span>}
         </div>
       </div>
-      <Button
-        label="아이디 생성"
-        onClick={handleSubmit}
-        disabled={!(isId && isPassword && isName && isEmail && isNickname)}
-      />
+      </div>
+      <span style={{ marginRight: "1rem" }}>
+        <Button
+          label="아이디 생성"
+          onClick={handleSubmit}
+          disabled={!(isId && isPassword && isName && isEmail && isNickname)}
+        />
+      </span>
     </div>
   );
 };
