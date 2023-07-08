@@ -39,16 +39,25 @@ const Login = () => {
             axios.post("/auth",{
                 userId: id,
                 password: password
-            })
-            setIsLogin(true);
-            alert('로그인에 성공했습니다');
+            }).then(response => {
+                console.log(response.data)
+                if(response.data.success===true){
+                    setIsLogin(true);
+                    alert('로그인에 성공했습니다');
+                    navigate("/");
+                }else{
+                  alert(response.data.msg);
+                  setId("");
+                  setPassword("");
+                  navigate("/Login");
+                  return;
+                }
+              });
         } catch (error: any) {
             console.log(error);
             const errCode = errorHandle(error.response.status);
             navigate(`/ErrorPage/${errCode}`);
-          }
-        
-        navigate("/");
+          }  
     }
     const loginHandler = () => {
         window.location.href = link;
