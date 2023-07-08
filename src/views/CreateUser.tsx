@@ -8,6 +8,7 @@ import { number } from "yargs";
 
 const CreateUser = () => {
   const [id, setId] = useState<string>("");
+  const [idDuplicateCheck, setIdDuplicateCheck] = useState<string>("");
   const [idMessage, setIdMessage] = useState<string>("");
   const [isId, setIsId] = useState<boolean>(false);
   const [password, setPassword] = useState<string>(""); // 숫자+영어+특수문자
@@ -21,9 +22,11 @@ const CreateUser = () => {
   const [isName, setIsName] = useState<boolean>(false);
   const [birth, setBirth] = useState<string>(""); // yyyy-mm-dd 형식
   const [nickname, setNickname] = useState<string>("");
+  const [nicknameDuplicateCheck, setNicknameDuplicateCheck] = useState<string>("");
   const [nicknameMessage, setNicknameMessage] = useState<string>("");
   const [isNickname, setIsNickname] = useState<boolean>(false);
   const [email, setEmail] = useState<string>(""); // @ 포함
+  const [emailDuplicateCheck, setEmailDuplicateCheck] = useState<string>("");
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [emailMessage, setEmailMessage] = useState<string>("");
   const [isEmailCheck, setIsEmailCheck] = useState<boolean>(false);
@@ -122,47 +125,6 @@ const CreateUser = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      await axios
-        .post("/user/signup", {
-          userId: id,
-          password: password,
-          name: name,
-          birth: birth,
-          nickname: nickname,
-          email: email,
-          userLoginType: "d",
-          userGradeId: 2,
-        })
-        .then((response) => {
-          console.log(response.data);
-          if (response.data.success === true) {
-            alert("회원가입에 성공했습니다. 다시 로그인 해주세요");
-            navigate("/Login");
-          }
-          if (response.data.msg === "아이디 중복") {
-            alert(response.data.msg + " 다른 아이디를 입력해주세요!");
-            setId("");
-          }
-          if (response.data.msg === "닉네임 중복") {
-            alert(response.data.msg + " 다른 닉네임을 입력해주세요!");
-            setNickname("");
-          }
-          if (response.data.msg === "이메일 중복") {
-            alert(response.data.msg + " 다른 이메일을 입력해주세요!");
-            setEmail("");
-          } else {
-            alert(response.data.msg);
-            return;
-          }
-        });
-    } catch (error: any) {
-      console.log(error);
-      const errCode = errorHandle(error.response.status);
-      navigate(`/ErrorPage/${errCode}`);
-    }
-  };
   const handleEmailCheck = async () => {
     try {
       await axios.post("/user/resendcode", {
@@ -197,6 +159,106 @@ const CreateUser = () => {
         navigate(`/ErrorPage/${errCode}`);
     }
   };
+  const handleIdDuplicate = async () => {
+    try{
+        await axios.post("/user/id", {
+            userId: id
+        }).then((response) => {
+            if (response.data.success === true) {
+                setIdDuplicateCheck("✔");
+            }
+            if (response.data.msg === "아이디 중복") {
+              alert(response.data.msg + " 다른 아이디를 입력해주세요!");
+              setId("");
+              setIdDuplicateCheck("✘");
+            }
+        });
+    } catch (error: any) {
+        console.log(error);
+        const errCode = errorHandle(error.response.status);
+        navigate(`/ErrorPage/${errCode}`);
+    }
+  }
+  const handleNicknameDuplicate = async () => {
+    try{
+        await axios.post("/user/nickname", {
+            userId: nickname
+        }).then((response) => {
+            if (response.data.success === true) {
+                setNicknameDuplicateCheck("✔");
+            }
+            if (response.data.msg === "닉네임 중복") {
+              alert(response.data.msg + " 다른 닉네임을 입력해주세요!");
+              setNickname("");
+              setNicknameDuplicateCheck("✘");
+            }
+          });
+    } catch (error: any) {
+        console.log(error);
+        const errCode = errorHandle(error.response.status);
+        navigate(`/ErrorPage/${errCode}`);
+    }
+  }
+  const handleEmailDuplicate = async () => {
+    try{
+        await axios.post("/user/email", {
+            userId: email
+        }).then((response) => {
+            if (response.data.success === true) {
+                setEmailDuplicateCheck("✔");
+            }
+            if (response.data.msg === "이메일 중복") {
+              alert(response.data.msg + " 다른 이메일을 입력해주세요!");
+              setEmail("");
+              setEmailDuplicateCheck("✘");
+            }
+          });
+    } catch (error: any) {
+        console.log(error);
+        const errCode = errorHandle(error.response.status);
+        navigate(`/ErrorPage/${errCode}`);
+    }
+  }
+  const handleSubmit = async () => {
+    try {
+      await axios
+        .post("/user/signup", {
+          userId: id,
+          password: password,
+          name: name,
+          birth: birth,
+          nickname: nickname,
+          email: email,
+          userLoginType: "d",
+          userGradeId: 2,
+        })
+        .then((response) => {
+          if (response.data.success === true) {
+            alert("회원가입에 성공했습니다. 다시 로그인 해주세요");
+            navigate("/Login");
+          }
+          if (response.data.msg === "아이디 중복") {
+            alert(response.data.msg + " 다른 아이디를 입력해주세요!");
+            setId("");
+          }
+          if (response.data.msg === "닉네임 중복") {
+            alert(response.data.msg + " 다른 닉네임을 입력해주세요!");
+            setNickname("");
+          }
+          if (response.data.msg === "이메일 중복") {
+            alert(response.data.msg + " 다른 이메일을 입력해주세요!");
+            setEmail("");
+          } else {
+            alert(response.data.msg);
+            return;
+          }
+        });
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    }
+  };
 
   return (
     <div className="card">
@@ -205,14 +267,30 @@ const CreateUser = () => {
           <label htmlFor="integer" className="font-bold block mb-2">
             아이디
           </label>
+          <div style={{ marginBottom: "1rem"}}>
+          <span>
           <InputText
             id="userid"
             keyfilter="alphanum"
-            className="w-full"
             onInput={handleId}
             value={id}
+            size={25}
             maxLength={12}
+            style={{ marginRight: "1rem"}}
           />
+          <Button
+            label="중복 확인"
+            onClick={handleIdDuplicate}
+            style={{ marginRight: "1rem"}}
+          />
+          {<span
+            className={`message ${isId ? "success" : "error"}`}
+            style={{ marginBottom: "1rem" }}
+          >
+            {idDuplicateCheck}
+          </span>}
+          </span>
+          </div>
           {id.length > 0 && (
             <span className={`message ${isId ? "success" : "error"}`}>
               {idMessage}
@@ -228,10 +306,10 @@ const CreateUser = () => {
           <InputText
             id="password"
             keyfilter={/[^]/}
-            className="w-full"
             onInput={handlePassword}
             value={password}
             type="password"
+            size={30}
             maxLength={15}
           />
           {password.length > 0 && (
@@ -249,10 +327,10 @@ const CreateUser = () => {
           <InputText
             id="passwordCheck"
             keyfilter={/[^]/}
-            className="w-full"
             onInput={handlePasswordCheck}
             value={passwordCheck}
             type="password"
+            size={30}
             maxLength={15}
           />
           {passwordCheck.length > 0 && (
@@ -272,9 +350,9 @@ const CreateUser = () => {
           <InputText
             id="name"
             keyfilter="alpha"
-            className="w-full"
             onInput={handleName}
             value={name}
+            size={20}
             maxLength={10}
           />
           {name.length > 0 && (
@@ -289,14 +367,30 @@ const CreateUser = () => {
           <label htmlFor="integer" className="font-bold block mb-2">
             닉네임
           </label>
+          <div>
+          <span>
           <InputText
             id="nickname"
             keyfilter="alphanum"
-            className="w-full"
             onInput={handleNickname}
             value={nickname}
+            size={20}
             maxLength={10}
+            style={{ marginRight: "1rem" }}
           />
+          <Button
+          label="중복 확인"
+          onClick={handleNicknameDuplicate}
+          style={{ marginRight: "1rem"}}
+          />
+          {<span
+            className={`message ${isNickname ? "success" : "error"}`}
+            style={{ marginBottom: "1rem" }}
+          >
+            {nicknameDuplicateCheck}
+          </span>}
+          </span>
+          </div>
           {nickname.length > 0 && (
             <span className={`message ${isNickname ? "success" : "error"}`}>
               {nicknameMessage}
@@ -312,10 +406,10 @@ const CreateUser = () => {
           <InputText
             id="birth"
             keyfilter={/^[^<>*!]+$/}
-            className="w-full"
             onInput={handleBirth}
             value={birth}
             type="date"
+            size={30}
           />
         </div>
       </div>
@@ -334,6 +428,17 @@ const CreateUser = () => {
               size={40}
             />
           </span>
+          <Button
+            label="중복 확인"
+            onClick={handleEmailDuplicate}
+            style={{ marginBottom: "1rem", marginRight: "1rem" }}
+          />
+          {<span
+            className={`message ${isEmail ? "success" : "error"}`}
+            style={{ marginBottom: "1rem", marginRight: "1rem" }}
+          >
+            {nicknameDuplicateCheck}
+          </span>}
           <Button
             label="이메일 인증"
             onClick={handleEmailCheck}
