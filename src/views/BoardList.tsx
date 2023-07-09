@@ -13,10 +13,12 @@ import { SearchOptioninterface } from "../interface/SearchOption";
 import { dateFormatFunc } from "../Common/DateFormat";
 import { ActiveIndexContext } from "../context/ActiveIndexContext";
 import { ActiveIndexContextProviderProps } from "../interface/UseContextDTO";
+import { BoardCategoryDto } from "../interface/BoardCategoryDto";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<Board[]>([]);
+  const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
   const navigate = useNavigate();
   const [inputSearch, setInputSearch] = useState<string>("");
   const [selectedSearchOption, setSelectedSearchOption] = useState<SearchOptioninterface>();
@@ -41,6 +43,9 @@ const BoardList = () => {
       try {
         setActiveIndex(1);
         setLoading(true);
+        const res = await axios.get('/board/category');
+        setBoardCategory(res.data);
+        console.log(boardCategory)
         const response = await axios.get("/board");
         setBoard(response.data);
       } catch (error: any) {
@@ -115,6 +120,7 @@ const BoardList = () => {
     );
   };
 
+
   const filterSearch = board.filter((Board: any) => {
     console.log(selectedSearchOption)
     if(selectedSearchOption?.code==='u'){
@@ -124,10 +130,14 @@ const BoardList = () => {
     }
   });
 
+
+  
   return (
     <div className="card">
       <Dropdown value={selectedSearchOption} onChange={(e) => setSelectedSearchOption(e.value)} options={searchOptions} optionLabel="name" 
-                placeholder="Title" className="w-full md:w-14rem" />
+          placeholder="Title" className="w-full md:w-14rem" />
+      <Dropdown value={selectedSearchOption} onChange={(e) => setSelectedSearchOption(e.value)} options={searchOptions} optionLabel="name" 
+          placeholder="Title" className="w-full md:w-14rem" />
       <span className="p-input-icon-left" style={{ marginBottom: "1rem" }}>
         <i className="pi pi-search" />
         <InputText
@@ -161,6 +171,8 @@ const BoardList = () => {
           style={{ minWidth: "12rem" }}
         ></Column>
       </DataTable>
+
+     
     </div>
   );
 };
