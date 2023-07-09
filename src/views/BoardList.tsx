@@ -130,14 +130,33 @@ const BoardList = () => {
     }
   });
 
+  const categorySearch = async (e:any) => {
+    console.log(e.id)
+    const categoryId = e.id
+    try{
+      setBoard([]);
+      if(categoryId==0){
+        const response = await axios.get("/board");
+        setBoard(response.data);
+      }else{
+        const response = await axios.get(`/board/categoryList/${categoryId}`);
+        setBoard(response.data)
+      }
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    }
+    
+  }
 
   
   return (
     <div className="card">
       <Dropdown value={selectedSearchOption} onChange={(e) => setSelectedSearchOption(e.value)} options={searchOptions} optionLabel="name" 
           placeholder="Title" className="w-full md:w-14rem" />
-      <Dropdown value={selectedSearchOption} onChange={(e) => setSelectedSearchOption(e.value)} options={searchOptions} optionLabel="name" 
-          placeholder="Title" className="w-full md:w-14rem" />
+      <Dropdown value={boardCategory} onChange={(e) => categorySearch(e.value)} options={boardCategory} optionLabel="category" 
+          placeholder="Category" className="w-full md:w-14rem" />
       <span className="p-input-icon-left" style={{ marginBottom: "1rem" }}>
         <i className="pi pi-search" />
         <InputText
