@@ -81,7 +81,7 @@ const Login = () => {
 
     //https://stack94.tistory.com/entry/React-%EC%B9%B4%EC%B9%B4%EC%98%A4Kakao-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EA%B8%B0
     //카카오 로그인 참조
-    const kakaoClientId = 'JavaScript KEY'
+    const kakaoClientId = `${process.env.REACT_APP_REST_API_KEY}`
     const kakaoOnSuccess = async (data: { response: { access_token: any; }; })=>{
       	console.log(data)
         const idToken = data.response.access_token  // 엑세스 토큰 백엔드로 전달
