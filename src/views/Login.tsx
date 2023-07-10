@@ -85,10 +85,26 @@ const Login = () => {
     const kakaoOnSuccess = async (data: { response: { access_token: any; }; })=>{
       	console.log(data)
         const idToken = data.response.access_token  // 엑세스 토큰 백엔드로 전달
+
+        const response = await axios.post("/user/kakao",{
+            idToken:idToken
+        })
     }
+    
     const kakaoOnFailure = (error: any) => {
         console.log(error);
     };
+    
+    const code = new URL(window.location.href).searchParams.get("code");
+    
+
+    const test = async () => {
+        window.location.href=link
+        console.log(code)
+        const response = await axios.post("/user/kakao",{
+            idToken:code
+        })
+    }
 
     
    
@@ -118,13 +134,13 @@ const Login = () => {
               </div>
               <div className="login-box-content">
                   <div >
-                      <KakaoLogin
+                      {/* <KakaoLogin
                           token={kakaoClientId}
                           onSuccess={kakaoOnSuccess}
                           onFail={kakaoOnFailure}
                           
-                      />
-
+                      /> */}
+                    <button onClick={test}>테스트</button>
                       
                   </div>
                   <div className="login-box-content" style={{display:'block',marginTop:'0.5rem'}}>
