@@ -145,9 +145,9 @@ const CreateUser = () => {
             email: email,
             code: emailCode
         }).then((response) => {
-            setIsEmailCode(true);
             if(response.data.success === true){
                 setEmailCodeMessage("✔")
+                setIsEmailCode(true);
             } else {
                 setEmailCodeMessage("✘")
             }
@@ -236,6 +236,9 @@ const CreateUser = () => {
           if (response.data.success === true) {
             alert("회원가입에 성공했습니다. 다시 로그인 해주세요");
             navigate("/Login");
+          } else {
+            alert(response.data.msg);
+            return;
           }
           if (response.data.msg === "아이디 중복") {
             alert(response.data.msg + " 다른 아이디를 입력해주세요!");
@@ -248,10 +251,7 @@ const CreateUser = () => {
           if (response.data.msg === "이메일 중복") {
             alert(response.data.msg + " 다른 이메일을 입력해주세요!");
             setEmail("");
-          } else {
-            alert(response.data.msg);
-            return;
-          }
+          } 
         });
     } catch (error: any) {
       console.log(error);
@@ -408,6 +408,7 @@ const CreateUser = () => {
             keyfilter={/^[^<>*!]+$/}
             onInput={handleBirth}
             value={birth}
+            max="2018-12-31"
             type="date"
             size={30}
           />
@@ -437,7 +438,7 @@ const CreateUser = () => {
             className={`message ${isEmail ? "success" : "error"}`}
             style={{ marginBottom: "1rem", marginRight: "1rem" }}
           >
-            {nicknameDuplicateCheck}
+            {emailDuplicateCheck}
           </span>}
           <Button
             label="이메일 인증"
@@ -488,7 +489,7 @@ const CreateUser = () => {
         <Button
           label="아이디 생성"
           onClick={handleSubmit}
-          disabled={!(isId && isPassword && isName && isEmail && isNickname)}
+          disabled={!(isId && isPassword && isName && isEmail && isNickname && isId && isEmailCode)}
         />
       </span>
     </div>
