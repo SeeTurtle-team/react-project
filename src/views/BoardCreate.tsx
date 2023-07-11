@@ -10,7 +10,7 @@ import { BoardCategoryDto } from "../interface/BoardCategoryDto";
 
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
-  const [text, setText] = useState<any>("");
+  const [text, setText] = useState<string|null>("");
   const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
   const [isBoardCategory, setIsBoardCategory] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -71,6 +71,15 @@ const BoardCreate = () => {
     setIsBoardCategory(true);
   }
 
+
+  const editorValue = (text:string|null) => {
+    if(typeof(text)=='string'){
+      return text
+    }else{
+      //에러처리
+    }
+
+  }
   return (
     <div className="card">
       <Dropdown 
@@ -93,7 +102,7 @@ const BoardCreate = () => {
       </span>
       <h2>Content</h2>
       <Editor
-        value={text}
+        value={editorValue(text)}
         onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
         style={{ height: "320px", marginBottom: "1rem" }}
         headerTemplate={header}
