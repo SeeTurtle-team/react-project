@@ -6,11 +6,9 @@ import { Button } from "primereact/button";
 import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { CategoryDTO } from "../interface/CategoryDTO";
 
-interface CategoryDTO {
-  name: string;
-  number: number;
-}
+
 
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
@@ -20,8 +18,10 @@ const BoardCreate = () => {
   const navigate = useNavigate();
   const Category: CategoryDTO[] = [
     { name: 'IT개발', number: 1 },
-    { name: '법률', number: 2 },
-    { name: '스포츠', number: 3 },
+    { name: '스포츠', number: 2 },
+    { name: '법률', number: 3 },
+    { name: '취미', number: 4 },
+    { name: '대학/리포트', number: 5 },
   ]
 
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};

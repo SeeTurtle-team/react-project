@@ -138,8 +138,20 @@ const BoardList = () => {
         options={searchOptions}
         optionLabel="name"
         placeholder="Title"
-        className="w-full md:w-14rem"
+        // className="w-full md:w-14rem"
+        size={10}
+        style={{ marginRight: "1rem" }}
       />
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          placeholder="Search"
+          onInput={handleSearch}
+          value={inputSearch}
+        />
+      </span>
+      <div style={{marginBottom: "1rem"}}>
+      <span>
       <Dropdown
         value={boardCategory}
         onChange={(e) => categorySearch(e.value)}
@@ -148,22 +160,13 @@ const BoardList = () => {
         placeholder="Category"
         className="w-full md:w-14rem"
       />
-      <span className="p-input-icon-left" style={{ marginBottom: "1rem" }}>
-        <i className="pi pi-search" />
-        <InputText
-          style={{ marginLeft: "0.5rem" }}
-          placeholder="Search"
-          onInput={handleSearch}
-          value={inputSearch}
-        />
-      </span>
-      <span>
         <Button
           label="Create"
           style={{ marginLeft: "57rem", marginBottom: "1rem" }}
           onClick={goToBoardCreate}
         />
       </span>
+      </div>
       <DataTable
         value={filterSearch}
         tableStyle={{ minWidth: "50rem" }}
