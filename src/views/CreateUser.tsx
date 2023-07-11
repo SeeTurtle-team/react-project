@@ -128,9 +128,15 @@ const CreateUser = () => {
     try {
       await axios.post("/user/sendcode", {
         email: email,
-      });
-      setIsEmailSendCode(true);
-      setEmailCheckMessage("이메일이 발송되었습니다");
+      }).then((response) => {
+        if(response.data.success === true) {
+            setIsEmailSendCode(true);
+            setEmailCheckMessage("이메일이 발송되었습니다");
+        }
+        if(response.data.success === false ){
+            alert(response.data.error);
+        }
+      })
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
@@ -151,7 +157,6 @@ const CreateUser = () => {
                 setEmailCodeMessage("✘")
             }
         })
-        console.log("code Checked");
     } catch (error: any) {
         console.log(error);
         const errCode = errorHandle(error.response.status);

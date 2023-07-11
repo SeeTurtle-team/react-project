@@ -15,7 +15,8 @@ interface CategoryDTO {
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
   const [text, setText] = useState<string>("");
-  const [selectCategory, setSelectCategory] = useState< CategoryDTO | null>(null);
+  const [selectCategory, setSelectCategory] = useState<CategoryDTO | null>(null);
+  const [isSelectCategory, setIsSelectCategory] = useState<boolean>(false);
   const navigate = useNavigate();
   const Category: CategoryDTO[] = [
     { name: 'IT개발', number: 1 },
@@ -47,36 +48,54 @@ const BoardCreate = () => {
   };
   // 로그인 기능 및 boardCreate에 category 값 추가하기
 
+  const renderHeader = () => {
+    return (
+        <span className="ql-formats">
+            <button className="ql-bold" aria-label="Bold"></button>
+            <button className="ql-italic" aria-label="Italic"></button>
+            <button className="ql-underline" aria-label="Underline"></button>
+        </span>
+    );
+  };
+
+  const header = renderHeader();
+
+  const handleInputTitle = (e: DropdownChangeEvent) => {
+    setSelectCategory(e.value);
+    setIsSelectCategory(true);
+  }
+
   return (
     <div className="card">
-      {/* <BoardHeader /> */} {/**이건 도대체 왜 페이지마다 들어가 잇는거죠..??? */}
-      <br />
+      <Dropdown 
+      value={selectCategory} 
+      onChange={handleInputTitle}
+      options={Category} optionLabel="name" 
+      placeholder="select category"
+      style={{ marginBottom: "2rem" }}
+      />
       <span className="p-float-label">
         <InputText
           id="Title"
           value={value}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setValue(e.target.value)
-          }
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
           onKeyDown={handleInputEnter}
           size={80}
-          style={{ marginBottom: "1rem" }}
         />
         <label htmlFor="Title">Title</label>
       </span>
-      <Dropdown 
-      value={selectCategory} 
-      onChange={(e: DropdownChangeEvent) => setSelectCategory(e.value)} 
-      options={Category} optionLabel="name" 
-      placeholder="select category"
-      />
       <h2>Content</h2>
       <Editor
         value={text}
-        onTextChange={(e: EditorTextChangeEvent) => setText(e.textValue)}
+        onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
         style={{ height: "320px", marginBottom: "1rem" }}
+        headerTemplate={header}
       />
-      <Button label="Submit" onClick={handleSubmit} />
+      <Button 
+      label="Submit" 
+      onClick={handleSubmit} 
+      disabled={!isSelectCategory}
+      />
     </div>
   );
 };

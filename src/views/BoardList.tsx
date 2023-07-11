@@ -40,8 +40,8 @@ const BoardList = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setActiveIndex(1);
       try {
-        setActiveIndex(1);
         setLoading(true);
         const res = await axios.get('/board/category');
         setBoardCategory(res.data);
@@ -124,7 +124,7 @@ const BoardList = () => {
   const filterSearch = board.filter((Board: any) => {
     console.log(selectedSearchOption)
     if(selectedSearchOption?.code==='u'){
-      return Board.id?.toLowerCase().includes(inputSearch.toLowerCase());
+      return Board.nickname?.toLowerCase().includes(inputSearch.toLowerCase());
     }
     else{
       return Board.title?.toLowerCase().includes(inputSearch.toLowerCase());
@@ -182,6 +182,7 @@ const BoardList = () => {
         onRowClick={boardState}
       >
         <Column field="id" header="ID"></Column>
+        <Column field="nickname" header="Nickname"></Column>
         <Column field="category" header="Category"></Column>
         <Column field="title" header="Title"></Column>
         <Column field="dateTime" header="Time"></Column>

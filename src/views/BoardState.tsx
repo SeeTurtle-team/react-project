@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card } from "primereact/card";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { Panel } from "primereact/panel";
@@ -9,13 +9,17 @@ import { BoardUpdateDto } from "../interface/BoardUpdateDto";
 import { Button } from "primereact/button";
 import { dateFormatFunc } from "../Common/DateFormat";
 import BoardComment from "./BoardComment";
+import { Editor } from "primereact/editor";
+import { ActiveIndexContext, ActiveIndexContextProviderProps } from "../context/ActiveIndexContext";
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
+  const {activeIndex, setActiveIndex}:ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
 
   const { index } = useParams();
   const navigate = useNavigate();
 
   const fetchUsers = async () => {
+    setActiveIndex(1);
     try {
       const response = await axios.get("/board/read/" + index);
       console.log(response.data)
@@ -53,20 +57,30 @@ const BoardState = () => {
       navigate(`/ErrorPage/${errCode}`);
     }
   };
+  
+  const renderHeader = () => {
+      return (
+          <span className="ql-formats">
+          </span>
+      );
+  }
 
-  const boardUpdate = async () => {
-    fetchUsers();
-  };
+  const header = renderHeader();
+  const modules = {
+    toolbar: false
+  }
 
   return (
     <div className="card">
-      <Card style={{ marginBottom: "2rem" }} title="Title">
-        <p className="m-0">{board?.title}</p>
+      <Card style={{ marginBottom: "2rem", backgroundColor: 'transparent' }} title={board?.title}>
+        <Editor 
+          value={board?.contents}
+          name="blog" 
+          headerTemplate={header} 
+          modules={modules}
+          readOnly={true}
+        />
       </Card>
-
-      <Panel header="Content" style={{ marginBottom: "2rem" }}>
-        <p className="m-0">{board?.contents}</p>
-      </Panel>
       <div style={{ marginBottom: "1rem" }}>
         <span>
           <Button
@@ -82,9 +96,6 @@ const BoardState = () => {
             작성일: {dateFormatFunc(board?.dateTime)}
           </p>
         </span>
-      </div>
-      <div style={{ marginBottom: "1rem" }}>
-        <Button label="Update" onClick={boardUpdate}></Button>
       </div>
       <BoardComment index={index}/>
     </div>
