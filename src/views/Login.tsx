@@ -30,10 +30,6 @@ const Login = () => {
     
     useEffect(() => {
         setActiveIndex(2);
-        // if(cookies !== undefined){
-        //     removeCookie("id");
-        //     console.log("remove");
-        // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -46,12 +42,16 @@ const Login = () => {
                 userId: id,
                 password: password
             }).then(response => {
-                const accessToken = response.data.access_token;
-                if(response.data.access_token === accessToken){
-                    setCookie("id", accessToken, {
-                        expires: new Date(1000 * 60),
-                    });
-                    // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}` ;
+                console.log(response);
+                const accessToken = response.data.jwtToken.access_token;
+                if(response.data.jwtToken.access_token !== undefined){
+                    setCookie("id", accessToken
+                    // , {
+                    //     httpOnly: true,
+                    //     secure: true
+                    // }
+                    );
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}` ;
                     alert('로그인에 성공했습니다');
                     setActiveIndex(0);
                     setIsLogin(true);

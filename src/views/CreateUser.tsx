@@ -71,7 +71,6 @@ const CreateUser = () => {
       //     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
       const passwordCurrent = e.target.value;
       setPasswordCheck(passwordCurrent);
-      console.log(password, passwordCurrent);
       if (password === passwordCurrent) {
         setPasswordCheckMessage("비밀번호 확인이 완료되었습니다. : )");
 
@@ -127,7 +126,7 @@ const CreateUser = () => {
 
   const handleEmailCheck = async () => {
     try {
-      await axios.post("/user/resendcode", {
+      await axios.post("/user/sendcode", {
         email: email,
       });
       setIsEmailSendCode(true);
@@ -182,7 +181,7 @@ const CreateUser = () => {
   const handleNicknameDuplicate = async () => {
     try{
         await axios.post("/user/nickname", {
-            userId: nickname
+            nickname: nickname
         }).then((response) => {
             if (response.data.success === true) {
                 setNicknameDuplicateCheck("✔");
@@ -202,10 +201,11 @@ const CreateUser = () => {
   const handleEmailDuplicate = async () => {
     try{
         await axios.post("/user/email", {
-            userId: email
+            email: email
         }).then((response) => {
             if (response.data.success === true) {
                 setEmailDuplicateCheck("✔");
+                setIsEmailCheck(true);
             }
             if (response.data.msg === "이메일 중복") {
               alert(response.data.msg + " 다른 이메일을 입력해주세요!");
@@ -444,6 +444,7 @@ const CreateUser = () => {
             label="이메일 인증"
             onClick={handleEmailCheck}
             style={{ marginBottom: "1rem" }}
+            disabled={!isEmailCheck}
           />
           <div style={{ marginBottom: "1rem" }}>
           {email.length > 0 && (
@@ -475,6 +476,7 @@ const CreateUser = () => {
           label="코드 확인" 
           onClick={handleCodeCheck} 
           style={{ marginRight: "1rem" }}
+          disabled={!isEmailSendCode}
           />
           {<span
             className={`message ${isEmailCode ? "success" : "error"}`}

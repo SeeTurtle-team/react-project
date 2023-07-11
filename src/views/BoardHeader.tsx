@@ -20,7 +20,7 @@ function BoardHeader() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if(cookies.id !== undefined){
+    if(cookies.id != undefined){
       setIsLogin(true);
     } 
     if(activeIndex === 2 && isLogin === true){
