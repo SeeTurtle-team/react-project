@@ -49,7 +49,9 @@ const BoardList = () => {
         const response = await axios.get("/board");
         setBoard(response.data);
       } catch (error: any) {
-        navigate(-1); // error 발생 시 이전 page 이동
+        console.log(error);
+        const errCode = errorHandle(error.response.status);
+        navigate(`/ErrorPage/${errCode}`); // error 발생 시 이전 page 이동
       }
 
       // board.forEach(element => {
