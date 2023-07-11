@@ -8,7 +8,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { errorHandle } from "../Common/ErrorHandle";
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown } from "primereact/dropdown";
 import { SearchOptioninterface } from "../interface/SearchOption";
 import { dateFormatFunc } from "../Common/DateFormat";
 import { ActiveIndexContext } from "../context/ActiveIndexContext";
@@ -21,13 +21,14 @@ const BoardList = () => {
   const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
   const navigate = useNavigate();
   const [inputSearch, setInputSearch] = useState<string>("");
-  const [selectedSearchOption, setSelectedSearchOption] = useState<SearchOptioninterface>();
-  const {activeIndex, setActiveIndex}:ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
+  const [selectedSearchOption, setSelectedSearchOption] =
+    useState<SearchOptioninterface>();
+  const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
+    useContext(ActiveIndexContext);
 
   const searchOptions = [
-    { name: 'Title', code: 't' },
-    { name: 'User', code: 'u' },
-  
+    { name: "Title", code: "t" },
+    { name: "User", code: "u" },
   ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,9 +44,9 @@ const BoardList = () => {
       setActiveIndex(1);
       try {
         setLoading(true);
-        const res = await axios.get('/board/category');
+        const res = await axios.get("/board/category");
         setBoardCategory(res.data);
-        console.log(boardCategory)
+        console.log(boardCategory);
         const response = await axios.get("/board");
         setBoard(response.data);
       } catch (error: any) {
@@ -61,7 +62,7 @@ const BoardList = () => {
     };
 
     fetchUsers();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading)
@@ -101,69 +102,56 @@ const BoardList = () => {
     }
   };
 
-  const actionBodyTemplate = (rowData: Board, props: any) => {
-    return (
-      <React.Fragment>
-        <Button
-          icon="pi pi-pencil"
-          rounded
-          outlined
-          className="mr-2"
-          onClick={() => goToBoardEdit(rowData.id)}
-        />
-        <Button
-          icon="pi pi-trash"
-          rounded
-          outlined
-          severity="danger"
-          onClick={() => handleBoardDelete(rowData.id)}
-        />
-      </React.Fragment>
-    );
-  };
-
-
   const filterSearch = board.filter((Board: any) => {
-    console.log(selectedSearchOption)
-    if(selectedSearchOption?.code==='u'){
+    console.log(selectedSearchOption);
+    if (selectedSearchOption?.code === "u") {
       return Board.nickname?.toLowerCase().includes(inputSearch.toLowerCase());
-    }
-    else{
+    } else {
       return Board.title?.toLowerCase().includes(inputSearch.toLowerCase());
     }
   });
 
-  const categorySearch = async (e:any) => {
-    console.log(e.id)
-    const categoryId = e.id
-    try{
+  const categorySearch = async (e: any) => {
+    console.log(e.id);
+    const categoryId = e.id;
+    try {
       setBoard([]);
-      if(categoryId==0){
+      if (categoryId == 0) {
         const response = await axios.get("/board");
         setBoard(response.data);
-      }else{
+      } else {
         const response = await axios.get(`/board/categoryList/${categoryId}`);
-        setBoard(response.data)
+        setBoard(response.data);
       }
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
     }
-    
-  }
+  };
 
-  
   return (
     <div className="card">
-      <Dropdown value={selectedSearchOption} onChange={(e) => setSelectedSearchOption(e.value)} options={searchOptions} optionLabel="name" 
-          placeholder="Title" className="w-full md:w-14rem" />
-      <Dropdown value={boardCategory} onChange={(e) => categorySearch(e.value)} options={boardCategory} optionLabel="category" 
-          placeholder="Category" className="w-full md:w-14rem" />
+      <Dropdown
+        value={selectedSearchOption}
+        onChange={(e) => setSelectedSearchOption(e.value)}
+        options={searchOptions}
+        optionLabel="name"
+        placeholder="Title"
+        className="w-full md:w-14rem"
+      />
+      <Dropdown
+        value={boardCategory}
+        onChange={(e) => categorySearch(e.value)}
+        options={boardCategory}
+        optionLabel="category"
+        placeholder="Category"
+        className="w-full md:w-14rem"
+      />
       <span className="p-input-icon-left" style={{ marginBottom: "1rem" }}>
         <i className="pi pi-search" />
         <InputText
-          style ={{marginLeft:'0.5rem'}}
+          style={{ marginLeft: "0.5rem" }}
           placeholder="Search"
           onInput={handleSearch}
           value={inputSearch}
@@ -188,14 +176,7 @@ const BoardList = () => {
         <Column field="category" header="Category"></Column>
         <Column field="title" header="Title"></Column>
         <Column field="dateTime" header="Time"></Column>
-        <Column
-          body={actionBodyTemplate}
-          exportable={false}
-          style={{ minWidth: "12rem" }}
-        ></Column>
       </DataTable>
-
-     
     </div>
   );
 };
