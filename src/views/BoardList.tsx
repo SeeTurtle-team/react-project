@@ -122,7 +122,6 @@ const BoardList = () => {
 
 
   const filterSearch = board.filter((Board: any) => {
-    console.log(Board);
     console.log(selectedSearchOption)
     if(selectedSearchOption?.code==='u'){
       return Board.id?.toLowerCase().includes(inputSearch.toLowerCase());
