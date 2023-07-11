@@ -77,7 +77,7 @@ const BoardList = () => {
 
   const boardState = (event: any) => {
     console.log(event.data);
-    const index = event.data.board_id;
+    const index = event.data.id;
     navigate(`/BoardState/${index}`);
   };
 
@@ -107,14 +107,14 @@ const BoardList = () => {
           rounded
           outlined
           className="mr-2"
-          onClick={() => goToBoardEdit(rowData.board_id)}
+          onClick={() => goToBoardEdit(rowData.id)}
         />
         <Button
           icon="pi pi-trash"
           rounded
           outlined
           severity="danger"
-          onClick={() => handleBoardDelete(rowData.board_id)}
+          onClick={() => handleBoardDelete(rowData.id)}
         />
       </React.Fragment>
     );
