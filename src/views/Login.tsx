@@ -13,6 +13,7 @@ import { UserLoginContext } from "../context/UserLoginContext"
 import "../css/Login.css";
 import { ActiveIndexContext } from "../context/ActiveIndexContext";
 import { ActiveIndexContextProviderProps, UserLoginContextProviderProps } from "../interface/UseContextDTO";
+import { useCookies } from "react-cookie";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -23,11 +24,12 @@ const Login = () => {
 
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+    const [cookies, setCookie, removeCookie] = useCookies(["id"]);
     const {isLogin, setIsLogin}:UserLoginContextProviderProps = useContext(UserLoginContext);
     const {activeIndex, setActiveIndex}:ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
     
     useEffect(() => {
-        return setActiveIndex(2);
+        setActiveIndex(2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -40,24 +42,41 @@ const Login = () => {
                 userId: id,
                 password: password
             }).then(response => {
-                console.log(response.data)
-                if(response.data.success===true){
-                    setIsLogin(true);
+                console.log(response);
+                const accessToken = response.data.jwtToken.access_token;
+                if(response.data.jwtToken.access_token !== undefined){
+                    setCookie("id", accessToken
+                    // , {
+                    //     httpOnly: true,
+                    //     secure: true
+                    // }
+                    );
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}` ;
                     alert('로그인에 성공했습니다');
+                    setActiveIndex(0);
+                    setIsLogin(true);
                     navigate("/");
-                }else{
+                }
+                if(response.data.msg === "존재하지 않는 아이디입니다."){
                   alert(response.data.msg);
                   setId("");
                   setPassword("");
                   navigate("/Login");
                   return;
-                }
+                } 
+                if(response.data.msg === "비밀번호가 일치하지 않습니다."){
+                    alert(response.data.msg);
+                    setPassword("");
+                    navigate("/Login");
+                    return;
+                  } 
               });
         } catch (error: any) {
             console.log(error);
             const errCode = errorHandle(error.response.status);
             navigate(`/ErrorPage/${errCode}`);
-          }  
+          }
+          console.log(cookies);
     }
     const loginHandler = () => {
         window.location.href = link;

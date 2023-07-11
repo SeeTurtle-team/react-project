@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React, { lazy, useContext, useEffect } from "react";
 import BoardHeader from "./views/BoardHeader";
 import { Route, Routes, Navigate } from "react-router";
 import { BrowserRouter } from "react-router-dom";

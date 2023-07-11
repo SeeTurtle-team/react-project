@@ -71,7 +71,6 @@ const CreateUser = () => {
       //     /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
       const passwordCurrent = e.target.value;
       setPasswordCheck(passwordCurrent);
-      console.log(password, passwordCurrent);
       if (password === passwordCurrent) {
         setPasswordCheckMessage("비밀번호 확인이 완료되었습니다. : )");
 
@@ -127,7 +126,7 @@ const CreateUser = () => {
 
   const handleEmailCheck = async () => {
     try {
-      await axios.post("/user/resendcode", {
+      await axios.post("/user/sendcode", {
         email: email,
       });
       setIsEmailSendCode(true);
@@ -145,9 +144,9 @@ const CreateUser = () => {
             email: email,
             code: emailCode
         }).then((response) => {
-            setIsEmailCode(true);
             if(response.data.success === true){
                 setEmailCodeMessage("✔")
+                setIsEmailCode(true);
             } else {
                 setEmailCodeMessage("✘")
             }
@@ -182,7 +181,7 @@ const CreateUser = () => {
   const handleNicknameDuplicate = async () => {
     try{
         await axios.post("/user/nickname", {
-            userId: nickname
+            nickname: nickname
         }).then((response) => {
             if (response.data.success === true) {
                 setNicknameDuplicateCheck("✔");
@@ -202,10 +201,11 @@ const CreateUser = () => {
   const handleEmailDuplicate = async () => {
     try{
         await axios.post("/user/email", {
-            userId: email
+            email: email
         }).then((response) => {
             if (response.data.success === true) {
                 setEmailDuplicateCheck("✔");
+                setIsEmailCheck(true);
             }
             if (response.data.msg === "이메일 중복") {
               alert(response.data.msg + " 다른 이메일을 입력해주세요!");
@@ -236,6 +236,9 @@ const CreateUser = () => {
           if (response.data.success === true) {
             alert("회원가입에 성공했습니다. 다시 로그인 해주세요");
             navigate("/Login");
+          } else {
+            alert(response.data.msg);
+            return;
           }
           if (response.data.msg === "아이디 중복") {
             alert(response.data.msg + " 다른 아이디를 입력해주세요!");
@@ -248,10 +251,7 @@ const CreateUser = () => {
           if (response.data.msg === "이메일 중복") {
             alert(response.data.msg + " 다른 이메일을 입력해주세요!");
             setEmail("");
-          } else {
-            alert(response.data.msg);
-            return;
-          }
+          } 
         });
     } catch (error: any) {
       console.log(error);
@@ -408,6 +408,7 @@ const CreateUser = () => {
             keyfilter={/^[^<>*!]+$/}
             onInput={handleBirth}
             value={birth}
+            max="2018-12-31"
             type="date"
             size={30}
           />
@@ -437,12 +438,13 @@ const CreateUser = () => {
             className={`message ${isEmail ? "success" : "error"}`}
             style={{ marginBottom: "1rem", marginRight: "1rem" }}
           >
-            {nicknameDuplicateCheck}
+            {emailDuplicateCheck}
           </span>}
           <Button
             label="이메일 인증"
             onClick={handleEmailCheck}
             style={{ marginBottom: "1rem" }}
+            disabled={!isEmailCheck}
           />
           <div style={{ marginBottom: "1rem" }}>
           {email.length > 0 && (
@@ -474,6 +476,7 @@ const CreateUser = () => {
           label="코드 확인" 
           onClick={handleCodeCheck} 
           style={{ marginRight: "1rem" }}
+          disabled={!isEmailSendCode}
           />
           {<span
             className={`message ${isEmailCode ? "success" : "error"}`}
@@ -488,7 +491,7 @@ const CreateUser = () => {
         <Button
           label="아이디 생성"
           onClick={handleSubmit}
-          disabled={!(isId && isPassword && isName && isEmail && isNickname)}
+          disabled={!(isId && isPassword && isName && isEmail && isNickname && isId && isEmailCode)}
         />
       </span>
     </div>

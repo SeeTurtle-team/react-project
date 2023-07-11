@@ -122,11 +122,13 @@ const BoardList = () => {
 
 
   const filterSearch = board.filter((Board: any) => {
+    console.log(Board);
     console.log(selectedSearchOption)
     if(selectedSearchOption?.code==='u'){
-      return Board.user_nickname.toLowerCase().includes(inputSearch.toLowerCase());
-    }else{
-      return Board.board_title.toLowerCase().includes(inputSearch.toLowerCase());
+      return Board.user_nickname?.toLowerCase().includes(inputSearch.toLowerCase());
+    }
+    else{
+      return Board.board_title?.toLowerCase().includes(inputSearch.toLowerCase());
     }
   });
 
