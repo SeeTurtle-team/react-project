@@ -132,6 +132,7 @@ const BoardList = () => {
 
   return (
     <div className="card">
+      <div style={{marginBottom: "1rem"}}>
       <Dropdown
         value={selectedSearchOption}
         onChange={(e) => setSelectedSearchOption(e.value)}
@@ -150,6 +151,7 @@ const BoardList = () => {
           value={inputSearch}
         />
       </span>
+      </div>
       <div style={{marginBottom: "1rem"}}>
       <span>
       <Dropdown
@@ -158,11 +160,12 @@ const BoardList = () => {
         options={boardCategory}
         optionLabel="category"
         placeholder="Category"
-        className="w-full md:w-14rem"
+        // className="w-full md:w-14rem"
+        size={20}
       />
         <Button
           label="Create"
-          style={{ marginLeft: "57rem", marginBottom: "1rem" }}
+          style={{ marginLeft: "57rem"}}
           onClick={goToBoardCreate}
         />
       </span>

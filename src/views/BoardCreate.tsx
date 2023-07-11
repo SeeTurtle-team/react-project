@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { InputText } from "primereact/inputtext";
@@ -6,23 +6,29 @@ import { Button } from "primereact/button";
 import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { CategoryDTO } from "../interface/CategoryDTO";
-
-
+import { BoardCategoryDto } from "../interface/BoardCategoryDto";
 
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
-  const [text, setText] = useState<string>("");
-  const [selectCategory, setSelectCategory] = useState<CategoryDTO | null>(null);
-  const [isSelectCategory, setIsSelectCategory] = useState<boolean>(false);
+  const [text, setText] = useState<any>("");
+  const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
+  const [isBoardCategory, setIsBoardCategory] = useState<boolean>(false);
   const navigate = useNavigate();
-  const Category: CategoryDTO[] = [
-    { name: 'IT개발', number: 1 },
-    { name: '스포츠', number: 2 },
-    { name: '법률', number: 3 },
-    { name: '취미', number: 4 },
-    { name: '대학/리포트', number: 5 },
-  ]
+  
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("/board/category");
+        setBoardCategory(res.data);
+      } catch (error: any) {
+        console.log(error);
+        const errCode = errorHandle(error.response.status);
+        navigate(`/ErrorPage/${errCode}`); // error 발생 시 이전 page 이동
+      }
+    };
+    fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
   const handleSubmit = () => {
@@ -32,7 +38,7 @@ const BoardCreate = () => {
         title: value,
         contents: text,
         userId: 5,
-        boardCategoryId: selectCategory?.number,
+        boardCategoryId: boardCategory,
       })
       .then((res) => res.data.body)
       .then((res) => console.log(res));
@@ -61,16 +67,17 @@ const BoardCreate = () => {
   const header = renderHeader();
 
   const handleInputTitle = (e: DropdownChangeEvent) => {
-    setSelectCategory(e.value);
-    setIsSelectCategory(true);
+    setBoardCategory(e.value);
+    setIsBoardCategory(true);
   }
 
   return (
     <div className="card">
       <Dropdown 
-      value={selectCategory} 
+      value={boardCategory} 
       onChange={handleInputTitle}
-      options={Category} optionLabel="name" 
+      options={boardCategory} 
+      optionLabel="category" 
       placeholder="select category"
       style={{ marginBottom: "2rem" }}
       />
@@ -94,7 +101,7 @@ const BoardCreate = () => {
       <Button 
       label="Submit" 
       onClick={handleSubmit} 
-      disabled={!isSelectCategory}
+      disabled={!isBoardCategory}
       />
     </div>
   );
