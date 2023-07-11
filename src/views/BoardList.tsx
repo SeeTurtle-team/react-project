@@ -125,10 +125,10 @@ const BoardList = () => {
     console.log(Board);
     console.log(selectedSearchOption)
     if(selectedSearchOption?.code==='u'){
-      return Board.user_nickname?.toLowerCase().includes(inputSearch.toLowerCase());
+      return Board.id?.toLowerCase().includes(inputSearch.toLowerCase());
     }
     else{
-      return Board.board_title?.toLowerCase().includes(inputSearch.toLowerCase());
+      return Board.title?.toLowerCase().includes(inputSearch.toLowerCase());
     }
   });
 
@@ -182,10 +182,10 @@ const BoardList = () => {
         rows={10}
         onRowClick={boardState}
       >
-        <Column field="board_id" header="ID"></Column>
-        <Column field="board_title" header="Title"></Column>
-        <Column field="board_dateTime" header="Time"></Column>
-        <Column field="board_recommend" header="Recommend"></Column>
+        <Column field="id" header="ID"></Column>
+        <Column field="category" header="Category"></Column>
+        <Column field="title" header="Title"></Column>
+        <Column field="dateTime" header="Time"></Column>
         <Column
           body={actionBodyTemplate}
           exportable={false}
