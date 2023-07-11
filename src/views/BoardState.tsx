@@ -88,6 +88,7 @@ const BoardState = () => {
       });
       const response = await axios.get("/board");
       setBoard(response.data);
+      navigate('/BoardList')
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
