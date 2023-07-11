@@ -12,6 +12,7 @@ const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
   const [text, setText] = useState<string|null>("");
   const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
+  const [selectBoardCategory, setSelectBoardCategory] = useState<BoardCategoryDto|null>(null);
   const [isBoardCategory, setIsBoardCategory] = useState<boolean>(false);
   const navigate = useNavigate();
   
@@ -67,7 +68,7 @@ const BoardCreate = () => {
   const header = renderHeader();
 
   const handleInputTitle = (e: DropdownChangeEvent) => {
-    setBoardCategory(e.value);
+    setSelectBoardCategory(e.value);
     setIsBoardCategory(true);
   }
 
@@ -83,7 +84,7 @@ const BoardCreate = () => {
   return (
     <div className="card">
       <Dropdown 
-      value={boardCategory} 
+      value={selectBoardCategory} 
       onChange={handleInputTitle}
       options={boardCategory} 
       optionLabel="category" 
