@@ -7,6 +7,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
 import { BoardUpdateDto } from "../interface/BoardUpdateDto";
+import { useCookies } from "react-cookie";
 
 const BoardEdit = () => {
   const [text, setText] = useState<any>("");
@@ -14,10 +15,15 @@ const BoardEdit = () => {
   const [board, setBoard] = useState<BoardUpdateDto>(); //어차피 하나의 데이터만 받을텐데 왜 배열로 받죠?
   const navigate = useNavigate();
   const {boardId} = useParams(); //이렇게 하면 App.tsx에 있는 <Route path="/BoardEdit/:boardId" element={<BoardEdit />} /> 이부분에서 boardId 파라미터를 가져올 수 있습니다
+  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
  
   // console.log(board[parmasUserId].board_title);
   // console.log(board[parmasUserId].board_contents);
+
+  const accessToken = cookies.id;
+  console.log(accessToken);
   const fetchUsers = async () => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
     try {
       setBoard(undefined);
       const boardIdNumber  = typeChangeStringToNumber(boardId);
@@ -29,7 +35,7 @@ const BoardEdit = () => {
       console.log(response.data)
       console.log(response.data.success)
 
-      if(!response.data.success){
+      if(!response.data.success && response.data.success != undefined){
         alert('권한이 없습니다');
         window.history.go(-1);
         return;
