@@ -50,9 +50,9 @@ const Login = () => {
                     //     httpOnly: true,
                     //     secure: true
                     // }
-                    );
+                    );    
                     // axios.defaults.baseURL = 'http://localhost:3000'
-                    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
+                    // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
                     // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
                     console.log(axios.defaults.headers.common.Authorization);
                     alert('로그인에 성공했습니다');

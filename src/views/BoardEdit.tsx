@@ -23,13 +23,23 @@ const BoardEdit = () => {
   const accessToken = cookies.id;
   console.log(accessToken);
   const fetchUsers = async () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
+    axios.post("/api", 
+        {
+          headers: {
+            Authorization: accessToken
+          }
+        })
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
     try {
       setBoard(undefined);
       const boardIdNumber  = typeChangeStringToNumber(boardId);
       const response = await axios.post("/board/getUpdate",{
         boardId : boardIdNumber,
-        userId : 5
+      },
+      {
+        headers: {
+          Authorization: accessToken
+        }
       });
 
       console.log(response.data)
