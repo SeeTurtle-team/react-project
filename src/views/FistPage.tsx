@@ -3,6 +3,7 @@ import { Carousel, CarouselResponsiveOption } from 'primereact/carousel';
 import { Tag } from 'primereact/tag';
 import { useState, useEffect } from 'react';
 import { ProductService } from '../service/ProductService';
+import { Fieldset } from 'primereact/fieldset';
 
 const FirstPage = () => {
 
@@ -63,7 +64,7 @@ const FirstPage = () => {
 
     const productTemplate = (product: Product) => {
         return (
-            <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
+            <div >
                 <div className="mb-3">
                     <img src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`} alt={product.name} className="w-6 shadow-2" />
                 </div>
@@ -79,11 +80,29 @@ const FirstPage = () => {
             </div>
         );
     };
-    return (
-        <div className="card">
-            <Carousel value={products} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} className="custom-carousel" circular
-                autoplayInterval={3000} itemTemplate={productTemplate} />
+
+    const legendTemplate = (
+        <div className="flex align-items-center text-primary">
+            <span className="pi pi-user mr-2"></span>
+            <span className="font-bold text-lg">Best Book</span>
         </div>
+    );
+
+
+    return (
+        <>
+            <div className="card">
+                <Fieldset legend={legendTemplate}>
+                    <Carousel value={products} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} className="custom-carousel" circular
+                        autoplayInterval={3000} itemTemplate={productTemplate} />
+                </Fieldset>
+            
+            </div>
+
+            <div className="card">
+            </div>
+        </>
+        
     )
 
 }
