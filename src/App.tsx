@@ -12,6 +12,7 @@ import CreateUser from "./views/CreateUser";
 import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import UserLoginProvider from './context/UserLoginContext';
 import ActiveIndexProvider from "./context/ActiveIndexContext";
+import FirstPage from "./views/FistPage";
 
 const BoardList = lazy(() => import("./views/BoardList"));
 const BoardState = lazy(() => import("./views/BoardState"));
@@ -27,7 +28,7 @@ const App = () => {
       <BrowserRouter>
         <BoardHeader />
         <Routes>
-          <Route path="/" element={<Navigate to="/" />} />
+          <Route path="/" element={<FirstPage/>} />
           <Route path="/BoardCreate" element={<BoardCreate />} />
           <Route path="/BoardEdit/:boardId" element={<BoardEdit />} />  {/**boardId를 넘겨야 게시글을 가져올 수 있겠죠? */}
           <Route path="/BoardList" element={<BoardList />} />
