@@ -14,6 +14,7 @@ import { dateFormatFunc } from "../Common/DateFormat";
 import { ActiveIndexContext } from "../context/ActiveIndexContext";
 import { ActiveIndexContextProviderProps } from "../interface/UseContextDTO";
 import { BoardCategoryDto } from "../interface/BoardCategoryDto";
+import { useCookies } from "react-cookie";
 
 const BoardList = () => {
   const [loading, setLoading] = useState(false);
@@ -25,11 +26,13 @@ const BoardList = () => {
     useState<SearchOptioninterface>();
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
     useContext(ActiveIndexContext);
-
+  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const searchOptions = [
     { name: "Title", code: "t" },
     { name: "User", code: "u" },
   ];
+  const accessToken = cookies.id;
+  console.log(accessToken);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);
@@ -40,14 +43,15 @@ const BoardList = () => {
   };
 
   useEffect(() => {
+    const headers = {Authorization:'Bearer '+accessToken}
     const fetchUsers = async () => {
       setActiveIndex(1);
       try {
         setLoading(true);
-        const res = await axios.get("/board/category");
+        const res = await axios.get("/board/category",{headers});
         setBoardCategory(res.data);
         console.log(boardCategory);
-        const response = await axios.get("/board");
+        const response = await axios.get("/board",{headers});
         setBoard(response.data);
       } catch (error: any) {
         console.log(error);
