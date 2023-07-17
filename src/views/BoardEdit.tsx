@@ -27,15 +27,7 @@ const BoardEdit = () => {
     try {
       setBoard(undefined);
       const boardIdNumber  = typeChangeStringToNumber(boardId);
-      const response = await axios.post("/board/getupdate",{
-        boardId : boardIdNumber,
-        // userId: 34
-      }
-      ,{
-        headers:headers
-      }
-      );
-
+      const response = await axios.get("/board/getupdate/" + boardId,{headers});
       console.log(response.data)
       console.log(response.data.success)
 
