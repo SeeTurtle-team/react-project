@@ -11,6 +11,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 
 import { BoardCommentDto } from "../interface/BoardCommentDto";
 import { dateFormatFunc } from "../Common/DateFormat";
+import { useCookies } from "react-cookie";
 
 const customStyles = {
   content: {
@@ -36,12 +37,15 @@ const BoardComment = ({ index }: Props) => {
   const [isBoardComment, setIsBoardComment] = useState<boolean>(false);
   const [selectedCommentIndex, setSelectedCommentIndex] = useState<number>();
   const [isSelectedCommentIndex, setIsSelectedCommentIndex] = useState<boolean>(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
+  const accessToken = cookies.id;
+  const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
   const userId = 5; // 로그인 후 아이디 값 받아오기
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("/board/comment/" + index);
+      const response = await axios.get("/board/comment/" + index, {headers});
       setBoardCommenet(response.data);
     } catch (error: any) {
       console.log(error);
@@ -60,9 +64,8 @@ const BoardComment = ({ index }: Props) => {
       axios
         .post("/board/comment/create", {
           contents: comment,
-          userId: userId,
           boardId: Number(index),
-        })
+        }, {headers})
         .then((response) => {
           console.log(response.data);
           if (response.data.success === true) {
@@ -113,6 +116,7 @@ const BoardComment = ({ index }: Props) => {
   const handleCommentDelete = (i: number) => {
     try {
       axios.delete("/board/comment/delete", {
+        headers: headers,
         data: {
           id: boardComment[i].boardComment_id,
           userId: userId,

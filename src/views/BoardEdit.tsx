@@ -12,35 +12,29 @@ import { useCookies } from "react-cookie";
 const BoardEdit = () => {
   const [text, setText] = useState<any>("");
   const [value, setValue] = useState<string>("");
-  const [board, setBoard] = useState<BoardUpdateDto>(); //어차피 하나의 데이터만 받을텐데 왜 배열로 받죠?
+  const [board, setBoard] = useState<BoardUpdateDto>();
   const navigate = useNavigate();
   const {boardId} = useParams(); //이렇게 하면 App.tsx에 있는 <Route path="/BoardEdit/:boardId" element={<BoardEdit />} /> 이부분에서 boardId 파라미터를 가져올 수 있습니다
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
- 
+  const accessToken = cookies.id;
+  console.log(accessToken);
+  const headers = {Authorization:'Bearer '+accessToken}
+
   // console.log(board[parmasUserId].board_title);
   // console.log(board[parmasUserId].board_contents);
 
-  const accessToken = cookies.id;
-  console.log(accessToken);
   const fetchUsers = async () => {
-    axios.post("/api", 
-        {
-          headers: {
-            Authorization: accessToken
-          }
-        })
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
     try {
       setBoard(undefined);
       const boardIdNumber  = typeChangeStringToNumber(boardId);
-      const response = await axios.post("/board/getUpdate",{
+      const response = await axios.post("/board/getupdate",{
         boardId : boardIdNumber,
-      },
-      {
-        headers: {
-          Authorization: accessToken
-        }
-      });
+        // userId: 34
+      }
+      ,{
+        headers:headers
+      }
+      );
 
       console.log(response.data)
       console.log(response.data.success)
@@ -79,9 +73,9 @@ const BoardEdit = () => {
         id: Number(boardId),
         title: value,
         contents: text,
-        userId: 5,
-        boardCategoryId: 1,
-      })
+        userId: board?.userId,
+        boardCategoryId: board?.boardCategoryId,
+      }, {headers})
       .then((res) => res.data.body)
       .then((res) => console.log(res));
 

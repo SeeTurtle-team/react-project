@@ -27,12 +27,13 @@ const BoardList = () => {
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
     useContext(ActiveIndexContext);
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
+  const accessToken = cookies.id;
+  const headers = {Authorization:'Bearer '+accessToken}
+
   const searchOptions = [
     { name: "Title", code: "t" },
     { name: "User", code: "u" },
   ];
-  const accessToken = cookies.id;
-  console.log(accessToken);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);
@@ -43,7 +44,6 @@ const BoardList = () => {
   };
 
   useEffect(() => {
-    const headers = {Authorization:'Bearer '+accessToken}
     const fetchUsers = async () => {
       setActiveIndex(1);
       try {
@@ -75,37 +75,11 @@ const BoardList = () => {
         <ProgressSpinner />
       </div>
     );
-
-  const goToBoardEdit = (boardId: number) => {
-    //rowData object 형식으로 받아오는데 object.board_id에서 board_id 부분이 오류
-    // state로 보내고 싶은 데이터 id, title, contents
-    navigate(`/BoardEdit/${boardId}`);
-  };
-
   const boardState = (event: any) => {
     console.log(event.data);
     const index = event.data.id;
     navigate(`/BoardState/${index}`);
   };
-
-  const handleBoardDelete = async (index: number) => {
-    try {
-      axios.delete("/board/delete", {
-        data: {
-          id: index,
-          userId: 5,
-        },
-        // 로그인 기능 생성시 userId user 값 받아서 값 변경해 주기
-      });
-      const response = await axios.get("/board");
-      setBoard(response.data);
-    } catch (error: any) {
-      console.log(error);
-      const errCode = errorHandle(error.response.status);
-      navigate(`/ErrorPage/${errCode}`);
-    }
-  };
-
   const filterSearch = board.filter((Board: any) => {
     console.log(selectedSearchOption);
     if (selectedSearchOption?.code === "u") {
@@ -121,10 +95,10 @@ const BoardList = () => {
     try {
       setBoard([]);
       if (categoryId == 0) {
-        const response = await axios.get("/board");
+        const response = await axios.get("/board" ,{headers});
         setBoard(response.data);
       } else {
-        const response = await axios.get(`/board/categoryList/${categoryId}`);
+        const response = await axios.get(`/board/categoryList/${categoryId}` ,{headers});
         setBoard(response.data);
       }
     } catch (error: any) {
