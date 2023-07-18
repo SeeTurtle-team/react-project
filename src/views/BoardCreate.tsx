@@ -81,6 +81,49 @@ const BoardCreate = () => {
     }
 
   }
+
+  const [selectedFile, setSelectedFile] = useState<any>('');
+  const handleFileInput = async (e:any) => {
+    const img = e.target.files[0];
+    const formData = new FormData();
+
+    await axios.get('/board/s3url').then((res)=>{
+      console.log(res)
+
+      let imageUrl = "";
+
+      fetch(res.data.data, {
+        method: "put",
+        headers: {
+            "Content-Type": "multipart/form-data",
+
+        },
+        body: img
+        }).then((res)=>console.log(res))
+
+        if (selectedFile.size > 0) {
+            imageUrl = res.data.split('?')[0];
+        } else {
+            imageUrl = "";
+        }
+
+    })
+
+    // formData.append('file',img);
+
+    // axios.post("/board/img", formData,{
+    //   headers: {
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    // }).then(res => {
+    //   console.log(res.data.location)
+    //   alert('성공')
+    // }).catch(err => {
+    //   alert('실패')
+    // })
+  }
+
+ 
   return (
     <div className="card">
       <Dropdown 
@@ -108,6 +151,8 @@ const BoardCreate = () => {
         style={{ height: "320px", marginBottom: "1rem" }}
         headerTemplate={header}
       />
+
+      <input type="file" onChange={handleFileInput}/>
       <Button 
       label="Submit" 
       onClick={handleSubmit} 
