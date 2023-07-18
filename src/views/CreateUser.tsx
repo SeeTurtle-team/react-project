@@ -132,6 +132,7 @@ const CreateUser = () => {
         if(response.data.success === true) {
             setIsEmailSendCode(true);
             setEmailCheckMessage("이메일이 발송되었습니다");
+            alert('이메일이 발송되었습니다')
         }
         if(response.data.success === false ){
             alert(response.data.error);
