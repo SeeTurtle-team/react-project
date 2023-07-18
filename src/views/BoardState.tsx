@@ -14,6 +14,7 @@ import {
   ActiveIndexContext,
   ActiveIndexContextProviderProps,
 } from "../context/ActiveIndexContext";
+import { useCookies } from "react-cookie";
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
@@ -21,11 +22,14 @@ const BoardState = () => {
 
   const { index } = useParams();
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
+  const accessToken = cookies.id;
+  const headers = {Authorization:'Bearer '+accessToken}
 
   const fetchUsers = async () => {
     setActiveIndex(1);
     try {
-      const response = await axios.get("/board/read/" + index);
+      const response = await axios.get("/board/read/" + index, {headers});
       console.log(response.data);
       setBoard(response.data);
     } catch (error: any) {
@@ -37,6 +41,7 @@ const BoardState = () => {
 
   useEffect(() => {
     fetchUsers();
+    console.log(index);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -44,9 +49,8 @@ const BoardState = () => {
     try {
       axios
         .post("/board/recommend", {
-          userId: 5,
           boardId: Number(index),
-        })
+        }, {headers})
         .then((response) => {
           console.log(response.data);
           if (response.data.success === true) {
@@ -73,20 +77,18 @@ const BoardState = () => {
   };
 
   const goToBoardEdit = (boardId: number) => {
-    //rowData object 형식으로 받아오는데 object.board_id에서 board_id 부분이 오류
-    // state로 보내고 싶은 데이터 id, title, contents
     navigate(`/BoardEdit/${boardId}`);
   };
-  const handleBoardDelete = async (index: number) => {
+  const handleBoardDelete = async (index: number | undefined) => {
     try {
       axios.delete("/board/delete", {
         data: {
           id: index,
-          userId: 5,
+          userId: board?.userId
         },
-        // 로그인 기능 생성시 userId user 값 받아서 값 변경해 주기
+        headers: headers,
       });
-      const response = await axios.get("/board");
+      const response = await axios.get("/board", {headers});
       setBoard(response.data);
       navigate('/BoardList')
     } catch (error: any) {

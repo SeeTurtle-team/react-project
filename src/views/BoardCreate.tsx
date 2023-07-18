@@ -7,6 +7,7 @@ import axios from "axios";
 import { errorHandle } from "../Common/ErrorHandle";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { BoardCategoryDto } from "../interface/BoardCategoryDto";
+import { useCookies } from "react-cookie";
 
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
@@ -14,12 +15,15 @@ const BoardCreate = () => {
   const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
   const [selectBoardCategory, setSelectBoardCategory] = useState<BoardCategoryDto|null>(null);
   const [isBoardCategory, setIsBoardCategory] = useState<boolean>(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
+  const accessToken = cookies.id;
+  const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
   
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("/board/category");
+        const res = await axios.get("/board/category", {headers});
         setBoardCategory(res.data);
       } catch (error: any) {
         console.log(error);
@@ -38,8 +42,9 @@ const BoardCreate = () => {
       .post("/board/create", {
         title: value,
         contents: text,
-        userId: 5,
-        boardCategoryId: boardCategory,
+        boardCategoryId: selectBoardCategory?.id,
+      }, {
+        headers: headers
       })
       .then((res) => res.data.body)
       .then((res) => console.log(res));

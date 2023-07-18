@@ -11,6 +11,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 
 import { BoardCommentDto } from "../interface/BoardCommentDto";
 import { dateFormatFunc } from "../Common/DateFormat";
+import { useCookies } from "react-cookie";
 
 const customStyles = {
   content: {
@@ -36,12 +37,15 @@ const BoardComment = ({ index }: Props) => {
   const [isBoardComment, setIsBoardComment] = useState<boolean>(false);
   const [selectedCommentIndex, setSelectedCommentIndex] = useState<number>();
   const [isSelectedCommentIndex, setIsSelectedCommentIndex] = useState<boolean>(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
+  const accessToken = cookies.id;
+  const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
-  const userId = 5; // 로그인 후 아이디 값 받아오기
+  // const userId = 5; // 로그인 후 아이디 값 받아오기
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("/board/comment/" + index);
+      const response = await axios.get("/board/comment/" + index, {headers});
       setBoardCommenet(response.data);
     } catch (error: any) {
       console.log(error);
@@ -60,9 +64,8 @@ const BoardComment = ({ index }: Props) => {
       axios
         .post("/board/comment/create", {
           contents: comment,
-          userId: userId,
           boardId: Number(index),
-        })
+        }, {headers})
         .then((response) => {
           console.log(response.data);
           if (response.data.success === true) {
@@ -81,17 +84,18 @@ const BoardComment = ({ index }: Props) => {
   };
   const handleCommentEdit = (i: number) => {
     setSelectedCommentIndex(i);
+    setIsBoardComment(!isBoardComment);
     if(selectedCommentIndex !== i && selectedCommentIndex !== undefined){
         setIsBoardComment(true);
+        console.log("isBoardComment is true");
         setBoardCommentEdit("");
     } else if (isBoardComment) {
       try {
         axios.patch("/board/comment/update", {
           id: boardComment[i].boardComment_id,
           contents: boardCommentEdit,
-          userId: userId,
           boardId: Number(index),
-        }).then((response) => {
+        },{headers}).then((response) => {
             console.log(response.data);
             if (response.data.success === true) {
               fetchUsers();
@@ -113,16 +117,16 @@ const BoardComment = ({ index }: Props) => {
   const handleCommentDelete = (i: number) => {
     try {
       axios.delete("/board/comment/delete", {
+        headers: headers,
         data: {
           id: boardComment[i].boardComment_id,
-          userId: userId,
         },
+      }).then((response) => {
+        if(response.data.success === true){
+          fetchUsers();
+          alert("댓글이 삭제 되었습니다.");
+        }
       });
-      if (userId === boardComment[i].userId) {
-        alert("댓글이 삭제 되었습니다.");
-      } else {
-        alert("댓글 작성자만 삭제할 수 있습니다.");
-      }
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
@@ -132,14 +136,15 @@ const BoardComment = ({ index }: Props) => {
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
   const handleCommentBan = (i: number) => {
     setModalIsOpen(!modalIsOpen);
+    setBanReason("");
   };
   const handleCommentBanSend = () => {
     try {
       axios.post("/board/notify", {
         reason: banReason,
         boardId: Number(index),
-        userId: userId,
-      });
+      },{headers});
+      alert("신고가 완료되었습니다!");
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
@@ -210,7 +215,7 @@ const BoardComment = ({ index }: Props) => {
               <h2>신고 이유</h2>
               <InputTextarea
                 id="userid"
-                keyfilter="alphanum"
+                keyfilter={/[^]/}
                 style={{ width: "12rem", marginBottom: "1rem" }}
                 className="w-full"
                 value={banReason}
