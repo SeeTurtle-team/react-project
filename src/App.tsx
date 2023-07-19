@@ -8,7 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 // import BoardList from "./views/BoardList";
 // import BoardState from "./views/BoardState";
 import Login from "./views/Login";
-import CreateUser from "./views/CreateUser";
+import UserCreate from "./views/UserCreate";
 import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import UserLoginProvider from './context/UserLoginContext';
 import ActiveIndexProvider from "./context/ActiveIndexContext";
@@ -35,7 +35,7 @@ const App = () => {
           <Route path="/BoardState/:index" element={<BoardState />} />
           <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />
           <Route path="/Login" element={<Login />} />
-          <Route path="/CreateUser" element={<CreateUser />} />
+          <Route path="/UserCreate" element={<UserCreate />} />
         </Routes>
       </BrowserRouter>
       </ActiveIndexProvider>

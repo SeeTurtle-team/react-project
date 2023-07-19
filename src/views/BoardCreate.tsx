@@ -37,6 +37,12 @@ const BoardCreate = () => {
 
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
   const handleSubmit = () => {
+    const encodingImages: any = text?.match( 
+      /data:image\/([a-zA-Z]*);base64,([^\"]*)/g, 
+  );
+  console.log(encodingImages);
+
+  
     try{
     axios
       .post("/board/create", {
@@ -90,6 +96,7 @@ const BoardCreate = () => {
   const [selectedFile, setSelectedFile] = useState<any>('');
   const handleFileInput = async (e:any) => {
     const img = e.target.files[0];
+    console.log(img);
     const formData = new FormData();
 
     await axios.get('/board/s3url').then((res)=>{
@@ -154,7 +161,7 @@ const BoardCreate = () => {
         value={editorValue(text)}
         onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
         style={{ height: "320px", marginBottom: "1rem" }}
-        headerTemplate={header}
+        // headerTemplate={header}
       />
 
       <input type="file" onChange={handleFileInput}/>
