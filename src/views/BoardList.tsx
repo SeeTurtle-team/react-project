@@ -82,6 +82,7 @@ const BoardList = () => {
   };
   const filterSearch = board.filter((Board: any) => {
     console.log(selectedSearchOption);
+    Board.dateTime = dateFormatFunc(Board.dateTime);
     if (selectedSearchOption?.code === "u") {
       return Board.nickname?.toLowerCase().includes(inputSearch.toLowerCase());
     } else {
@@ -156,9 +157,9 @@ const BoardList = () => {
         onRowClick={boardState}
       >
         <Column field="id" header="ID"></Column>
-        <Column field="nickname" header="Nickname"></Column>
-        <Column field="category" header="Category"></Column>
         <Column field="title" header="Title"></Column>
+        <Column field="category" header="Category"></Column>
+        <Column field="nickname" header="Nickname"></Column>
         <Column field="dateTime" header="Time"></Column>
       </DataTable>
     </div>

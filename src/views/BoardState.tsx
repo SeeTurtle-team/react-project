@@ -15,6 +15,7 @@ import {
   ActiveIndexContextProviderProps,
 } from "../context/ActiveIndexContext";
 import { useCookies } from "react-cookie";
+
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
@@ -103,13 +104,15 @@ const BoardState = () => {
       <Card
         style={{ marginBottom: "2rem", backgroundColor: "transparent" }}
         title={board?.title}
+        // className="min-h-screen"
       >
         <Editor
           value={board?.contents}
-          name="blog"
+          name="contents"
           headerTemplate={header}
           modules={modules}
           readOnly={true}
+          style={{ minHeight: '400px', height: "auto" }}
         />
       </Card>
       <div style={{ marginBottom: "1rem" }}>
@@ -144,6 +147,7 @@ const BoardState = () => {
           </p>
         </span>
       </div>
+      <h2>댓글</h2>
       <BoardComment index={index} />
     </div>
   );
