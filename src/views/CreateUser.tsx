@@ -288,6 +288,7 @@ const CreateUser = () => {
             label="중복 확인"
             onClick={handleIdDuplicate}
             style={{ marginRight: "1rem"}}
+            disabled={!(isId)}
           />
           {<span
             className={`message ${isId ? "success" : "error"}`}
@@ -388,6 +389,7 @@ const CreateUser = () => {
           label="중복 확인"
           onClick={handleNicknameDuplicate}
           style={{ marginRight: "1rem"}}
+          disabled={!(isNickname)}
           />
           {<span
             className={`message ${isNickname ? "success" : "error"}`}
@@ -439,6 +441,7 @@ const CreateUser = () => {
             label="중복 확인"
             onClick={handleEmailDuplicate}
             style={{ marginBottom: "1rem", marginRight: "1rem" }}
+            disabled={!(isEmail)}
           />
           {<span
             className={`message ${isEmail ? "success" : "error"}`}
