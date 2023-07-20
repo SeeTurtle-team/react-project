@@ -36,14 +36,12 @@ const BoardCreate = () => {
   }, []);
 
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
-  const handleSubmit = () => {
-    const encodingImages: any = text?.match( 
-      /data:image\/([a-zA-Z]*);base64,([^\"]*)/g, 
-  );
-  console.log(encodingImages);
+  const handleSubmit = async () => {
+  //   const encodingImages: any = text?.match( 
+  //     /data:image\/([a-zA-Z]*);base64,([^\"]*)/g, 
+  // );
 
-  
-    try{
+  try{
     axios
       .post("/board/create", {
         title: value,
@@ -63,6 +61,7 @@ const BoardCreate = () => {
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
     }
+  
   };
   // 로그인 기능 및 boardCreate에 category 값 추가하기
 
@@ -94,34 +93,30 @@ const BoardCreate = () => {
   }
 
   const [selectedFile, setSelectedFile] = useState<any>('');
-  const handleFileInput = async (e:any) => {
+
+  const handleFileInput = async (e: any) => {
     const img = e.target.files[0];
     console.log(img);
+  
     const formData = new FormData();
-
-    await axios.get('/board/s3url').then((res)=>{
-      console.log(res)
-
-      let imageUrl = "";
-
-      fetch(res.data.data, {
-        method: "put",
+    formData.append("file", img);
+  
+    try {
+      const s3UrlResponse = await axios.get("/board/s3url", { headers });
+      console.log(s3UrlResponse);
+  
+      const presignedURL = s3UrlResponse.data.data;
+  
+      await fetch(presignedURL, {
+        method: "PUT",
         headers: {
-            "Content-Type": "multipart/form-data",
-
+          "Content-Type": img.type,
         },
-        body: img
-        }).then((res)=>console.log(res))
-
-        if (selectedFile.size > 0) {
-            imageUrl = res.data.split('?')[0];
-        } else {
-            imageUrl = "";
-        }
-
-    })
-
-    // formData.append('file',img);
+        body: img,
+      });
+      console.log(s3UrlResponse.data.data.split('?')[0]);
+      const imgURL = s3UrlResponse.data.data.split('?')[0];
+      setText(text+`<p><img src=${imgURL}></p>`);
 
     // axios.post("/board/img", formData,{
     //   headers: {
@@ -133,6 +128,12 @@ const BoardCreate = () => {
     // }).catch(err => {
     //   alert('실패')
     // })
+    } catch (error: any) {
+      console.log(error);
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+  }
+
   }
 
  
@@ -160,8 +161,8 @@ const BoardCreate = () => {
       <Editor
         value={editorValue(text)}
         onTextChange={(e: EditorTextChangeEvent) => setText(e.htmlValue)}
-        style={{ height: "320px", marginBottom: "1rem" }}
-        // headerTemplate={header}
+        style={{ minHeight: '400px', height: "auto" , marginBottom: "1rem" }}
+        headerTemplate={header}
       />
 
       <input type="file" onChange={handleFileInput}/>
