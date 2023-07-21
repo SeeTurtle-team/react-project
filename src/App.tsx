@@ -1,4 +1,4 @@
-import React, { lazy, useContext, useEffect } from "react";
+import React, { Suspense, lazy, useContext, useEffect } from "react";
 import BoardHeader from "./views/BoardHeader";
 import { Route, Routes, Navigate } from "react-router";
 import { BrowserRouter } from "react-router-dom";
@@ -13,6 +13,7 @@ import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import UserLoginProvider from './context/UserLoginContext';
 import ActiveIndexProvider from "./context/ActiveIndexContext";
 import FirstPage from "./views/FistPage";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const BoardList = lazy(() => import("./views/BoardList"));
 const BoardState = lazy(() => import("./views/BoardState"));
@@ -23,6 +24,7 @@ const App = () => {
 
   return (
     <div>
+      <Suspense fallback={<ProgressSpinner />}>
       <UserLoginProvider>
       <ActiveIndexProvider>
       <BrowserRouter>
@@ -40,6 +42,7 @@ const App = () => {
       </BrowserRouter>
       </ActiveIndexProvider>
       </UserLoginProvider>
+      </Suspense>
     </div>
   );
 };

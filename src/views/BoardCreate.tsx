@@ -174,7 +174,6 @@ const BoardCreate = () => {
       <input type="file" onChange={handleFileInput}/>
       <Button 
       label="Submit" 
-      onClick={handleSubmit} 
       disabled={!isBoardCategory}
       />
     </div>
