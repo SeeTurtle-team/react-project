@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
-import { Board } from "../interface/BoardListDto";
+import { Board } from "../../interface/BoardListDto";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
-import { errorHandle } from "../Common/ErrorHandle";
+import { errorHandle } from "../../Common/ErrorHandle";
 import { Dropdown } from "primereact/dropdown";
-import { SearchOptioninterface } from "../interface/SearchOption";
-import { dateFormatFunc } from "../Common/DateFormat";
-import { ActiveIndexContext } from "../context/ActiveIndexContext";
-import { ActiveIndexContextProviderProps } from "../interface/UseContextDTO";
-import { BoardCategoryDto } from "../interface/BoardCategoryDto";
+import { SearchOptioninterface } from "../../interface/SearchOption";
+import { dateFormatFunc } from "../../Common/DateFormat";
+import { ActiveIndexContext } from "../../context/ActiveIndexContext";
+import { ActiveIndexContextProviderProps } from "../../interface/UseContextDTO";
+import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
 
 const BoardList = () => {

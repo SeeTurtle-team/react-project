@@ -3,17 +3,17 @@ import { Card } from "primereact/card";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { Panel } from "primereact/panel";
 import { useParams } from "react-router";
-import { errorHandle } from "../Common/ErrorHandle";
+import { errorHandle } from "../../Common/ErrorHandle";
 import axios from "axios";
-import { BoardUpdateDto } from "../interface/BoardUpdateDto";
+import { BoardUpdateDto } from "../../interface/BoardUpdateDto";
 import { Button } from "primereact/button";
-import { dateFormatFunc } from "../Common/DateFormat";
+import { dateFormatFunc } from "../../Common/DateFormat";
 import BoardComment from "./BoardComment";
 import { Editor } from "primereact/editor";
 import {
   ActiveIndexContext,
   ActiveIndexContextProviderProps,
-} from "../context/ActiveIndexContext";
+} from "../../context/ActiveIndexContext";
 import { useCookies } from "react-cookie";
 
 const BoardState = () => {

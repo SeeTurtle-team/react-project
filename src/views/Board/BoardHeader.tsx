@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { TabMenu } from "primereact/tabmenu";
 import { MenuItem } from "primereact/menuitem";
 // import { UserLoginContext } from "../context/UserLoginContext";
-import { ActiveIndexContext } from "../context/ActiveIndexContext";
-import { ActiveIndexContextProviderProps } from "../interface/UseContextDTO";
+import { ActiveIndexContext } from "../../context/ActiveIndexContext";
+import { ActiveIndexContextProviderProps } from "../../interface/UseContextDTO";
 import { useCookies } from "react-cookie";
 
 function BoardHeader() {

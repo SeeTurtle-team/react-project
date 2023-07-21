@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import axios from "axios";
-import { errorHandle } from "../Common/ErrorHandle";
+import { errorHandle } from "../../Common/ErrorHandle";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { BoardCategoryDto } from "../interface/BoardCategoryDto";
+import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
 
 const BoardCreate = () => {

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
-import { errorHandle } from "../Common/ErrorHandle";
+import { errorHandle } from "../../Common/ErrorHandle";
 import axios from "axios";
 import { number } from "yargs";
 

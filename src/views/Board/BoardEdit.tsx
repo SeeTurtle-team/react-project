@@ -5,8 +5,8 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useParams } from "react-router";
 import axios from "axios";
-import { errorHandle } from "../Common/ErrorHandle";
-import { BoardUpdateDto } from "../interface/BoardUpdateDto";
+import { errorHandle } from "../../Common/ErrorHandle";
+import { BoardUpdateDto } from "../../interface/BoardUpdateDto";
 import { useCookies } from "react-cookie";
 
 const BoardEdit = () => {

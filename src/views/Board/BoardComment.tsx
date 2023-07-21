@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { errorHandle } from "../Common/ErrorHandle";
+import { errorHandle } from "../../Common/ErrorHandle";
 import Modal from "react-modal";
 
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
@@ -9,8 +9,8 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
 
-import { BoardCommentDto } from "../interface/BoardCommentDto";
-import { dateFormatFunc } from "../Common/DateFormat";
+import { BoardCommentDto } from "../../interface/BoardCommentDto";
+import { dateFormatFunc } from "../../Common/DateFormat";
 import { useCookies } from "react-cookie";
 
 const customStyles = {
