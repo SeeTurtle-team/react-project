@@ -71,7 +71,6 @@ const BoardEdit = () => {
           id: Number(boardId),
           title: value,
           contents: text,
-          userId: board?.userId,
           boardCategoryId: board?.boardCategoryId,
         },
         { headers }

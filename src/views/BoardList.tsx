@@ -17,7 +17,6 @@ import { BoardCategoryDto } from "../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
 
 const BoardList = () => {
-  const [loading, setLoading] = useState(false);
   const [board, setBoard] = useState<Board[]>([]);
   const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
   const navigate = useNavigate();
@@ -47,7 +46,6 @@ const BoardList = () => {
     const fetchUsers = async () => {
       setActiveIndex(1);
       try {
-        setLoading(true);
         const res = await axios.get("/board/category",{headers});
         setBoardCategory(res.data);
         console.log(boardCategory);
@@ -62,19 +60,12 @@ const BoardList = () => {
       // board.forEach(element => {
       //   element.board_dateTime = dateFormatFunc(element.board_dateTime)
       // });
-      setLoading(false);
     };
 
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading)
-    return (
-      <div className="card flex justify-content-center">
-        <ProgressSpinner />
-      </div>
-    );
   const boardState = (event: any) => {
     console.log(event.data);
     const index = event.data.id;

@@ -1,4 +1,4 @@
-import React, { lazy, useContext, useEffect } from "react";
+import React, { Suspense, lazy, useContext, useEffect } from "react";
 import BoardHeader from "./views/BoardHeader";
 import { Route, Routes, Navigate } from "react-router";
 import { BrowserRouter } from "react-router-dom";
@@ -8,11 +8,12 @@ import { BrowserRouter } from "react-router-dom";
 // import BoardList from "./views/BoardList";
 // import BoardState from "./views/BoardState";
 import Login from "./views/Login";
-import CreateUser from "./views/CreateUser";
+import UserCreate from "./views/UserCreate";
 import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import UserLoginProvider from './context/UserLoginContext';
 import ActiveIndexProvider from "./context/ActiveIndexContext";
 import FirstPage from "./views/FistPage";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const BoardList = lazy(() => import("./views/BoardList"));
 const BoardState = lazy(() => import("./views/BoardState"));
@@ -23,6 +24,7 @@ const App = () => {
 
   return (
     <div>
+      <Suspense fallback={<ProgressSpinner />}>
       <UserLoginProvider>
       <ActiveIndexProvider>
       <BrowserRouter>
@@ -35,11 +37,12 @@ const App = () => {
           <Route path="/BoardState/:index" element={<BoardState />} />
           <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />
           <Route path="/Login" element={<Login />} />
-          <Route path="/CreateUser" element={<CreateUser />} />
+          <Route path="/UserCreate" element={<UserCreate />} />
         </Routes>
       </BrowserRouter>
       </ActiveIndexProvider>
       </UserLoginProvider>
+      </Suspense>
     </div>
   );
 };

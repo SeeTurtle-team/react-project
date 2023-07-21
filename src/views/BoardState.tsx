@@ -85,7 +85,6 @@ const BoardState = () => {
       axios.delete("/board/delete", {
         data: {
           id: index,
-          userId: board?.userId
         },
         headers: headers,
       });
