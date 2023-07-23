@@ -14,6 +14,7 @@ import UserLoginProvider from './context/UserLoginContext';
 import ActiveIndexProvider from "./context/ActiveIndexContext";
 import FirstPage from "./views/FistPage";
 import { ProgressSpinner } from "primereact/progressspinner";
+import SmallTalk from "./views/SmallTalk";
 
 const BoardList = lazy(() => import("./views/BoardList"));
 const BoardState = lazy(() => import("./views/BoardState"));
@@ -38,6 +39,8 @@ const App = () => {
           <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />
           <Route path="/Login" element={<Login />} />
           <Route path="/UserCreate" element={<UserCreate />} />
+
+          <Route path='smallTalk' element={<SmallTalk/>}/>
         </Routes>
       </BrowserRouter>
       </ActiveIndexProvider>
