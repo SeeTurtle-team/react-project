@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 import { SmallChatDto } from "../interface/SmallChatDto";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 
-const socket = io('http://localhost:5000/chat');
+//const socket = io('http://localhost:5000/chat');
 
 
 const SmallTalk = () => {
@@ -20,10 +20,10 @@ const SmallTalk = () => {
           if (!message) return alert('메시지를 입력해 주세요.');
     
           console.log(message);
-          socket.emit('message', message, (chat: SmallChatDto) => {
-            setChats((prevChats) => [...prevChats, chat]);
-            setMessage('');
-          });
+        //   socket.emit('message', message, (chat: SmallChatDto) => {
+        //     setChats((prevChats) => [...prevChats, chat]);
+        //     setMessage('');
+        //   });
         },
         [message]
       );
