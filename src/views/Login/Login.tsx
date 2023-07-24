@@ -43,36 +43,40 @@ const Login = () => {
                 password: password
             }).then(response => {
                 console.log(response);
-                const accessToken = response.data.jwtToken.access_token;
-                if(response.data.jwtToken.access_token !== undefined){
-                    setCookie("id", accessToken
-                    // , {
-                    //     httpOnly: true,
-                    //     secure: true
-                    // }
-                    );    
-                    // axios.defaults.baseURL = 'http://localhost:3000'
-                    // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
-                    // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-                    console.log(axios.defaults.headers.common.Authorization);
-                    alert('로그인에 성공했습니다');
-                    setActiveIndex(0);
-                    setIsLogin(true);
-                    navigate("/");
+                if(response.data.success === false){
+                    if(response.data.msg === "존재하지 않는 아이디입니다."){
+                        alert(response.data.msg);
+                        setId("");
+                        setPassword("");
+                        navigate("/Login");
+                        return;
+                      } 
+                    if(response.data.msg === "비밀번호가 일치하지 않습니다."){
+                        alert(response.data.msg);
+                        setPassword("");
+                        navigate("/Login");
+                        return;
+                    } 
                 }
-                if(response.data.msg === "존재하지 않는 아이디입니다."){
-                  alert(response.data.msg);
-                  setId("");
-                  setPassword("");
-                  navigate("/Login");
-                  return;
-                } 
-                if(response.data.msg === "비밀번호가 일치하지 않습니다."){
-                    alert(response.data.msg);
-                    setPassword("");
-                    navigate("/Login");
-                    return;
-                  } 
+                if(response.data.success === true){
+                    const accessToken = response.data.jwtToken.access_token;
+                    if(response.data.jwtToken.access_token !== undefined){
+                        setCookie("id", accessToken
+                        // , {
+                        //     httpOnly: true,
+                        //     secure: true
+                        // }
+                        );    
+                        // axios.defaults.baseURL = 'http://localhost:3000'
+                        // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
+                        // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+                        console.log(axios.defaults.headers.common.Authorization);
+                        alert('로그인에 성공했습니다');
+                        setActiveIndex(0);
+                        setIsLogin(true);
+                        navigate("/");
+                    }
+                }
               });
         } catch (error: any) {
             console.log(error);
