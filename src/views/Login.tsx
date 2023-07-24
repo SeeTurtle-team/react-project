@@ -136,7 +136,12 @@ const Login = () => {
         })
     }
 
-
+    const onQryFactoryKeyPress = (e:any) => {
+        if (e.key === 'Enter') {
+          console.log('enter press here! ')
+          handleLogin()
+        }
+      }
 
     return (
         <div className="card">
@@ -148,7 +153,7 @@ const Login = () => {
                 </div>
                 <div >
                     <div className="login-box-pw">
-                        <Password keyfilter={/[^s]/} style={{ width: '25rem' }} value={password} onChange={(e) => setPassword(e.target.value)} maxLength={15} placeholder="PASSWORD" />
+                        <Password keyfilter={/[^s]/} style={{ width: '25rem' }} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={e => onQryFactoryKeyPress(e)} maxLength={15} placeholder="PASSWORD" />
                     </div>
                 </div>
                 <div className="login-box-content">
