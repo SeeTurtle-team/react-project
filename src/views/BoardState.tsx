@@ -32,7 +32,13 @@ const BoardState = () => {
     try {
       const response = await axios.get("/board/read/" + index, {headers});
       console.log(response.data);
-      setBoard(response.data);
+      if(response.data.success!=undefined || response.data.success==false){
+        alert(response.data.msg);
+        window.history.go(-1);
+      }else{
+        setBoard(response.data);
+
+      }
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
