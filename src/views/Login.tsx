@@ -36,6 +36,24 @@ const Login = () => {
     const handleCreateUser = () => {
         navigate("/CreateUser");
     };
+
+    const successLogin = (accessToken:string) => {
+        setCookie("id", accessToken
+            // , {
+            //     httpOnly: true,
+            //     secure: true
+            // }
+        );
+        // axios.defaults.baseURL = 'http://localhost:3000'
+        // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
+        // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+        console.log(axios.defaults.headers.common.Authorization);
+        alert('로그인에 성공했습니다');
+        setActiveIndex(0);
+        setIsLogin(true);
+        navigate("/");
+    }
+
     const handleLogin = () => {
         try {
             axios.post("/auth", {
@@ -58,20 +76,7 @@ const Login = () => {
                 }
                 if (response.data.jwtToken.access_token !== undefined) {
                     const accessToken = response.data.jwtToken.access_token;
-                    setCookie("id", accessToken
-                        // , {
-                        //     httpOnly: true,
-                        //     secure: true
-                        // }
-                    );
-                    // axios.defaults.baseURL = 'http://localhost:3000'
-                    // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}` ;
-                    // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-                    console.log(axios.defaults.headers.common.Authorization);
-                    alert('로그인에 성공했습니다');
-                    setActiveIndex(0);
-                    setIsLogin(true);
-                    navigate("/");
+                    successLogin(accessToken);
                 }
 
             });
@@ -93,7 +98,9 @@ const Login = () => {
                 token: token
             });
 
-            console.log(response.data.access_token)
+            console.log(response.data.access_token);
+
+            successLogin(response.data.access_token);
         } catch (error: any) {
             console.log(error)
             const errCode = errorHandle(error.response.status);
