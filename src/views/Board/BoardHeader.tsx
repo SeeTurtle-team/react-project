@@ -13,6 +13,7 @@ function BoardHeader() {
   const items: MenuItem[] = [
     { label: "Home", icon: "pi pi-fw pi-home", url: "/" },
     { label: "Board", icon: "pi pi-fw pi-calendar", url: "/BoardList" },
+    { label: "EBook", icon: "pi pi-fw pi-calendar", url: "/EbookList" },
     (isLogin)
       ? { label: "Logout", icon: "pi pi-sign-out", url: "/" }
       : { label: "Login", icon: "pi pi-sign-in", url: "/Login"}
@@ -23,7 +24,7 @@ function BoardHeader() {
     if(cookies.id != undefined){
       setIsLogin(true);
     } 
-    if(activeIndex === 2 && isLogin === true){
+    if(activeIndex === 3 && isLogin === true){
       setIsLogin(false);
       removeCookie("id");
       alert("로그아웃 되었습니다");

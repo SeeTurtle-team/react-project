@@ -29,7 +29,7 @@ const Login = () => {
     const {activeIndex, setActiveIndex}:ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
     
     useEffect(() => {
-        setActiveIndex(2);
+        setActiveIndex(3);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 

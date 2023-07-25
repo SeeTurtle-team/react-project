@@ -15,6 +15,7 @@ import ActiveIndexProvider from "./context/ActiveIndexContext";
 import FirstPage from "./views/FistPage";
 import { ProgressSpinner } from "primereact/progressspinner";
 import EbookCreate from "./views/Ebook/EbookCreate";
+import EbookList from "./views/Ebook/EbookList";
 
 const BoardList = lazy(() => import("./views/Board/BoardList"));
 const BoardState = lazy(() => import("./views/Board/BoardState"));
@@ -37,8 +38,11 @@ const App = () => {
           <Route path="/BoardList" element={<BoardList />} />
           <Route path="/BoardState/:index" element={<BoardState />} />
           <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />
+
           <Route path="/Login" element={<Login />} />
           <Route path="/UserCreate" element={<UserCreate />} />
+
+          <Route path="/EbookList" element={<EbookList />} />
           <Route path="/EbookCreate" element={<EbookCreate />} />
         </Routes>
       </BrowserRouter>
