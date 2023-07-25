@@ -91,6 +91,7 @@ const BoardState = () => {
       const response = await axios.get("/board", {headers});
       setBoard(response.data);
       navigate('/BoardList')
+      alert("게시글이 삭제 되었습니다!");
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
