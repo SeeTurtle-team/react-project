@@ -118,11 +118,11 @@ const BoardCreate = () => {
       const imgURL = s3UrlResponse.data.data.split('?')[0];
       setText(text+`<p><img src=${imgURL}></p>`);
 
-      axios.post("/board/imgurl", {
-        imgURL:imgURL
-      },{
-        headers: headers
-      })
+      // axios.post("/board/imgurl", {
+      //   imgURL:imgURL
+      // },{
+      //   headers: headers
+      // })
 
     // axios.post("/board/img", formData,{
     //   headers: {
@@ -175,6 +175,7 @@ const BoardCreate = () => {
       <Button 
       label="Submit" 
       disabled={!isBoardCategory}
+      onClick={handleSubmit}
       />
     </div>
   );
