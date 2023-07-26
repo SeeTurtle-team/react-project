@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useContext, useEffect } from "react";
-import BoardHeader from "./views/Board/BoardHeader";
+import BoardHeader from "./views/BoardHeader";
 import { Route, Routes, Navigate } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
@@ -7,20 +7,19 @@ import { BrowserRouter } from "react-router-dom";
 // import BoardEdit from "./views/BoardEdit";
 // import BoardList from "./views/BoardList";
 // import BoardState from "./views/BoardState";
-import Login from "./views/Login/Login";
-import UserCreate from "./views/Login/UserCreate";
+import Login from "./views/Login";
+import UserCreate from "./views/UserCreate";
 import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import UserLoginProvider from './context/UserLoginContext';
 import ActiveIndexProvider from "./context/ActiveIndexContext";
 import FirstPage from "./views/FistPage";
 import { ProgressSpinner } from "primereact/progressspinner";
-import EbookCreate from "./views/Ebook/EbookCreate";
-import EbookList from "./views/Ebook/EbookList";
+import SmallTalk from "./views/SmallTalk";
 
-const BoardList = lazy(() => import("./views/Board/BoardList"));
-const BoardState = lazy(() => import("./views/Board/BoardState"));
-const BoardCreate = lazy(() => import("./views/Board/BoardCreate"));
-const BoardEdit = lazy(() => import("./views/Board/BoardEdit"));
+const BoardList = lazy(() => import("./views/BoardList"));
+const BoardState = lazy(() => import("./views/BoardState"));
+const BoardCreate = lazy(() => import("./views/BoardCreate"));
+const BoardEdit = lazy(() => import("./views/BoardEdit"));
 
 const App = () => {
 
@@ -38,12 +37,10 @@ const App = () => {
           <Route path="/BoardList" element={<BoardList />} />
           <Route path="/BoardState/:index" element={<BoardState />} />
           <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />
-
           <Route path="/Login" element={<Login />} />
           <Route path="/UserCreate" element={<UserCreate />} />
 
-          <Route path="/EbookList" element={<EbookList />} />
-          <Route path="/EbookCreate" element={<EbookCreate />} />
+          <Route path='smallTalk' element={<SmallTalk/>}/>
         </Routes>
       </BrowserRouter>
       </ActiveIndexProvider>
