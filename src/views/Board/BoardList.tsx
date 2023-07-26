@@ -15,6 +15,7 @@ import { ActiveIndexContext } from "../../context/ActiveIndexContext";
 import { ActiveIndexContextProviderProps } from "../../interface/UseContextDTO";
 import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
+import "../../css/BoardList.css";
 
 const BoardList = () => {
   const [board, setBoard] = useState<Board[]>([]);
@@ -123,7 +124,7 @@ const BoardList = () => {
       </span>
       </div>
       <div style={{marginBottom: "1rem"}}>
-      <span>
+      <span className="inputContainer">
       <Dropdown
         value={boardCategory}
         onChange={(e) => categorySearch(e.value)}
@@ -133,11 +134,12 @@ const BoardList = () => {
         // className="w-full md:w-14rem"
         size={20}
       />
+        <span className="createButtonContainer">
         <Button
           label="Create"
-          style={{ marginLeft: "57rem"}}
           onClick={goToBoardCreate}
         />
+        </span>
       </span>
       </div>
       <DataTable

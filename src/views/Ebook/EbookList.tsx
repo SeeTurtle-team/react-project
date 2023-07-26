@@ -11,7 +11,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useNavigate } from "react-router";
 
-import "./EbookList.css";
+import "../../css/EbookList.css";
 
 const EbookList = () => {
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =

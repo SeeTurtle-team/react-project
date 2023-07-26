@@ -8,11 +8,11 @@ import KakaoLogin from "react-kakao-login";
 import { Password } from 'primereact/password';
 
 import axios from "axios";
-import { errorHandle } from "../Common/ErrorHandle";
-import { UserLoginContext } from "../context/UserLoginContext"
-import "../css/Login.css";
-import { ActiveIndexContext } from "../context/ActiveIndexContext";
-import { ActiveIndexContextProviderProps, UserLoginContextProviderProps } from "../interface/UseContextDTO";
+import { errorHandle } from "../../Common/ErrorHandle";
+import { UserLoginContext } from "../../context/UserLoginContext"
+import "../../css/Login.css";
+import { ActiveIndexContext } from "../../context/ActiveIndexContext";
+import { ActiveIndexContextProviderProps, UserLoginContextProviderProps } from "../../interface/UseContextDTO";
 import { useCookies } from "react-cookie";
 
 const Login = () => {
