@@ -8,7 +8,7 @@ import axios from "axios";
 import { BoardUpdateDto } from "../interface/BoardUpdateDto";
 import { Button } from "primereact/button";
 import { dateFormatFunc } from "../Common/DateFormat";
-import BoardComment from "./BoardComment";
+import BoardComment from "./Board/BoardComment";
 import { Editor } from "primereact/editor";
 import {
   ActiveIndexContext,
