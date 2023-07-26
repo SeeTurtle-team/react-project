@@ -1,0 +1,11 @@
+.createButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .inputContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }

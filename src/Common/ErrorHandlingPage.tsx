@@ -44,13 +44,14 @@ const ErrorHandlingPage = () => {
     }
 
     const page401 = () => {
-        window.history.go(-2);
+        // window.history.go(-2);
+        navigate('/');
     }
 
     const undefinedUrl = () => {
         alert('알 수 없는 에러가 발생했습니다')
-        window.history.go(-2);
-
+        // window.history.go(-2);
+        navigate('/');
     }
     
 

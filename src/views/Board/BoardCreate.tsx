@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import axios from "axios";
-import { errorHandle } from "../Common/ErrorHandle";
+import { errorHandle } from "../../Common/ErrorHandle";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { BoardCategoryDto } from "../interface/BoardCategoryDto";
+import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
 
 const BoardCreate = () => {
@@ -118,11 +118,11 @@ const BoardCreate = () => {
       const imgURL = s3UrlResponse.data.data.split('?')[0];
       setText(text+`<p><img src=${imgURL}></p>`);
 
-      axios.post("/board/imgurl", {
-        imgURL:imgURL
-      },{
-        headers: headers
-      })
+      // axios.post("/board/imgurl", {
+      //   imgURL:imgURL
+      // },{
+      //   headers: headers
+      // })
 
     // axios.post("/board/img", formData,{
     //   headers: {
@@ -175,6 +175,7 @@ const BoardCreate = () => {
       <Button 
       label="Submit" 
       disabled={!isBoardCategory}
+      onClick={handleSubmit}
       />
     </div>
   );
