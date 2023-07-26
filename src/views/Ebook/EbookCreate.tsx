@@ -22,13 +22,13 @@ const EbookCreate = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const handleSubmit = () => {
         console.log("submit");
-        console.log(editor.current.getInstance().getHTML());
-        // axios.post("/board/imgurl", {
-        //     title:title,
-        //     text:editor.current.getInstance().getHTML()
-        // },{
-        //     headers: headers
-        // })
+        console.log(`'${editor.current.getInstance().getHTML()}'`);
+        axios.post("/board/imgurl", {
+            title:title,
+            text:`'${editor.current.getInstance().getHTML()}'`
+        },{
+            headers: headers
+        })
     }
 
       const uploadImage = async (blob:any) => {
@@ -54,12 +54,6 @@ const EbookCreate = () => {
           console.log(s3UrlResponse.data.data.split('?')[0]);
           const imgURL:string = s3UrlResponse.data.data.split('?')[0];
           return imgURL;
-          // axios.post("/board/imgurl", {
-          //   imgURL:imgURL
-          // },{
-          //   headers: headers
-          // })
-
         } catch (error: any) {
           console.log(error);
           const errCode = errorHandle(error.response.status);
@@ -98,7 +92,7 @@ const EbookCreate = () => {
               hooks={{
                 addImageBlobHook: async (blob, callback) => {
                     const url = await uploadImage(blob);
-                    callback(`${url}`, 'alt text');
+                    callback(`${url}`,'alt text');
                     return false;
                 }
               }}
