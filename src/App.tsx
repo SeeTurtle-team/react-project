@@ -17,6 +17,8 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import EbookCreate from "./views/Ebook/EbookCreate";
 import EbookList from "./views/Ebook/EbookList";
 import SmallTalk from "./views/SmallTalk";
+import SearchId from "./views/Login/SearchId";
+import SearchPassword from "./views/Login/SearchPassword";
 
 const BoardList = lazy(() => import("./views/Board/BoardList"));
 const BoardState = lazy(() => import("./views/Board/BoardState"));
@@ -42,6 +44,8 @@ const App = () => {
 
           <Route path="/Login" element={<Login />} />
           <Route path="/UserCreate" element={<UserCreate />} />
+          <Route path="/SearchId" element={<SearchId />} />
+          <Route path="/SearchPassword" element={<SearchPassword />} />
 
           <Route path="/EbookList" element={<EbookList />} />
           <Route path="/EbookCreate" element={<EbookCreate />} />

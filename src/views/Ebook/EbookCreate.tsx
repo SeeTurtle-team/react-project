@@ -8,10 +8,13 @@ import { useCookies } from 'react-cookie';
 import axios from "axios";
 import 'primeicons/primeicons.css';
 import { errorHandle } from '../../Common/ErrorHandle';
+import EbookState from './EbookState';
+// import '@toast-ui/editor/dist/toastui-editor-viewer.css';​
 
 const EbookCreate = () => {
     const [title, setTitle] = useState<string>("");
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);
+    const [text, setText] = useState<string>("t");
     const accessToken = cookies.id;
     const headers = {Authorization:'Bearer '+accessToken}
     const editor = useRef<any>();
@@ -23,12 +26,12 @@ const EbookCreate = () => {
     const handleSubmit = () => {
         console.log("submit");
         console.log(`'${editor.current.getInstance().getHTML()}'`);
-        axios.post("/board/imgurl", {
-            title:title,
-            text:`'${editor.current.getInstance().getHTML()}'`
-        },{
-            headers: headers
-        })
+        // axios.post("/board/imgurl", {
+        //     title:title,
+        //     text:`'${editor.current.getInstance().getHTML()}'`
+        // },{
+        //     headers: headers
+        // })
     }
 
       const uploadImage = async (blob:any) => {
@@ -76,6 +79,7 @@ const EbookCreate = () => {
             <h2>Content</h2>
             <div style={{ marginBottom: "1rem", backgroundColor: "white" }}>
             <Editor
+            onChange={() => setText(editor.current.getInstance().getHTML())}
             initialValue=""
             ref={editor}
             previewStyle="vertical"
@@ -98,6 +102,7 @@ const EbookCreate = () => {
               }}
             />
             </div>
+            <EbookState text={text}/>
             <Button
             onClick={handleSubmit}
             >작성하기</Button>
