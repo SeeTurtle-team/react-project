@@ -1,40 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import React, { useRef, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import { Button } from 'primereact/button';
-import { useNavigate } from "react-router-dom"; // Import the useHistory hook
-import { InputText } from 'primereact/inputtext';
-import { useCookies } from 'react-cookie';
-import axios from "axios";
-import 'primeicons/primeicons.css';
 import { errorHandle } from '../../Common/ErrorHandle';
-import EbookState from './EbookState';
-// import '@toast-ui/editor/dist/toastui-editor-viewer.css';​
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
-const EbookCreate = () => {
+const EbookEdit = () => {
     const [title, setTitle] = useState<string>("");
-    const [cookies, setCookie, removeCookie] = useCookies(["id"]);
     const [text, setText] = useState<string>("");
+    const [cookies, setCookie, removeCookie] = useCookies(["id"]);
     const accessToken = cookies.id;
-    const headers = {Authorization:'Bearer '+accessToken}
+    console.log(accessToken);
+    const headers = { Authorization: "Bearer " + accessToken };
     const editor = useRef<any>();
     const navigate = useNavigate();
-    
 
-    const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const handleSubmit = () => {
-        console.log("submit");
-        console.log(`'${editor.current.getInstance().getHTML()}'`);
-        // axios.post("/board/imgurl", {
-        //     title:title,
-        //     text:`'${editor.current.getInstance().getHTML()}'`
-        // },{
-        //     headers: headers
-        // })
+        console.log('submit');
     }
 
-      const uploadImage = async (blob:any) => {
+    const uploadImage = async (blob:any) => {
         const img = blob;
         console.log(img);
       
@@ -65,20 +53,20 @@ const EbookCreate = () => {
       }
 
     return (
-        <div>
-            <h2>Title</h2>
-            <div style={{marginBottom: "1rem"}}>
-            <InputText
-            id="Title"
-            value={title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-            onKeyDown={handleInputEnter}
-            size={80}
-            />
-            </div>
-            <h2>Content</h2>
-            <div style={{ marginBottom: "1rem", backgroundColor: "white" }}>
-            <Editor
+        <div className="card">
+      <span className="p-float-label">
+        <InputText
+          id="Title"
+          value={title}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setTitle(e.target.value)
+          }
+          size={80}
+        />
+        <label htmlFor="Title">title</label>
+      </span>
+      <h2>Content</h2>
+      <Editor
             onChange={() => setText(editor.current.getInstance().getHTML())}
             initialValue=""
             ref={editor}
@@ -101,13 +89,10 @@ const EbookCreate = () => {
                 }
               }}
             />
-            </div>
-            <EbookState />
-            <Button
-            onClick={handleSubmit}
-            >작성하기</Button>
-        </div>
+
+      <Button label="Submit" onClick={handleSubmit} />
+    </div>
     );
 };
 
-export default EbookCreate;
+export default EbookEdit;

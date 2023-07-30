@@ -19,6 +19,8 @@ import EbookList from "./views/Ebook/EbookList";
 import SmallTalk from "./views/SmallTalk";
 import SearchId from "./views/Login/SearchId";
 import SearchPassword from "./views/Login/SearchPassword";
+import EbookState from "./views/Ebook/EbookState";
+import EbookEdit from "./views/Ebook/EbookEdit";
 
 const BoardList = lazy(() => import("./views/Board/BoardList"));
 const BoardState = lazy(() => import("./views/Board/BoardState"));
@@ -49,6 +51,8 @@ const App = () => {
 
           <Route path="/EbookList" element={<EbookList />} />
           <Route path="/EbookCreate" element={<EbookCreate />} />
+          <Route path="/EbookState/:id" element={<EbookState />} />
+          <Route path="/EbookEdit/:ebookId" element={<EbookEdit />} />
 
 	        <Route path='smallTalk' element={<SmallTalk/>} />
         </Routes>
