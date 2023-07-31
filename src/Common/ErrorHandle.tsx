@@ -15,7 +15,10 @@ export const errorHandle = (errCode:number) => {
             return 401;
         case 400:
             alert('잘못된 요청입니다');
-            return 400      
+            return 400;
+        case 408:
+            alert('응답시간 초과');
+            return 408;      
     }
 }
 
