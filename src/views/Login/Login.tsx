@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext, useEffect, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -29,12 +30,12 @@ const Login = () => {
     const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
 
     useEffect(() => {
-        setActiveIndex(2);
+        setActiveIndex(3);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const handleCreateUser = () => {
-        navigate("/CreateUser");
+    const handleUserCreate = () => {
+        navigate("/UserCreate");
     };
 
     const successLogin = (accessToken:string) => {
@@ -143,17 +144,32 @@ const Login = () => {
         }
       }
 
+    const searchId = () => {
+        navigate('/searchId');
+    }
+
+    const searchPassword = () => {
+        navigate('/searchPassword');
+    }
+
     return (
         <div className="card">
-            <div className="login-box">
+            <div className="login-box" style={{height:500}}>
                 <div>
-                    <div className="login-box-id">
+                    <div className="login-box-id" style={{width: '15rem'}}>
                         <InputText id="userid" keyfilter="alphanum" style={{ width: '12rem' }} className="w-full" value={id} onChange={(e) => setId(e.target.value)} placeholder="ID" />
                     </div>
                 </div>
-                <div >
+                <div>
                     <div className="login-box-pw">
-                        <Password keyfilter={/[^s]/} style={{ width: '25rem' }} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={e => onQryFactoryKeyPress(e)} maxLength={15} placeholder="PASSWORD" />
+                        <Password 
+                        keyfilter={/[^s]/} 
+                        style={{ width: '25rem' }} 
+                        value={password} onChange={(e) => setPassword(e.target.value)} 
+                        onKeyDown={e => onQryFactoryKeyPress(e)} 
+                        maxLength={15} 
+                        placeholder="PASSWORD"
+                        />
                     </div>
                 </div>
                 <div className="login-box-content">
@@ -162,10 +178,14 @@ const Login = () => {
                         outlined
                         style={{
                             marginRight: "2rem",
-                            marginTop: '0.5rem'
+                            marginTop: '0.5rem',
+                            width: '15rem'
                         }}
                         onClick={handleLogin} />
-                    <Button label="회원가입" outlined onClick={handleCreateUser} />
+                    {/* <Button label="회원가입" outlined onClick={handleUserCreate} /> */}
+                </div>
+                <div style={{width:400, marginRight: '1rem', marginBottom: '1rem' }}>
+                    <a onClick={searchId}>아이디 찾기</a> | <a onClick={searchPassword}>비밀번호 재설정</a> | <a onClick={handleUserCreate}>회원 가입</a>
                 </div>
                 <div className="login-box-content">
                     <div >
