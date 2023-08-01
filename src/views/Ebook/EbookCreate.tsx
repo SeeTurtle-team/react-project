@@ -14,7 +14,6 @@ import EbookState from './EbookState';
 const EbookCreate = () => {
     const [title, setTitle] = useState<string>("");
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);
-    const [text, setText] = useState<string>("");
     const accessToken = cookies.id;
     const headers = {Authorization:'Bearer '+accessToken}
     const editor = useRef<any>();
@@ -22,7 +21,7 @@ const EbookCreate = () => {
     
 
     const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    // const fileInputRef = useRef<HTMLInputElement>(null);
     const handleSubmit = () => {
         console.log("submit");
         console.log(`'${editor.current.getInstance().getHTML()}'`);
@@ -79,7 +78,6 @@ const EbookCreate = () => {
             <h2>Content</h2>
             <div style={{ marginBottom: "1rem", backgroundColor: "white" }}>
             <Editor
-            onChange={() => setText(editor.current.getInstance().getHTML())}
             initialValue=""
             ref={editor}
             previewStyle="vertical"
@@ -102,7 +100,7 @@ const EbookCreate = () => {
               }}
             />
             </div>
-            <EbookState />
+            {/* <EbookState /> */}
             <Button
             onClick={handleSubmit}
             >작성하기</Button>
