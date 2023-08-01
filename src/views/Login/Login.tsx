@@ -185,7 +185,7 @@ const Login = () => {
                     {/* <Button label="회원가입" outlined onClick={handleUserCreate} /> */}
                 </div>
                 <div style={{width:400, marginRight: '1rem', marginBottom: '1rem' }}>
-                    <a onClick={searchId}>아이디 찾기</a> | <a onClick={searchPassword}>비밀번호 찾기</a> | <a onClick={handleUserCreate}>회원 가입</a>
+                    <a onClick={searchId}>아이디 찾기</a> | <a onClick={searchPassword}>비밀번호 재설정</a> | <a onClick={handleUserCreate}>회원 가입</a>
                 </div>
                 <div className="login-box-content">
                     <div >

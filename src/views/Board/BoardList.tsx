@@ -101,6 +101,10 @@ const BoardList = () => {
     }
   };
 
+  const handleSearchButton = () => {
+    
+  }
+
   return (
     <div className="card">
       <div style={{marginBottom: "1rem"}}>
@@ -120,6 +124,12 @@ const BoardList = () => {
           placeholder="Search"
           onInput={handleSearch}
           value={inputSearch}
+        />
+      </span>
+      <span style={{marginLeft:'1rem'}}>
+        <Button
+        label="검색"
+        onClick={handleSearchButton}
         />
       </span>
       </div>
@@ -143,7 +153,7 @@ const BoardList = () => {
       </span>
       </div>
       <DataTable
-        value={filterSearch}
+        value={board}
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}

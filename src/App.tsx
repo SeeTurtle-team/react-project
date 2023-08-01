@@ -21,6 +21,7 @@ import SearchId from "./views/Login/SearchId";
 import SearchPassword from "./views/Login/SearchPassword";
 import EbookState from "./views/Ebook/EbookState";
 import EbookEdit from "./views/Ebook/EbookEdit";
+import SearchPasswordReset from "./views/Login/SearchPasswordReset";
 
 const BoardList = lazy(() => import("./views/Board/BoardList"));
 const BoardState = lazy(() => import("./views/Board/BoardState"));
@@ -39,7 +40,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<FirstPage/>} />
           <Route path="/BoardCreate" element={<BoardCreate />} />
-          <Route path="/BoardEdit/:boardId" element={<BoardEdit />} />  {/**boardId를 넘겨야 게시글을 가져올 수 있겠죠? */}
+          <Route path="/BoardEdit/:boardId" element={<BoardEdit />} />
           <Route path="/BoardList" element={<BoardList />} />
           <Route path="/BoardState/:index" element={<BoardState />} />
           <Route path='/ErrorPage/:id' element={<ErrorHandlingPage/>} />
@@ -48,6 +49,7 @@ const App = () => {
           <Route path="/UserCreate" element={<UserCreate />} />
           <Route path="/SearchId" element={<SearchId />} />
           <Route path="/SearchPassword" element={<SearchPassword />} />
+          <Route path="/SearchPassword/:paramsId" element={<SearchPasswordReset />} />
 
           <Route path="/EbookList" element={<EbookList />} />
           <Route path="/EbookCreate" element={<EbookCreate />} />
