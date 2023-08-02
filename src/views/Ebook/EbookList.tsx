@@ -10,10 +10,13 @@ import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useNavigate } from "react-router";
+import { useQuery } from "react-query";
 
 import "../../css/EbookList.css";
+import axios from "axios";
 
 const EbookList = () => {
+  const [ebook, setEbook] = useState<any[]>([]);
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
     useContext(ActiveIndexContext);
   const [inputSearch, setInputSearch] = useState<string>("");
@@ -21,6 +24,39 @@ const EbookList = () => {
   const accessToken = cookies.id;
   const headers = { Authorization: "Bearer " + accessToken };
   const navigate = useNavigate();
+
+    const { isSuccess, isError, isLoading, isFetching, data, error } = useQuery(
+    'getEbookList',
+    () => axios.get("/ebook", {headers}),
+    {
+      onSuccess: (data) => {
+        console.log("onSuccess", data);
+        console.log(data.data);
+        setEbook(data.data);
+      },
+      onError: (error) => {
+        console.log("onError", error);
+      },
+      staleTime: 60000,
+      cacheTime: Infinity,
+    }
+  );
+
+    if (isFetching) {
+    console.log("fetching...");
+  }
+
+  if (isLoading) {
+    console.log("loading...");
+  }
+
+  if (isError) {
+    console.log("error", error);
+  }
+
+  if (isSuccess) {
+    console.log("success");
+  }
 
   useEffect(() => {
     setActiveIndex(2);
@@ -32,8 +68,6 @@ const EbookList = () => {
   const goToEbookCreate = () => {
     navigate("/EbookCreate");
   };
-
-  const filterSearch = () => {};
 
   return (
     <div className="card">
@@ -51,13 +85,12 @@ const EbookList = () => {
         <span className="createButtonContainer">
           <Button
             label="Create"
-            style={{ marginLeft: "57rem" }}
             onClick={goToEbookCreate}
           />
         </span>
       </div>
       <DataTable
-        // value={filterSearch}
+        value={ebook}
         tableStyle={{ minWidth: "50rem" }}
         paginator
         rows={10}

@@ -53,6 +53,22 @@ const BoardList = () => {
     }
   );
 
+  if (isFetching) {
+    console.log("fetching...");
+  }
+
+  if (isLoading) {
+    console.log("loading...");
+  }
+
+  if (isError) {
+    console.log("error", error);
+  }
+
+  if (isSuccess) {
+    console.log("success");
+  }
+
   useEffect(() => {
     if(isSuccess && data){
       setBoard(data.data);
@@ -81,22 +97,6 @@ const BoardList = () => {
     FetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (isFetching) {
-    console.log("fetching...");
-  }
-
-  if (isLoading) {
-    console.log("loading...");
-  }
-
-  if (isError) {
-    console.log("error", error);
-  }
-
-  if (isSuccess) {
-    console.log("success");
-  }
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);
