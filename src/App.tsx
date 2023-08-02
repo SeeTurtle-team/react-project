@@ -1,7 +1,6 @@
 import React, { Suspense, lazy, useContext, useEffect } from "react";
 import BoardHeader from "./views/Board/BoardHeader";
 import { Route, Routes, Navigate } from "react-router";
-import { BrowserRouter } from "react-router-dom";
 
 // import BoardCreate from "./views/BoardCreate";
 // import BoardEdit from "./views/BoardEdit";
@@ -35,7 +34,6 @@ const App = () => {
       <Suspense fallback={<ProgressSpinner />}>
       <UserLoginProvider>
       <ActiveIndexProvider>
-      <BrowserRouter>
         <BoardHeader />
         <Routes>
           <Route path="/" element={<FirstPage/>} />
@@ -58,7 +56,6 @@ const App = () => {
 
 	        <Route path='smallTalk' element={<SmallTalk/>} />
         </Routes>
-      </BrowserRouter>
       </ActiveIndexProvider>
       </UserLoginProvider>
       </Suspense>
