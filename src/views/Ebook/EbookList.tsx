@@ -17,8 +17,8 @@ import axios from "axios";
 
 const EbookList = () => {
   const [ebook, setEbook] = useState<any[]>([]);
-  const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
-    useContext(ActiveIndexContext);
+  // const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
+  //   useContext(ActiveIndexContext);
   const [inputSearch, setInputSearch] = useState<string>("");
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const accessToken = cookies.id;
@@ -59,7 +59,7 @@ const EbookList = () => {
   }
 
   useEffect(() => {
-    setActiveIndex(2);
+    // setActiveIndex(2);
   });
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputSearch(e.target.value);

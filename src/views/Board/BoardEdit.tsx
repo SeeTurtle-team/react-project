@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
-import { useNavigate } from "react-router-dom"; // Import the useHistory hook
+import { useNavigate } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useParams } from "react-router";

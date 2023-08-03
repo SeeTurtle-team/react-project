@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card } from "primereact/card";
-import { useNavigate } from "react-router-dom"; // Import the useHistory hook
-import { Panel } from "primereact/panel";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
 import { errorHandle } from "../../Common/ErrorHandle";
 import axios from "axios";
@@ -18,8 +17,8 @@ import { useCookies } from "react-cookie";
 
 const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
-  const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
-    useContext(ActiveIndexContext);
+  // const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
+  //   useContext(ActiveIndexContext);
 
   const { index } = useParams();
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ const BoardState = () => {
   const headers = {Authorization:'Bearer '+accessToken}
 
   const fetchUsers = async () => {
-    setActiveIndex(1);
+    // setActiveIndex(1);
     try {
       const response = await axios.get("/board/read/" + index, {headers});
       console.log(response.data);
