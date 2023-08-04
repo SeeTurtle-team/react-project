@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { InputText } from "primereact/inputtext";
@@ -8,6 +8,7 @@ import { errorHandle } from "../../Common/ErrorHandle";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
+import { ActiveIndexContext, ActiveIndexContextProviderProps } from "../../context/ActiveIndexContext";
 
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
@@ -15,12 +16,15 @@ const BoardCreate = () => {
   const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
   const [selectBoardCategory, setSelectBoardCategory] = useState<BoardCategoryDto|null>(null);
   const [isBoardCategory, setIsBoardCategory] = useState<boolean>(false);
+  const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
+  useContext(ActiveIndexContext);
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
   
   useEffect(() => {
+    setActiveIndex(1);
     const fetchUsers = async () => {
       try {
         const res = await axios.get("/board/category", {headers});

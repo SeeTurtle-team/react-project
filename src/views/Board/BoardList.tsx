@@ -25,8 +25,8 @@ const BoardList = () => {
   const [inputSearch, setInputSearch] = useState<string>("");
   const [selectedSearchOption, setSelectedSearchOption] =
     useState<SearchOptioninterface>();
-  // const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
-  //   useContext(ActiveIndexContext);
+  const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
+    useContext(ActiveIndexContext);
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
@@ -74,7 +74,7 @@ const BoardList = () => {
       setBoard(data.data);
     }
     const FetchUsers = async () => {
-      // setActiveIndex(1);
+      setActiveIndex(1);
       try {
         const res = await axios.get("/board/category",{headers});
         setBoardCategory(res.data);

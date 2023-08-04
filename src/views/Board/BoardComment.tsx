@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import { errorHandle } from "../../Common/ErrorHandle";
 import Modal from "react-modal";
 
-import { useNavigate } from "react-router-dom"; // Import the useHistory hook
+import { useNavigate } from "react-router-dom";
 import { Fieldset } from "primereact/fieldset";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
+import { useQuery, useMutation } from "react-query";
 
 import { BoardCommentDto } from "../../interface/BoardCommentDto";
 import { dateFormatFunc } from "../../Common/DateFormat";
@@ -41,21 +42,56 @@ const BoardComment = ({ index }: Props) => {
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
-  // const userId = 5; // 로그인 후 아이디 값 받아오기
 
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get("/board/comment/" + index, {headers});
-      setBoardCommenet(response.data);
-    } catch (error: any) {
-      console.log(error);
-      const errCode = errorHandle(error.response.status);
-      navigate(`/ErrorPage/${errCode}`);
+  const { isSuccess, isError, isLoading, isFetching, data, error } = useQuery(
+    'getBoardComment',
+    () => axios.get("/board/comment/" + index, {headers}),
+    {
+      onSuccess: (data) => {
+        console.log("onSuccess", data);
+        console.log(data.data);
+        setBoardCommenet(data.data);
+      },
+      onError: (error) => {
+        console.log("onError", error);
+      },
+      staleTime: 60000,
+      cacheTime: Infinity,
     }
-  };
+  );
+
+  if (isFetching) {
+    console.log("fetching...");
+  }
+
+  if (isLoading) {
+    console.log("loading...");
+  }
+
+  if (isError) {
+    console.log("error", error);
+  }
+
+  if (isSuccess) {
+    console.log("success");
+  }
+
+  // const fetchUsers = async () => {
+  //   try {
+  //     const response = await axios.get("/board/comment/" + index, {headers});
+  //     setBoardCommenet(response.data);
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     const errCode = errorHandle(error.response.status);
+  //     navigate(`/ErrorPage/${errCode}`);
+  //   }
+  // };
 
   useEffect(() => {
-    fetchUsers();
+    if(isSuccess && data){
+      setBoardCommenet(data.data);
+    }
+    // fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -69,7 +105,7 @@ const BoardComment = ({ index }: Props) => {
         .then((response) => {
           console.log(response.data);
           if (response.data.success === true) {
-            fetchUsers();
+            // fetchUsers();
           } else {
             alert(response.data.msg);
             return;
@@ -98,7 +134,7 @@ const BoardComment = ({ index }: Props) => {
         },{headers}).then((response) => {
             console.log(response.data);
             if (response.data.success === true) {
-              fetchUsers();
+              // fetchUsers();
             } else {
               alert(response.data.msg);
               return;
@@ -123,7 +159,7 @@ const BoardComment = ({ index }: Props) => {
         },
       }).then((response) => {
         if(response.data.success === true){
-          fetchUsers();
+          // fetchUsers();
           alert("댓글이 삭제 되었습니다.");
         }
       });
