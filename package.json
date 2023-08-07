@@ -59,8 +59,5 @@
   },
   "devDependencies": {
     "@types/react-modal": "^3.16.0"
-  },
-  "overrides": {
-    "@svgr/webpack": "$@svgr/webpack"
   }
 }
