@@ -73,7 +73,7 @@ const BoardList = () => {
     navigate(`/BoardState/${index}`);
   };
   const filterSearch = board.filter((Board: any) => {
-    console.log(selectedSearchOption);
+    //console.log(selectedSearchOption);
     Board.dateTime = dateFormatFunc(Board.dateTime);
     if (selectedSearchOption?.code === "u") {
       return Board.nickname?.toLowerCase().includes(inputSearch.toLowerCase());
