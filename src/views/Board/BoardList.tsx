@@ -15,7 +15,7 @@ import { ActiveIndexContext } from "../../context/ActiveIndexContext";
 import { ActiveIndexContextProviderProps } from "../../interface/UseContextDTO";
 import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import "../../css/BoardList.css";
 
 const BoardList = () => {

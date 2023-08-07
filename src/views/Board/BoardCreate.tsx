@@ -9,6 +9,7 @@ import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
 import { ActiveIndexContext, ActiveIndexContextProviderProps } from "../../context/ActiveIndexContext";
+import { useMutation, useQueryClient } from 'react-query';
 
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
@@ -22,6 +23,7 @@ const BoardCreate = () => {
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   
   useEffect(() => {
     setActiveIndex(1);
@@ -39,35 +41,54 @@ const BoardCreate = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
-  const handleSubmit = async () => {
-  //   const encodingImages: any = text?.match( 
-  //     /data:image\/([a-zA-Z]*);base64,([^\"]*)/g, 
-  // );
+  const createBoardMutation = useMutation(
+    (newBoardData: { title: string, contents: string, boardCategoryId: number }) =>
+      axios.post('/board/create', newBoardData, { headers }).then(res => res.data.body)
+  );
 
-  try{
-    axios
-      .post("/board/create", {
+  const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
+
+  const handleSubmit = async () => {
+    try {
+      const newBoardData = {
         title: value,
-        contents: text,
-        boardCategoryId: selectBoardCategory?.id,
-      }, {
-        headers: headers
-      })
-      .then((res) => res.data.body)
-      .then((res) => console.log(res));
-    setValue("");
-    setText("");
-    navigate("/BoardList");
-    }
-    catch (error: any) {
-      console.log(error)
+        contents: text || '',
+        boardCategoryId: selectBoardCategory?.id || 0,
+      };
+      await createBoardMutation.mutateAsync(newBoardData);
+      setValue('');
+      setText('');
+      queryClient.refetchQueries('getBoardList');
+      navigate('/BoardList');
+    } catch (error: any) {
+      console.log(error);
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
     }
-  
   };
-  // 로그인 기능 및 boardCreate에 category 값 추가하기
+
+  // const handleSubmit = async () => {
+  // try{
+  //   axios
+  //     .post("/board/create", {
+  //       title: value,
+  //       contents: text,
+  //       boardCategoryId: selectBoardCategory?.id,
+  //     }, {
+  //       headers: headers
+  //     })
+  //     .then((res) => res.data.body)
+  //     .then((res) => console.log(res));
+  //   setValue("");
+  //   setText("");
+  //   navigate("/BoardList");
+  //   }
+  //   catch (error: any) {
+  //     console.log(error)
+  //     const errCode = errorHandle(error.response.status);
+  //     navigate(`/ErrorPage/${errCode}`);
+  //   }
+  // };
 
   const renderHeader = () => {
     return (

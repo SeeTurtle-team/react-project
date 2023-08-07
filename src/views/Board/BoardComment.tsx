@@ -8,7 +8,7 @@ import { Fieldset } from "primereact/fieldset";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
-import { useQuery, useMutation } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 import { BoardCommentDto } from "../../interface/BoardCommentDto";
 import { dateFormatFunc } from "../../Common/DateFormat";
@@ -42,7 +42,8 @@ const BoardComment = ({ index }: Props) => {
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
+  
   const { isSuccess, isError, isLoading, isFetching, data, error } = useQuery(
     'getBoardComment',
     () => axios.get("/board/comment/" + index, {headers}),
@@ -95,80 +96,159 @@ const BoardComment = ({ index }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSubmit = () => {
+  const createCommentMutation = useMutation(
+    (newCommentData: { contents: string, boardId: number }) =>
+      axios.post(`/board/comment/create`, newCommentData, { headers }).then(res => res.data)
+  );
+
+  const handleSubmit = async () => {
     try {
-      axios
-        .post("/board/comment/create", {
-          contents: comment,
-          boardId: Number(index),
-        }, {headers})
-        .then((response) => {
-          console.log(response.data);
-          if (response.data.success === true) {
-            // fetchUsers();
-          } else {
-            alert(response.data.msg);
-            return;
-          }
-        });
-      setComment("");
+      const newCommentData = {
+        contents: comment,
+        boardId: Number(index),
+      };
+
+      const response = await createCommentMutation.mutateAsync(newCommentData);
+
+      if (response.success === true) {
+        setComment('');
+        queryClient.invalidateQueries('getBoardComment');
+      } else {
+        alert(response.msg);
+      }
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
     }
   };
-  const handleCommentEdit = (i: number) => {
+
+  // const handleSubmit = () => {
+  //   try {
+  //     axios
+  //       .post("/board/comment/create", {
+  //         contents: comment,
+  //         boardId: Number(index),
+  //       }, {headers})
+  //       .then((response) => {
+  //         console.log(response.data);
+  //         if (response.data.success === true) {
+  //           // fetchUsers();
+  //         } else {
+  //           alert(response.data.msg);
+  //           return;
+  //         }
+  //       });
+  //     setComment("");
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     const errCode = errorHandle(error.response.status);
+  //     navigate(`/ErrorPage/${errCode}`);
+  //   }
+  // };
+
+  const editCommentMutation = useMutation(
+    (commentData: { id: number, contents: string }) =>
+      axios.patch('/board/comment/update', commentData, { headers }).then(res => res.data)
+  );
+
+  const handleCommentEdit = async (i: number) => {
     setSelectedCommentIndex(i);
     setIsBoardComment(!isBoardComment);
-    if(selectedCommentIndex !== i && selectedCommentIndex !== undefined){
-        setIsBoardComment(true);
-        console.log("isBoardComment is true");
-        setBoardCommentEdit("");
+    if (selectedCommentIndex !== i && selectedCommentIndex !== undefined) {
+      setIsBoardComment(true);
+      console.log('isBoardComment is true');
+      setBoardCommentEdit('');
     } else if (isBoardComment) {
       try {
-        axios.patch("/board/comment/update", {
+        const updatedComment = await editCommentMutation.mutateAsync({
           id: boardComment[i].boardComment_id,
           contents: boardCommentEdit,
-          boardId: Number(index),
-        },{headers}).then((response) => {
-            console.log(response.data);
-            if (response.data.success === true) {
-              // fetchUsers();
-            } else {
-              alert(response.data.msg);
-              return;
-            }
-          });
+        });
+        console.log(updatedComment);
+        queryClient.invalidateQueries('getBoardComment');
       } catch (error: any) {
         console.log(error);
         const errCode = errorHandle(error.response.status);
         navigate(`/ErrorPage/${errCode}`);
       }
-      setBoardCommentEdit("");
+      setBoardCommentEdit('');
       setSelectedCommentIndex(undefined);
       setIsBoardComment(false);
-    } 
+    }
   };
-  const handleCommentDelete = (i: number) => {
+
+  const deleteCommentMutation = useMutation(
+    (commentId: number) =>
+      axios.delete(`/board/comment/delete`, {
+        headers,
+        data: { id: commentId },
+      }).then(res => res.data)
+  );
+
+  const handleCommentDelete = async (i: number) => {
     try {
-      axios.delete("/board/comment/delete", {
-        headers: headers,
-        data: {
-          id: boardComment[i].boardComment_id,
-        },
-      }).then((response) => {
-        if(response.data.success === true){
-          // fetchUsers();
-          alert("댓글이 삭제 되었습니다.");
-        }
-      });
+      const response = await deleteCommentMutation.mutateAsync(boardComment[i].boardComment_id);
+      console.log(response);
+      queryClient.invalidateQueries('getBoardComment');
     } catch (error: any) {
       console.log(error);
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
     }
   };
+
+  // const handleCommentEdit = (i: number) => {
+  //   setSelectedCommentIndex(i);
+  //   setIsBoardComment(!isBoardComment);
+  //   if(selectedCommentIndex !== i && selectedCommentIndex !== undefined){
+  //       setIsBoardComment(true);
+  //       console.log("isBoardComment is true");
+  //       setBoardCommentEdit("");
+  //   } else if (isBoardComment) {
+  //     try {
+  //       axios.patch("/board/comment/update", {
+  //         id: boardComment[i].boardComment_id,
+  //         contents: boardCommentEdit,
+  //         boardId: Number(index),
+  //       },{headers}).then((response) => {
+  //           console.log(response.data);
+  //           if (response.data.success === true) {
+  //             // fetchUsers();
+  //           } else {
+  //             alert(response.data.msg);
+  //             return;
+  //           }
+  //         });
+  //     } catch (error: any) {
+  //       console.log(error);
+  //       const errCode = errorHandle(error.response.status);
+  //       navigate(`/ErrorPage/${errCode}`);
+  //     }
+  //     setBoardCommentEdit("");
+  //     setSelectedCommentIndex(undefined);
+  //     setIsBoardComment(false);
+  //   } 
+  // };
+  // const handleCommentDelete = (i: number) => {
+  //   try {
+  //     axios.delete("/board/comment/delete", {
+  //       headers: headers,
+  //       data: {
+  //         id: boardComment[i].boardComment_id,
+  //       },
+  //     }).then((response) => {
+  //       if(response.data.success === true){
+  //         // fetchUsers();
+  //         alert("댓글이 삭제 되었습니다.");
+  //       }
+  //     });
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     const errCode = errorHandle(error.response.status);
+  //     navigate(`/ErrorPage/${errCode}`);
+  //   }
+  // };
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
   const handleCommentBan = (i: number) => {
     setModalIsOpen(!modalIsOpen);
