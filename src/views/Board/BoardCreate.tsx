@@ -51,10 +51,14 @@ const BoardCreate = () => {
         headers: headers
       })
       .then((res) => res.data.body)
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res)
+        alert('등록이 완료 되었습니다');
+        navigate("/BoardList");
+
+      });
     setValue("");
     setText("");
-    navigate("/BoardList");
     }
     catch (error: any) {
       console.log(error)
