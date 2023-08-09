@@ -9,8 +9,9 @@ import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
 import { Divider } from 'primereact/divider';
-
+import { Dialog } from 'primereact/dialog';
 import axios from "axios";
+import { HandleFileInput } from "../../Common/S3ImgUpload";
 
 const SmallTalkList = () => {
     const [smallTalkSub, setSmallTalkSub] = useState<SmallTalkSubDto[]>([]);
@@ -19,7 +20,8 @@ const SmallTalkList = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);
     const accessToken = cookies.id;
     const headers = { Authorization: 'Bearer ' + accessToken }
-    const [layout, setLayout] = useState('grid');
+    const [dialogVisible, setDialogVisible] = useState<boolean>(false);
+    const [SubImgUrl, setSubImgUrl] = useState<string>('');
 
     const getSmallSubList = async () => {
         try {
@@ -114,6 +116,22 @@ const SmallTalkList = () => {
     //     );
     // };
 
+    const dialogFooterTemplate = () => {
+        return <Button label="Create" icon="pi pi-check" onClick={() => setDialogVisible(false)} />;
+    };
+
+    const test1 = async (e: any) => {
+
+        const imgurl = await HandleFileInput(e, headers);
+        if(!imgurl.success) {
+            const errCode = errorHandle(imgurl.msg);
+            navigate(`/ErrorPage/${errCode}`);
+        }else{
+            setSubImgUrl(imgurl);
+        }
+    }
+
+    
     return (
         <div className="card">
             <div>
@@ -135,17 +153,31 @@ const SmallTalkList = () => {
                 <span className="createButtonContainer">
                     <Button
                         label="Create"
-                        //onClick={goToBoardCreate}
+                        onClick={() => setDialogVisible(true)}
                     />
                 </span>
             </div>
-
 
             <Divider />
             <div>
 
                 <DataView value={smallTalkSub} itemTemplate={itemTemplate} />
             </div>
+
+
+            <Dialog header="Create New Small Talk" visible={dialogVisible} style={{ width: '40vw' }} maximizable
+                modal contentStyle={{ height: '300px' }} onHide={() => setDialogVisible(false)} footer={dialogFooterTemplate}>
+                <div className="login-box-id" style={{ width: '30rem' }}>
+                    <InputText id="title" keyfilter="alphanum" style={{ width: '12rem' }} className="w-full" placeholder="Title" />
+                </div>
+                <div className="login-box-id" style={{ width: '30rem' }}>
+                    <InputText id="description" keyfilter="alphanum" style={{ width: '12rem' }} className="w-full" placeholder="Description of Subject" />
+                </div>
+
+                <input type="file" onChange={(e) => test1(e)} />
+                <button onClick={() => console.log(test)}>sdfsd</button>
+
+            </Dialog>
         </div>
     )
 }
