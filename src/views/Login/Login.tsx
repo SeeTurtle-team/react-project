@@ -18,11 +18,11 @@ import { useCookies } from "react-cookie";
 
 const Login = () => {
     const navigate = useNavigate();
+    // axios.defaults.baseURL = "http://localhost:5000";
     const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
     const clientID = `${process.env.REACT_APP_GOOGLE_LOGIN}`;
-
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);

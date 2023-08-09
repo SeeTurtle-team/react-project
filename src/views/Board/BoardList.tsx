@@ -30,6 +30,8 @@ const BoardList = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
+  // axios.defaults.baseURL = "http://localhost:5000";
+
 
   const searchOptions = [
     { name: "Title", code: "t" },
@@ -43,7 +45,7 @@ const BoardList = () => {
       onSuccess: (data) => {
         console.log("onSuccess", data);
         console.log(data.data);
-        setBoard(data.data);
+        setBoard(data.data.items);
       },
       onError: (error) => {
         console.log("onError", error);
@@ -71,7 +73,7 @@ const BoardList = () => {
 
   useEffect(() => {
     if(isSuccess && data){
-      setBoard(data.data);
+      setBoard(data.data.items);
     }
     const FetchUsers = async () => {
       setActiveIndex(1);
