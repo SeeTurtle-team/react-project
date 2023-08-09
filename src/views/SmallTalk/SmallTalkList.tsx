@@ -12,9 +12,18 @@ import { Divider } from 'primereact/divider';
 import { Dialog } from 'primereact/dialog';
 import axios from "axios";
 import { HandleFileInput } from "../../Common/S3ImgUpload";
+import { SmallSubCreateDto } from "../../interface/SmallSubCreate.Dto";
 
 const SmallTalkList = () => {
     const [smallTalkSub, setSmallTalkSub] = useState<SmallTalkSubDto[]>([]);
+    const [smallSubCreate, setSmallSubCreate] = useState<SmallSubCreateDto>({
+        title:"",
+        detail:"",
+        imgUrl:""
+    }
+       
+    );
+
     const navigate = useNavigate();
 
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);
@@ -117,10 +126,10 @@ const SmallTalkList = () => {
     // };
 
     const dialogFooterTemplate = () => {
-        return <Button label="Create" icon="pi pi-check" onClick={() => setDialogVisible(false)} />;
+        return <Button label="Create" icon="pi pi-check" onClick={() => createSub()} />;
     };
 
-    const test1 = async (e: any) => {
+    const getImgUrl = async (e: any) => {
 
         const imgurl = await HandleFileInput(e, headers);
         if(!imgurl.success) {
@@ -131,6 +140,19 @@ const SmallTalkList = () => {
         }
     }
 
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        setSmallSubCreate({
+            ...smallSubCreate,
+            [name]:value
+        })
+    }
+
+    
+    const createSub = async () => {
+        setDialogVisible(false);
+        console.log(smallSubCreate);
+    }
     
     return (
         <div className="card">
@@ -168,14 +190,13 @@ const SmallTalkList = () => {
             <Dialog header="Create New Small Talk" visible={dialogVisible} style={{ width: '40vw' }} maximizable
                 modal contentStyle={{ height: '300px' }} onHide={() => setDialogVisible(false)} footer={dialogFooterTemplate}>
                 <div className="login-box-id" style={{ width: '30rem' }}>
-                    <InputText id="title" keyfilter="alphanum" style={{ width: '12rem' }} className="w-full" placeholder="Title" />
+                    <InputText id="title" name="title" keyfilter="alphanum" style={{ width: '12rem' }} className="w-full" placeholder="Title" onChange={onChange}/>
                 </div>
                 <div className="login-box-id" style={{ width: '30rem' }}>
-                    <InputText id="description" keyfilter="alphanum" style={{ width: '12rem' }} className="w-full" placeholder="Description of Subject" />
+                    <InputText id="description" name="detail" keyfilter="alphanum" style={{ width: '12rem' }} className="w-full" placeholder="Description of Subject" onChange={onChange}/>
                 </div>
 
-                <input type="file" onChange={(e) => test1(e)} />
-                <button onClick={() => console.log(test)}>sdfsd</button>
+                <input type="file" onChange={(e) => getImgUrl(e)} />
 
             </Dialog>
         </div>
