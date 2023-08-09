@@ -5,6 +5,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { errorHandle } from "../../Common/ErrorHandle";
 import { useCookies } from "react-cookie";
+import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
+import { Rating } from 'primereact/rating';
+import { Tag } from 'primereact/tag';
+import { Divider } from 'primereact/divider';
+
 import axios from "axios";
 
 const SmallTalkList = () => {
@@ -14,21 +19,100 @@ const SmallTalkList = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);
     const accessToken = cookies.id;
     const headers = { Authorization: 'Bearer ' + accessToken }
+    const [layout, setLayout] = useState('grid');
 
     const getSmallSubList = async () => {
         try {
-            const res = await axios.get("/small-talk/getAllList",{headers});
+            const res = await axios.get("/small-talk/getAllList", { headers });
             setSmallTalkSub(res.data);
-            
+
         } catch (error: any) {
             const errCode = errorHandle(error.response.status);
             navigate(`/ErrorPage/${errCode}`); // error 발생 시 이전 page 이동
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getSmallSubList();
-    },[]);
+    }, []);
+
+    const setImg = (url: string) => {
+        return url === null ? `https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5064919.png` : url;
+    }
+
+
+    const listItem = (smallTalkSub: SmallTalkSubDto) => {
+        return (
+            <div className="col-12">
+                <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+                    <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={setImg(smallTalkSub.imgUrl)} alt={smallTalkSub.name} />
+                    <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+                        <div className="flex flex-column align-items-center sm:align-items-start gap-3">
+                            <div className="text-2xl font-bold text-900">{smallTalkSub.title}</div>
+                            {/* <Rating value={smallTalkSub.rating} readOnly cancel={false}></Rating> */}
+                            <h3>{smallTalkSub.detail}</h3>
+                            <span>생성자 : {smallTalkSub.nickname}</span>
+                            <div className="flex align-items-center gap-3">
+                                <span className="flex align-items-center gap-2">
+                                    <i className="pi pi-tag"></i>
+                                    {/* <span className="font-semibold">{smallTalkSub.category}</span> */}
+                                </span>
+                                {/* <Tag value={smallTalkSub.inventoryStatus} severity={getSeverity(smallTalkSub)}></Tag> */}
+                            </div>
+                        </div>
+                        <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                            {/* <span className="text-2xl font-semibold">${smallTalkSub.price}</span> */}
+                            <Button >입장하기</Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    const gridItem = (smallTalkSub: SmallTalkSubDto) => {
+        return (
+            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
+                <div className="p-4 border-1 surface-border surface-card border-round">
+                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
+                        <div className="flex align-items-center gap-2">
+                            <i className="pi pi-tag"></i>
+                            <span className="font-semibold">{smallTalkSub.title}</span>
+                        </div>
+                        {/* <Tag value={smallTalkSub.inventoryStatus} severity={getSeverity(smallTalkSub)}></Tag> */}
+                    </div>
+                    <div className="flex flex-column align-items-center gap-3 py-5">
+                        <img className="w-9 shadow-2 border-round" src={setImg(smallTalkSub.imgUrl)} alt={smallTalkSub.name} />
+                        <div className="text-2xl font-bold">{smallTalkSub.name}</div>
+                        {/* <Rating value={smallTalkSub.rating} readOnly cancel={false}></Rating> */}
+                        <span>{smallTalkSub.detail}</span>
+
+                    </div>
+                    <div className="flex align-items-center justify-content-between">
+                        {/* <span className="text-2xl font-semibold">${smallTalkSub.price}</span> */}
+                        <Button >입장하기</Button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    const itemTemplate = (smallTalkSub: SmallTalkSubDto, layout: string) => {
+        if (!smallTalkSub) {
+            return;
+        }
+
+        if (layout === 'list') return listItem(smallTalkSub);
+        else if (layout === 'grid') return gridItem(smallTalkSub);
+    };
+
+    // const header = () => {
+    //     return (
+    //         <div className="flex justify-content-end">
+    //             <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
+    //         </div>
+    //     );
+    // };
 
     return (
         <div className="card">
@@ -47,10 +131,20 @@ const SmallTalkList = () => {
                     //onClick={handleSearchButton}
                     />
                 </span>
+
+                <span className="createButtonContainer">
+                    <Button
+                        label="Create"
+                        //onClick={goToBoardCreate}
+                    />
+                </span>
             </div>
 
+
+            <Divider />
             <div>
-                <button onClick={() => console.log(smallTalkSub)}>test</button>
+
+                <DataView value={smallTalkSub} itemTemplate={itemTemplate} />
             </div>
         </div>
     )
