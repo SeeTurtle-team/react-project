@@ -24,6 +24,7 @@ const BoardCreate = () => {
   const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  axios.defaults.baseURL = "http://localhost:5000";
   
   useEffect(() => {
     setActiveIndex(1);

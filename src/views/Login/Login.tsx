@@ -27,7 +27,7 @@ const Login = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);
     const { isLogin, setIsLogin }: UserLoginContextProviderProps = useContext(UserLoginContext);
     const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
-    // axios.defaults.baseURL = "http://localhost:5000";
+    axios.defaults.baseURL = "http://localhost:5000";
 
     useEffect(() => {
         setActiveIndex(3);

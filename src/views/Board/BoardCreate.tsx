@@ -19,6 +19,7 @@ const BoardCreate = () => {
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
+  axios.defaults.baseURL = "http://localhost:5000";
   
   useEffect(() => {
     const fetchUsers = async () => {

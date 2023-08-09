@@ -30,7 +30,7 @@ const BoardList = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
-  // axios.defaults.baseURL = "http://localhost:5000";
+  axios.defaults.baseURL = "http://localhost:5000";
 
 
   const searchOptions = [
