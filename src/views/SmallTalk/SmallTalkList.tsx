@@ -132,7 +132,7 @@ const SmallTalkList = () => {
     const getImgUrl = async (e: any) => {
 
         const imgurl = await HandleFileInput(e, headers);
-        if(!imgurl.success) {
+        if(imgurl.success===false) {
             const errCode = errorHandle(imgurl.msg);
             navigate(`/ErrorPage/${errCode}`);
         }else{
@@ -152,6 +152,24 @@ const SmallTalkList = () => {
     const createSub = async () => {
         setDialogVisible(false);
         console.log(smallSubCreate);
+
+        try{
+            axios.post('/small-talk/create',{
+                title:smallSubCreate.title,
+                detail:smallSubCreate.detail,
+                imgUrl:SubImgUrl
+            },{headers}
+            ).then((res) => res.data.body)
+            .then((res) => {
+                console.log(res);
+                getSmallSubList();
+            })
+
+        }catch(error: any) {
+            console.log(error)
+            const errCode = errorHandle(error.response.status);
+            navigate(`/ErrorPage/${errCode}`);
+          }
     }
     
     return (
@@ -190,10 +208,10 @@ const SmallTalkList = () => {
             <Dialog header="Create New Small Talk" visible={dialogVisible} style={{ width: '40vw' }} maximizable
                 modal contentStyle={{ height: '300px' }} onHide={() => setDialogVisible(false)} footer={dialogFooterTemplate}>
                 <div className="login-box-id" style={{ width: '30rem' }}>
-                    <InputText id="title" name="title" keyfilter="alphanum" style={{ width: '12rem' }} className="w-full" placeholder="Title" onChange={onChange}/>
+                    <InputText id="title" name="title" style={{ width: '12rem' }} className="w-full" placeholder="Title" onChange={onChange}/>
                 </div>
                 <div className="login-box-id" style={{ width: '30rem' }}>
-                    <InputText id="description" name="detail" keyfilter="alphanum" style={{ width: '12rem' }} className="w-full" placeholder="Description of Subject" onChange={onChange}/>
+                    <InputText id="description" name="detail" style={{ width: '12rem' }} className="w-full" placeholder="Description of Subject" onChange={onChange}/>
                 </div>
 
                 <input type="file" onChange={(e) => getImgUrl(e)} />
