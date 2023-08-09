@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
 import { useNavigate } from "react-router-dom"; // Import the useHistory hook
 import { InputText } from "primereact/inputtext";
@@ -8,8 +8,6 @@ import { errorHandle } from "../../Common/ErrorHandle";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
-import { ActiveIndexContext, ActiveIndexContextProviderProps } from "../../context/ActiveIndexContext";
-import { useMutation, useQueryClient } from 'react-query';
 
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
@@ -17,16 +15,12 @@ const BoardCreate = () => {
   const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
   const [selectBoardCategory, setSelectBoardCategory] = useState<BoardCategoryDto|null>(null);
   const [isBoardCategory, setIsBoardCategory] = useState<boolean>(false);
-  const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
-  useContext(ActiveIndexContext);
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   
   useEffect(() => {
-    setActiveIndex(1);
     const fetchUsers = async () => {
       try {
         const res = await axios.get("/board/category", {headers});
@@ -41,54 +35,39 @@ const BoardCreate = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const createBoardMutation = useMutation(
-    (newBoardData: { title: string, contents: string, boardCategoryId: number }) =>
-      axios.post('/board/create', newBoardData, { headers }).then(res => res.data.body)
-  );
-
   const handleInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {};
-
   const handleSubmit = async () => {
-    try {
-      const newBoardData = {
+  //   const encodingImages: any = text?.match( 
+  //     /data:image\/([a-zA-Z]*);base64,([^\"]*)/g, 
+  // );
+
+  try{
+    axios
+      .post("/board/create", {
         title: value,
-        contents: text || '',
-        boardCategoryId: selectBoardCategory?.id || 0,
-      };
-      await createBoardMutation.mutateAsync(newBoardData);
-      setValue('');
-      setText('');
-      queryClient.refetchQueries('getBoardList');
-      navigate('/BoardList');
-    } catch (error: any) {
-      console.log(error);
+        contents: text,
+        boardCategoryId: selectBoardCategory?.id,
+      }, {
+        headers: headers
+      })
+      .then((res) => res.data.body)
+      .then((res) => {
+        console.log(res)
+        alert('등록이 완료 되었습니다');
+        navigate("/BoardList");
+
+      });
+    setValue("");
+    setText("");
+    }
+    catch (error: any) {
+      console.log(error)
       const errCode = errorHandle(error.response.status);
       navigate(`/ErrorPage/${errCode}`);
     }
+  
   };
-
-  // const handleSubmit = async () => {
-  // try{
-  //   axios
-  //     .post("/board/create", {
-  //       title: value,
-  //       contents: text,
-  //       boardCategoryId: selectBoardCategory?.id,
-  //     }, {
-  //       headers: headers
-  //     })
-  //     .then((res) => res.data.body)
-  //     .then((res) => console.log(res));
-  //   setValue("");
-  //   setText("");
-  //   navigate("/BoardList");
-  //   }
-  //   catch (error: any) {
-  //     console.log(error)
-  //     const errCode = errorHandle(error.response.status);
-  //     navigate(`/ErrorPage/${errCode}`);
-  //   }
-  // };
+  // 로그인 기능 및 boardCreate에 category 값 추가하기
 
   const renderHeader = () => {
     return (
