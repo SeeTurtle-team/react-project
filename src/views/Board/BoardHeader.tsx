@@ -8,37 +8,44 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 function BoardHeader() {
-  const {activeIndex, setActiveIndex}:ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
+  const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const navigate = useNavigate();
   const items: MenuItem[] = [
-      { label: "Home", icon: "pi pi-fw pi-home", command: () => navigate("/") },
-      { label: "Board", icon: "pi pi-fw pi-calendar", command: () => navigate("/BoardList") },
-      { label: "EBook", icon: "pi pi-fw pi-calendar", command: () => navigate("/EbookList") },
-      (isLogin)
-        ? { label: "Logout", icon: "pi pi-sign-out", command: () => {
-            setIsLogin(false);
-            removeCookie("id");
-            alert("로그아웃 되었습니다");
-            navigate("/");
-          }}
-        : { label: "Login", icon: "pi pi-sign-in", command: () => navigate("/Login") }
-    ];
+    { label: "Home", icon: "pi pi-fw pi-home", command: () => navigate("/") },
+    { label: "Board", icon: "pi pi-fw pi-calendar", command: () => navigate("/BoardList") },
+    { label: "EBook", icon: "pi pi-fw pi-calendar", command: () => navigate("/EbookList") },
+    (isLogin)
+      ? {
+        label: "Logout", icon: "pi pi-sign-out", command: () => {
+          setIsLogin(false);
+          removeCookie("id");
+          alert("로그아웃 되었습니다");
+          navigate("/");
+        }
+      }
+      : {
+        label: "Login", icon: "pi pi-sign-in", command: () => {
+          setIsLogin(true);
+          navigate("/Login");
+        }
+      }
+  ];
 
   useEffect(() => {
-    if(cookies.id != undefined){
+    if (cookies.id != undefined) {
       setIsLogin(true);
-    } 
-    if(activeIndex === 3 && isLogin === true){
+    }
+    if (activeIndex === 3 && isLogin === true) {
       setIsLogin(false);
       removeCookie("id");
       alert("로그아웃 되었습니다");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  
+
 
   return (
     <TabMenu
@@ -46,7 +53,7 @@ function BoardHeader() {
       style={{ marginBottom: "1rem" }}
       activeIndex={activeIndex}
       onTabChange={(e) => setActiveIndex(e.index)}
-      />
+    />
   );
 }
 
