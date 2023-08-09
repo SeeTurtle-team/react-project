@@ -14,9 +14,10 @@ function BoardHeader() {
     { label: "Home", icon: "pi pi-fw pi-home", url: "/" },
     { label: "Board", icon: "pi pi-fw pi-calendar", url: "/BoardList" },
     { label: "EBook", icon: "pi pi-fw pi-calendar", url: "/EbookList" },
+    { label: "SmallTalk", icon: "pi pi-fw pi-calendar", url:"/smallTalkList"},
     (isLogin)
       ? { label: "Logout", icon: "pi pi-sign-out", url: "/" }
-      : { label: "Login", icon: "pi pi-sign-in", url: "/Login"}
+      : { label: "Login", icon: "pi pi-sign-in", url: "/Login"},
   ];
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -24,7 +25,7 @@ function BoardHeader() {
     if(cookies.id != undefined){
       setIsLogin(true);
     } 
-    if(activeIndex === 3 && isLogin === true){
+    if(activeIndex === 4 && isLogin === true){
       setIsLogin(false);
       removeCookie("id");
       alert("로그아웃 되었습니다");
