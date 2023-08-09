@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { SmallChatDto } from "../interface/SmallChatDto";
+import { SmallChatDto } from "../../interface/SmallChatDto";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 
 const socket = io('http://localhost:5000/chat');
