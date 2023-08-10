@@ -3,5 +3,6 @@ export interface SmallTalkDto{
     isDeleted:string,
     smallSubjectId:number,
     userId:number,
-    contents:string
+    contents:string,
+    userName:string
 }

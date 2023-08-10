@@ -2,6 +2,8 @@ import { io } from "socket.io-client";
 import { SmallTalkDto } from "../../interface/SmallTalkDto";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 
 const socket = io('http://localhost:5000/chat');
 
@@ -43,6 +45,11 @@ const SmallTalk = () => {
   const chatContainerEl = useRef<HTMLDivElement>(null);
   const {roomId} = useParams();
 
+
+  const [cookies, setCookie, removeCookie] = useCookies(["id"]);
+  const accessToken = cookies.id;
+  const headers = {Authorization:'Bearer '+accessToken}
+
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   }, []); 
@@ -64,6 +71,7 @@ const SmallTalk = () => {
 
     // message event listener
     useEffect(() => {
+      getList();
       const messageHandler = (chat: SmallTalkDto) =>
         setChats((prevChats) => [...prevChats, chat]);
       socket.on('message', messageHandler);
@@ -77,13 +85,20 @@ const SmallTalk = () => {
     }, []);
 
 
+  const getList = async () => {
+    const response = await axios(`/small-talk/getSmallTalk/${roomId}`,{headers});
+    setChats(response.data)
+
+  }  
+
   const onSendMessage = useCallback(
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!message) return alert('메시지를 입력해 주세요.');
 
       console.log(message);
-      socket.emit('message', { roomId, message }, (chat: SmallTalkDto) => {
+      socket.emit('message', { roomId, message, headers }, (chat: SmallTalkDto) => {
+        //console.log(chat)
         setChats((prevChats) => [...prevChats, chat]);
         setMessage('');
       });
@@ -92,11 +107,11 @@ const SmallTalk = () => {
   );
 
   return (
-    <>
+    <div className="card">
       <div>
         {chats.map((chat,index) => (
           <div>
-            {chat.userId} : {chat.contents}
+            {chat.userName} : {chat.contents}
           </div>
         ))}
       </div>
@@ -109,7 +124,7 @@ const SmallTalk = () => {
 
       </form>
 
-    </>
+    </div>
   )
 }
 
