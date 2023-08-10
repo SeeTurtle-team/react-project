@@ -55,7 +55,7 @@ const App = () => {
           <Route path="/EbookState/:id" element={<EbookState />} />
           <Route path="/EbookEdit/:ebookId" element={<EbookEdit />} />
 
-	        <Route path='smallTalk' element={<SmallTalk/>} />
+	        <Route path='smallTalk/:roomId' element={<SmallTalk/>} />
           <Route path='smallTalkList' element={<SmallTalkList/>}/>
         </Routes>
       </ActiveIndexProvider>
