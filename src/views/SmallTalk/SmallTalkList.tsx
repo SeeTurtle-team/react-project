@@ -31,6 +31,7 @@ const SmallTalkList = () => {
     const headers = { Authorization: 'Bearer ' + accessToken }
     const [dialogVisible, setDialogVisible] = useState<boolean>(false);
     const [SubImgUrl, setSubImgUrl] = useState<string>('');
+    axios.defaults.baseURL = "http://localhost:5000";
 
     const getSmallSubList = async () => {
         try {
