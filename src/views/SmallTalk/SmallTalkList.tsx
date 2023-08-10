@@ -73,7 +73,7 @@ const SmallTalkList = () => {
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
                             {/* <span className="text-2xl font-semibold">${smallTalkSub.price}</span> */}
-                            <Button >입장하기</Button>
+                            <Button onClick={()=>{navigate(`/smalltalk/${smallTalkSub.id}`)}}>입장하기</Button>
                         </div>
                     </div>
                 </div>
@@ -101,7 +101,7 @@ const SmallTalkList = () => {
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         {/* <span className="text-2xl font-semibold">${smallTalkSub.price}</span> */}
-                        <Button >입장하기</Button>
+                        <Button onClick={()=>{navigate(`/smalltalk/${smallTalkSub.id}`)}}>입장하기</Button>
                     </div>
                 </div>
             </div>
