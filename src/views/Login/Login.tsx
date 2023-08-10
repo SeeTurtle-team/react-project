@@ -22,12 +22,12 @@ const Login = () => {
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
     const clientID = `${process.env.REACT_APP_GOOGLE_LOGIN}`;
-
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);
     const { isLogin, setIsLogin }: UserLoginContextProviderProps = useContext(UserLoginContext);
     const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
+    axios.defaults.baseURL = "http://localhost:5000";
 
     useEffect(() => {
         setActiveIndex(3);

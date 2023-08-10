@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Card } from "primereact/card";
-import { useNavigate } from "react-router-dom"; // Import the useHistory hook
-import { Panel } from "primereact/panel";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router";
 import { errorHandle } from "../../Common/ErrorHandle";
 import axios from "axios";
@@ -20,7 +19,6 @@ const BoardState = () => {
   const [board, setBoard] = useState<BoardUpdateDto>();
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
     useContext(ActiveIndexContext);
-
   const { index } = useParams();
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
@@ -48,7 +46,6 @@ const BoardState = () => {
 
   useEffect(() => {
     fetchUsers();
-    console.log(index);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

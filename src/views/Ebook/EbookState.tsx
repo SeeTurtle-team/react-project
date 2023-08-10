@@ -10,8 +10,8 @@ import { useCookies } from 'react-cookie';
 
 const EbookState = () => {
     const { index } = useParams();
-    const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
-    useContext(ActiveIndexContext);
+    // const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
+    // useContext(ActiveIndexContext);
     const [text, setText] = useState<string>("<h2>test</h2><p>a");
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);
     const accessToken = cookies.id;
@@ -21,7 +21,7 @@ const EbookState = () => {
     // axios.get("url", "{json}", "{header}")
 
     useEffect(() => {
-        setActiveIndex(2);
+        // setActiveIndex(2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 

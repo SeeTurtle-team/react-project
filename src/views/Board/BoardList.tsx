@@ -15,6 +15,7 @@ import { ActiveIndexContext } from "../../context/ActiveIndexContext";
 import { ActiveIndexContextProviderProps } from "../../interface/UseContextDTO";
 import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
+import { useQuery, useMutation } from "react-query";
 import "../../css/BoardList.css";
 
 const BoardList = () => {
@@ -29,29 +30,61 @@ const BoardList = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
+  axios.defaults.baseURL = "http://localhost:5000";
+
 
   const searchOptions = [
     { name: "Title", code: "t" },
     { name: "User", code: "u" },
   ];
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputSearch(e.target.value);
-  };
+  const { isSuccess, isError, isLoading, isFetching, data, error } = useQuery(
+    'getBoardList',
+    () => axios.get("/board", {headers}),
+    {
+      onSuccess: (data) => {
+        console.log("onSuccess", data);
+        console.log(data.data);
+        setBoard(data.data.items);
+      },
+      onError: (error) => {
+        console.log("onError", error);
+      },
+      staleTime: 60000,
+      cacheTime: Infinity,
+    }
+  );
 
-  const goToBoardCreate = () => {
-    navigate("/BoardCreate");
-  };
+  if (isFetching) {
+    console.log("fetching...");
+  }
+
+  if (isLoading) {
+    console.log("loading...");
+  }
+
+  if (isError) {
+    console.log("error", error);
+  }
+
+  if (isSuccess) {
+    console.log("success");
+  }
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    if(isSuccess && data){
+      setBoard(data.data.items);
+    }
+    const FetchUsers = async () => {
       setActiveIndex(1);
       try {
         const res = await axios.get("/board/category",{headers});
         setBoardCategory(res.data);
         console.log(boardCategory);
-        const response = await axios.get("/board",{headers});
-        setBoard(response.data);
+
+        // const response = await axios.get("/board",{headers});
+        // setBoard(response.data);
+
       } catch (error: any) {
         console.log(error);
         const errCode = errorHandle(error.response.status);
@@ -63,24 +96,32 @@ const BoardList = () => {
       // });
     };
 
-    fetchUsers();
+    FetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputSearch(e.target.value);
+  };
+
+  const goToBoardCreate = () => {
+    navigate("/BoardCreate");
+  };
 
   const boardState = (event: any) => {
     console.log(event.data);
     const index = event.data.id;
     navigate(`/BoardState/${index}`);
   };
-  const filterSearch = board.filter((Board: any) => {
-    //console.log(selectedSearchOption);
-    Board.dateTime = dateFormatFunc(Board.dateTime);
-    if (selectedSearchOption?.code === "u") {
-      return Board.nickname?.toLowerCase().includes(inputSearch.toLowerCase());
-    } else {
-      return Board.title?.toLowerCase().includes(inputSearch.toLowerCase());
-    }
-  });
+  // const filterSearch = board.filter((Board: any) => {
+  //   console.log(selectedSearchOption);
+  //   Board.dateTime = dateFormatFunc(Board.dateTime);
+  //   if (selectedSearchOption?.code === "u") {
+  //     return Board.nickname?.toLowerCase().includes(inputSearch.toLowerCase());
+  //   } else {
+  //     return Board.title?.toLowerCase().includes(inputSearch.toLowerCase());
+  //   }
+  // });
 
   const categorySearch = async (e: any) => {
     console.log(e.id);
