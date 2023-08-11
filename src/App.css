@@ -43,3 +43,8 @@
   justify-content: right;
   text-align: right;
 }
+
+.chatBox{
+  border-width: 0.1px;
+  border-style: solid;
+}
