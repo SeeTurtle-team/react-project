@@ -4,7 +4,9 @@ import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from
 import { useParams } from "react-router";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { Card } from 'primereact/card';import { Divider } from "primereact/divider";
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Button } from 'primereact/button';
+import { Divider } from "primereact/divider";
 ;
 
 const socket = io('http://localhost:5000/chat');
@@ -21,7 +23,7 @@ const SmallTalk = () => {
   const accessToken = cookies.id;
   const headers = { Authorization: 'Bearer ' + accessToken }
 
-  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = useCallback((e: any) => {
     setMessage(e.target.value);
   }, []);
 
@@ -81,10 +83,10 @@ const SmallTalk = () => {
     <div className="card">
       <div>
         {chats.map((chat, index) => (
-          <div className='chatBox' style={{marginTop:'0.5rem', border:'solid 0.1px',borderRadius:'10px', background:'#f4f5f5'}}>
-            <h3 style={{marginLeft:'1rem'}}>{chat.userName}의 의견</h3>
-            <Divider/>
-            <p style={{marginLeft:'1rem'}} >
+          <div className='chatBox' style={{ marginTop: '0.5rem', border: 'solid 0.1px', borderRadius: '10px', background: '#f4f5f5' }}>
+            <h3 style={{ marginLeft: '1rem' }}>{chat.userName}의 의견</h3>
+            <Divider />
+            <p style={{ marginLeft: '1rem' }} >
               {chat.contents}
             </p>
           </div>
@@ -94,14 +96,29 @@ const SmallTalk = () => {
 
         ))}
       </div>
+      <Divider/>
+      <br />
+      <div >
+        <form method="submit" onSubmit={onSendMessage} >
+          {/* <input type='text' value={message} onChange={onChange} /> */}
+          <label htmlFor="의견 제시하기" style={{display:'block'}}>의견 제시하기</label>
+          <InputTextarea
+            // inputid="description"
+            style={{display:'block',marginTop:'0.5rem'}}
+            name="description"
+            rows={4}
+            cols={100}
+            // className={classNames({ 'p-invalid': isFormFieldInvalid('description') })}
+            value={message}
+            onChange={(e) => {
+              onChange(e);
+            }}
+          />
+          <Button style={{height:'3rem',marginTop:'0.5rem'}} label="Submit" type="submit" icon="pi pi-check" />
 
-      <br/>
+        </form>
+      </div>
 
-      <form method="submit" onSubmit={onSendMessage}>
-        <input type='text' value={message} onChange={onChange} />
-        <input type="submit" value="Submit" />
-
-      </form>
 
     </div>
   )
