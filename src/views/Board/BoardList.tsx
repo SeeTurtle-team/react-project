@@ -155,6 +155,7 @@ const BoardList = () => {
 
   const changePage = async (newPage: number) => {
     try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const response = await axios.get(`/board/?pageNo=${newPage}`, { headers });
       console.log(response);
       setBoard(response.data.items);
