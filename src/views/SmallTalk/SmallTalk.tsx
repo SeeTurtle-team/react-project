@@ -71,7 +71,7 @@ const SmallTalk = () => {
       const response = await axios(`/small-talk/getSmallTalk/${roomId}`, { headers });
       console.log(response);
       setChats(response.data.list);
-      setSmallTalkSub(response.data.sub[0]);
+      setSmallTalkSub(response.data.sub);
     } catch (error: any) {
       console.log(error)
       const errCode = errorHandle(error.response.status);
