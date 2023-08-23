@@ -1,12 +1,14 @@
 import { io } from "socket.io-client";
 import { SmallTalkDto } from "../../interface/SmallTalkDto";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 import { Divider } from "primereact/divider";
+import { errorHandle } from "../../Common/ErrorHandle";
+import { SmallSubCreateDto } from "../../interface/SmallSubCreate.Dto";
 ;
 
 const socket = io('http://localhost:5000/chat');
@@ -14,9 +16,15 @@ const socket = io('http://localhost:5000/chat');
 
 const SmallTalk = () => {
   const [chats, setChats] = useState<SmallTalkDto[]>([]);
+  const [smallSubCreate, setSmallSubCreate] = useState<SmallSubCreateDto>({
+    title:"",
+    detail:"",
+    imgUrl:""
+  });
   const [message, setMessage] = useState<string>('');
   const chatContainerEl = useRef<HTMLDivElement>(null);
   const { roomId } = useParams();
+  const navigate = useNavigate();
 
 
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
@@ -59,8 +67,15 @@ const SmallTalk = () => {
 
 
   const getList = async () => {
-    const response = await axios(`/small-talk/getSmallTalk/${roomId}`, { headers });
-    setChats(response.data)
+    try {
+      const response = await axios(`/small-talk/getSmallTalk/${roomId}`, { headers });
+      setChats(response.data.list)
+    } catch (error: any) {
+      console.log(error)
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    }
+
 
   }
 
@@ -96,15 +111,15 @@ const SmallTalk = () => {
 
         ))}
       </div>
-      <Divider/>
+      <Divider />
       <br />
       <div >
         <form method="submit" onSubmit={onSendMessage} >
           {/* <input type='text' value={message} onChange={onChange} /> */}
-          <label htmlFor="의견 제시하기" style={{display:'block'}}>의견 제시하기</label>
+          <label htmlFor="의견 제시하기" style={{ display: 'block' }}>의견 제시하기</label>
           <InputTextarea
             // inputid="description"
-            style={{display:'block',marginTop:'0.5rem'}}
+            style={{ display: 'block', marginTop: '0.5rem' }}
             name="description"
             rows={4}
             cols={100}
@@ -114,7 +129,7 @@ const SmallTalk = () => {
               onChange(e);
             }}
           />
-          <Button style={{height:'3rem',marginTop:'0.5rem'}} label="Submit" type="submit" icon="pi pi-check" />
+          <Button style={{ height: '3rem', marginTop: '0.5rem' }} label="Submit" type="submit" icon="pi pi-check" />
 
         </form>
       </div>
