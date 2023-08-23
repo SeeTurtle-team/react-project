@@ -8,19 +8,19 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 import { Divider } from "primereact/divider";
 import { errorHandle } from "../../Common/ErrorHandle";
-import { SmallSubCreateDto } from "../../interface/SmallSubCreate.Dto";
+import { SmallTalkSubDto } from "../../interface/SmallTalkSub.Dto";
 ;
 
 const socket = io('http://localhost:5000/chat');
 
 
 const SmallTalk = () => {
+
+  //스몰 톡 리스트
   const [chats, setChats] = useState<SmallTalkDto[]>([]);
-  const [smallSubCreate, setSmallSubCreate] = useState<SmallSubCreateDto>({
-    title:"",
-    detail:"",
-    imgUrl:""
-  });
+  const [smallTalkSub, setSmallTalkSub] = useState<SmallTalkSubDto>();
+
+
   const [message, setMessage] = useState<string>('');
   const chatContainerEl = useRef<HTMLDivElement>(null);
   const { roomId } = useParams();
@@ -69,7 +69,9 @@ const SmallTalk = () => {
   const getList = async () => {
     try {
       const response = await axios(`/small-talk/getSmallTalk/${roomId}`, { headers });
-      setChats(response.data.list)
+      console.log(response);
+      setChats(response.data.list);
+      setSmallTalkSub(response.data.sub[0]);
     } catch (error: any) {
       console.log(error)
       const errCode = errorHandle(error.response.status);
@@ -94,8 +96,33 @@ const SmallTalk = () => {
     [message, roomId]
   );
 
+  const setImg = (url: string|any) => {
+    return url === null ? `https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5064919.png` : url;
+  }
+
   return (
     <div className="card">
+      <div className="col-12">
+        <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+          <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={setImg(smallTalkSub?.imgUrl)} alt={smallTalkSub?.name} />
+          <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+            <div className="flex flex-column align-items-center sm:align-items-start gap-3">
+              <div className="text-2xl font-bold text-900">{smallTalkSub?.title}</div>
+              {/* <Rating value={smallTalkSub.rating} readOnly cancel={false}></Rating> */}
+              <h3>{smallTalkSub?.detail}</h3>
+              <span>생성자 : {smallTalkSub?.nickname}</span>
+              <div className="flex align-items-center gap-3">
+                <span className="flex align-items-center gap-2">
+                  <i className="pi pi-tag"></i>
+                  {/* <span className="font-semibold">{smallTalkSub.category}</span> */}
+                </span>
+                {/* <Tag value={smallTalkSub.inventoryStatus} severity={getSeverity(smallTalkSub)}></Tag> */}
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      </div>
       <div>
         {chats.map((chat, index) => (
           <div className='chatBox' style={{ marginTop: '0.5rem', border: 'solid 0.1px', borderRadius: '10px', background: '#f4f5f5' }}>
