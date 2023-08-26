@@ -17,12 +17,14 @@ import { SmallSubCreateDto } from "../../interface/SmallSubCreate.Dto";
 const SmallTalkList = () => {
     const [smallTalkSub, setSmallTalkSub] = useState<SmallTalkSubDto[]>([]);
     const [smallSubCreate, setSmallSubCreate] = useState<SmallSubCreateDto>({
-        title:"",
-        detail:"",
-        imgUrl:""
+        title: "",
+        detail: "",
+        imgUrl: ""
     }
-       
+
     );
+
+    const [searchTitle, setSearchTitle] = useState<string>('');
 
     const navigate = useNavigate();
 
@@ -74,7 +76,7 @@ const SmallTalkList = () => {
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
                             {/* <span className="text-2xl font-semibold">${smallTalkSub.price}</span> */}
-                            <Button onClick={()=>{navigate(`/smalltalk/${smallTalkSub.id}`)}}>입장하기</Button>
+                            <Button onClick={() => { navigate(`/smalltalk/${smallTalkSub.id}`) }}>입장하기</Button>
                         </div>
                     </div>
                 </div>
@@ -102,7 +104,7 @@ const SmallTalkList = () => {
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         {/* <span className="text-2xl font-semibold">${smallTalkSub.price}</span> */}
-                        <Button onClick={()=>{navigate(`/smalltalk/${smallTalkSub.id}`)}}>입장하기</Button>
+                        <Button onClick={() => { navigate(`/smalltalk/${smallTalkSub.id}`) }}>입장하기</Button>
                     </div>
                 </div>
             </div>
@@ -133,46 +135,64 @@ const SmallTalkList = () => {
     const getImgUrl = async (e: any) => {
 
         const imgurl = await HandleFileInput(e, headers);
-        if(imgurl.success===false) {
+        if (imgurl.success === false) {
             const errCode = errorHandle(imgurl.msg);
             navigate(`/ErrorPage/${errCode}`);
-        }else{
+        } else {
             setSubImgUrl(imgurl);
         }
     }
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setSmallSubCreate({
             ...smallSubCreate,
-            [name]:value
+            [name]: value
         })
     }
 
-    
+    const searchSmalltalkSub = (e:React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTitle(e.target.value);
+    }
+
     const createSub = async () => {
         setDialogVisible(false);
         console.log(smallSubCreate);
 
-        try{
-            axios.post('/small-talk/create',{
-                title:smallSubCreate.title,
-                detail:smallSubCreate.detail,
-                imgUrl:SubImgUrl
-            },{headers}
+        try {
+            axios.post('/small-talk/create', {
+                title: smallSubCreate.title,
+                detail: smallSubCreate.detail,
+                imgUrl: SubImgUrl
+            }, { headers }
             ).then((res) => res.data.body)
-            .then((res) => {
-                console.log(res);
-                getSmallSubList();
-            })
+                .then((res) => {
+                    console.log(res);
+                    getSmallSubList();
+                })
 
-        }catch(error: any) {
+        } catch (error: any) {
             console.log(error)
             const errCode = errorHandle(error.response.status);
             navigate(`/ErrorPage/${errCode}`);
-          }
+        }
     }
-    
+
+    const getSearchList = async () => {
+        console.log(searchTitle);
+        try {
+            const res = await axios.post("/small-talk/searchTitle", 
+            { title:searchTitle},
+            { headers });
+            setSearchTitle('');
+            setSmallTalkSub(res.data);
+
+        } catch (error: any) {
+            const errCode = errorHandle(error.response.status);
+            navigate(`/ErrorPage/${errCode}`); // error 발생 시 이전 page 이동
+        }
+    }
+
     return (
         <div className="card">
             <div>
@@ -180,14 +200,14 @@ const SmallTalkList = () => {
                     <i className="pi pi-search" />
                     <InputText
                         placeholder="Search"
-                    //onInput={handleSearch}
-                    //value={inputSearch}
+                        onInput={searchSmalltalkSub}
+                        value={searchTitle}
                     />
                 </span>
                 <span style={{ marginLeft: '1rem' }}>
                     <Button
                         label="검색"
-                    //onClick={handleSearchButton}
+                        onClick={getSearchList}
                     />
                 </span>
 
@@ -209,10 +229,10 @@ const SmallTalkList = () => {
             <Dialog header="Create New Small Talk" visible={dialogVisible} style={{ width: '40vw' }} maximizable
                 modal contentStyle={{ height: '300px' }} onHide={() => setDialogVisible(false)} footer={dialogFooterTemplate}>
                 <div className="login-box-id" style={{ width: '30rem' }}>
-                    <InputText id="title" name="title" style={{ width: '12rem' }} className="w-full" placeholder="Title" onChange={onChange}/>
+                    <InputText id="title" name="title" style={{ width: '12rem' }} className="w-full" placeholder="Title" onChange={onChange} />
                 </div>
                 <div className="login-box-id" style={{ width: '30rem' }}>
-                    <InputText id="description" name="detail" style={{ width: '12rem' }} className="w-full" placeholder="Description of Subject" onChange={onChange}/>
+                    <InputText id="description" name="detail" style={{ width: '12rem' }} className="w-full" placeholder="Description of Subject" onChange={onChange} />
                 </div>
 
                 <input type="file" onChange={(e) => getImgUrl(e)} />

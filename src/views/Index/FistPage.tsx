@@ -2,9 +2,9 @@ import { Button } from 'primereact/button';
 import { Carousel, CarouselResponsiveOption } from 'primereact/carousel';
 import { Tag } from 'primereact/tag';
 import { useState, useEffect, useContext } from 'react';
-import { ProductService } from '../service/ProductService';
+import { ProductService } from '../../service/ProductService';
 import { Fieldset } from 'primereact/fieldset';
-import { ActiveIndexContext, ActiveIndexContextProviderProps } from '../context/ActiveIndexContext';
+import { ActiveIndexContext, ActiveIndexContextProviderProps } from '../../context/ActiveIndexContext';
 
 const FirstPage = () => {
     const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =

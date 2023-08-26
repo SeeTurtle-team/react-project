@@ -11,7 +11,7 @@ import UserCreate from "./views/Login/UserCreate";
 import ErrorHandlingPage from "./Common/ErrorHandlingPage";
 import UserLoginProvider from './context/UserLoginContext';
 import ActiveIndexProvider from "./context/ActiveIndexContext";
-import FirstPage from "./views/FistPage";
+import FirstPage from "./views/Index/FistPage";
 import { ProgressSpinner } from "primereact/progressspinner";
 import EbookCreate from "./views/Ebook/EbookCreate";
 import EbookList from "./views/Ebook/EbookList";
