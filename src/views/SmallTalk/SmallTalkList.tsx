@@ -179,7 +179,7 @@ const SmallTalkList = () => {
     }
 
     const getSearchList = async () => {
-        console.log(searchTitle);
+        //console.log(searchTitle);
         try {
             const res = await axios.post("/small-talk/searchTitle", 
             { title:searchTitle},
@@ -193,6 +193,14 @@ const SmallTalkList = () => {
         }
     }
 
+    const enterKey = (e:any) => {
+        console.log(e.key);
+       
+        if(e.key == 'Enter'){
+            searchTitle == '' ? getSmallSubList() : getSearchList();
+        }
+    }
+ 
     return (
         <div className="card">
             <div>
@@ -202,6 +210,7 @@ const SmallTalkList = () => {
                         placeholder="Search"
                         onInput={searchSmalltalkSub}
                         value={searchTitle}
+                        onKeyDown={enterKey}
                     />
                 </span>
                 <span style={{ marginLeft: '1rem' }}>
