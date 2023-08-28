@@ -27,7 +27,7 @@ const LastBoard = () => {
 
     const legendTemplate = (
         <div className="flex align-items-center text-primary">
-            <span className="pi pi-user mr-2"></span>
+            <span className="pi pi-fw pi-calendar"></span>
             <span className="font-bold text-lg">최근 게시글</span>
         </div>
     );
