@@ -5,8 +5,9 @@ import { useState, useEffect, useContext } from 'react';
 import { ProductService } from '../../service/ProductService';
 import { Fieldset } from 'primereact/fieldset';
 import { ActiveIndexContext, ActiveIndexContextProviderProps } from '../../context/ActiveIndexContext';
-import PopularEbook from './PopularEbook';
+import MenuButton from './MenuButton';
 import LastBoard from './LastBoard';
+import PopularSmallTalk from './PopularSmallTalk';
 
 const FirstPage = () => {
     const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
@@ -105,11 +106,15 @@ const FirstPage = () => {
             </div>
 
             <div className="card" style={{float:'left', width:'49%'}}>
-                <PopularEbook/>
+                <MenuButton/>
             </div>
 
             <div className="card" style={{float:'left', width:'49%',marginLeft:'2%',display:"inline-block"}}>
                 <LastBoard/>
+            </div>
+
+            <div className='card' style={{display:'inline-block',width:'100%'}}>
+                <PopularSmallTalk/>
             </div>
         </>
         

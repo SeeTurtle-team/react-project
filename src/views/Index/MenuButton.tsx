@@ -1,7 +1,7 @@
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router';
 
-const PopularEbook = () => {
+const MenuButton = () => {
     const navigate = useNavigate();
 
     const board = () :string=> {
@@ -30,4 +30,4 @@ const PopularEbook = () => {
     )
 }
 
-export default PopularEbook;
+export default MenuButton;
