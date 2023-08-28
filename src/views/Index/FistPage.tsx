@@ -108,7 +108,7 @@ const FirstPage = () => {
                 <PopularEbook/>
             </div>
 
-            <div className="card" style={{float:'left', width:'49%',marginLeft:'2%'}}>
+            <div className="card" style={{float:'left', width:'49%',marginLeft:'2%',display:"inline-block"}}>
                 <LastBoard/>
             </div>
         </>

@@ -32,22 +32,31 @@ const LastBoard = () => {
         </div>
     );
 
+    const boardState = (event: any) => {
+        console.log(event.data);
+        const index = event.data.id;
+        navigate(`/BoardState/${index}`);
+    };
+
     return (
-        <>
-            <Fieldset legend={legendTemplate}>
+        <div style={{display:'inline-flex',width:'100%'}}>
+            <Fieldset legend={legendTemplate} style={{display:'inline-flex'}}>
                 <DataTable
                     value={board}
                     tableStyle={{ minWidth: "50rem" }}
                     rows={5}
-                //onRowClick={boardState}
+                    onRowClick={boardState}
+                    style={{display:'inline-flex'}}
                 >
                     {/* <Column field="id" header="ID"></Column> */}
                     <Column field="title" header="Title"></Column>
                     <Column field="category" header="Category"></Column>
                     <Column field="nickname" header="Nickname"></Column>
+                    <Column field="dateTime" header="Date"></Column>
+
                 </DataTable>
             </Fieldset>
-        </>
+        </div>
     )
 
 }
