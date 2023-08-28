@@ -16,6 +16,7 @@ function BoardHeader() {
     { label: "Home", icon: "pi pi-fw pi-home", command: () => navigate("/") },
     { label: "Board", icon: "pi pi-fw pi-calendar", command: () => navigate("/BoardList") },
     { label: "EBook", icon: "pi pi-fw pi-calendar", command: () => navigate("/EbookList") },
+    { label: "QnA", icon: "pi pi-fw pi-calendar", command: () => navigate("/QnA") },
     { label: "SmallTalk", icon: "pi pi-fw pi-calendar", command: () => navigate("/smallTalkList") },
     (isLogin)
       ? {
@@ -38,7 +39,7 @@ function BoardHeader() {
     if (cookies.id != undefined) {
       setIsLogin(true);
     }
-    if (activeIndex === 4 && isLogin === true) {
+    if (activeIndex === 5 && isLogin === true) {
       setIsLogin(false);
       removeCookie("id");
       alert("로그아웃 되었습니다");
