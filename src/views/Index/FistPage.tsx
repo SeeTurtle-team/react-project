@@ -8,10 +8,16 @@ import { ActiveIndexContext, ActiveIndexContextProviderProps } from '../../conte
 import MenuButton from './MenuButton';
 import LastBoard from './LastBoard';
 import PopularSmallTalk from './PopularSmallTalk';
+import axios from 'axios';
+import { useNavigate } from 'react-router';
+import { errorHandle } from '../../Common/ErrorHandle';
+import { GetEbookListDto } from '../../interface/GetEbookListDto';
 
 const FirstPage = () => {
     const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
     useContext(ActiveIndexContext);
+    const navigate = useNavigate();
+    const [ebookList, setEbookList] = useState<GetEbookListDto[]>([]);
 
     interface Product {
         id: string;
@@ -66,7 +72,22 @@ const FirstPage = () => {
     useEffect(() => {
         ProductService.getProductsSmall().then((data) => setProducts(data.slice(0, 9)));
         setActiveIndex(0);
+        getEbookList();
     }, []);
+
+    const getEbookList = async () => {
+        try{
+            const res = await axios.get('/ebook/starRating?pageNo=1&pageSize=10');
+            console.log(res.data);
+            setEbookList(res.data.items);
+        }catch(error:any) {
+            console.log(error);
+            // console.log(error.response.status)
+            const errCode = error.message ==='Network Error' ? '503' : errorHandle(error.response.status);
+            
+            navigate(`/ErrorPage/${errCode}`); //
+        }
+    }
 
     const productTemplate = (product: Product) => {
         return (
