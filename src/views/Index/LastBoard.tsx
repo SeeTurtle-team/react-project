@@ -51,13 +51,17 @@ const LastBoard = () => {
 
     return (
         <div style={{display:'inline-flex',width:'100%'}}>
-            <Fieldset legend={legendTemplate} style={{display:'inline-flex'}}>
+            <Fieldset legend={legendTemplate} style={{display:'inline-block'}}>
                 <DataTable
                     value={board}
                     tableStyle={{ minWidth: "50rem" }}
                     rows={5}
+                    resizableColumns columnResizeMode="fit"
                     onRowClick={boardState}
                     style={{display:'inline-flex'}}
+                    showGridlines
+                    //virtualScrollerOptions={{ itemSize: 26 }}
+                    scrollable
                 >
                     {/* <Column field="id" header="ID"></Column> */}
                     <Column field="title" header="Title"></Column>
