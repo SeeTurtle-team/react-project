@@ -8,10 +8,16 @@ import { ActiveIndexContext, ActiveIndexContextProviderProps } from '../../conte
 import MenuButton from './MenuButton';
 import LastBoard from './LastBoard';
 import PopularSmallTalk from './PopularSmallTalk';
+import axios from 'axios';
+import { useNavigate } from 'react-router';
+import { errorHandle } from '../../Common/ErrorHandle';
+import { GetEbookListDto } from '../../interface/GetEbookListDto';
 
 const FirstPage = () => {
     const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
     useContext(ActiveIndexContext);
+    const navigate = useNavigate();
+    const [ebookList, setEbookList] = useState<GetEbookListDto[]>([]);
 
     interface Product {
         id: string;
@@ -47,37 +53,67 @@ const FirstPage = () => {
         }
     ];
 
-    const getSeverity = (product: Product) => {
-        switch (product.inventoryStatus) {
-            case 'INSTOCK':
-                return 'success';
+    const getSeverity = (product: GetEbookListDto) => {
+        const rating = parseInt(product.starRating);
 
-            case 'LOWSTOCK':
-                return 'warning';
-
-            case 'OUTOFSTOCK':
-                return 'danger';
-
-            default:
-                return null;
+        if(rating>=8){
+            return 'danger';
+        }else if(rating>=4 && rating<8){
+            return 'warning'; 
+        }else{
+            return 'success';
         }
+        // switch (product.starRating) {
+        //     case 'OUTOFSTOCK':
+        //         return 'danger';
+
+        //     case 'LOWSTOCK':
+        //         return 'warning';    
+        //     case 'INSTOCK':
+        //         return 'success';
+
+            
+
+            
+
+        //     default:
+        //         return null;
+        // }
     };
 
     useEffect(() => {
         ProductService.getProductsSmall().then((data) => setProducts(data.slice(0, 9)));
         setActiveIndex(0);
+        getEbookList();
     }, []);
 
-    const productTemplate = (product: Product) => {
+    const getEbookList = async () => {
+        try{
+            const res = await axios.get('/ebook/starRating?pageNo=1&pageSize=10');
+            console.log(res.data);
+            setEbookList(res.data.items);
+        }catch(error:any) {
+            console.log(error);
+            // console.log(error.response.status)
+            const errCode = error.message ==='Network Error' ? '503' : errorHandle(error.response.status);
+            
+            navigate(`/ErrorPage/${errCode}`); //
+        }
+    }
+
+    const productTemplate = (product: GetEbookListDto) => {
         return (
-            <div >
-                <div className="mb-3">
-                    <img src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`} alt={product.name} className="w-6 shadow-2" />
+            <div style={{marginLeft:'25%'}}>
+                <div className="mb-3" >
+                    <img src={`https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5875129.png`} alt={product.title} className="w-6 shadow-2" />
                 </div>
                 <div>
-                    <h4 className="mb-1">{product.name}</h4>
-                    <h6 className="mt-0 mb-3">${product.price}</h6>
-                    <Tag value={product.inventoryStatus} severity={getSeverity(product)}></Tag>
+                    <h2 className="mb-1">{product.title}</h2>
+                    <h4 className="mt-0 mb-3" style={{display:'inline'}}>{product.nickname}</h4>
+                    <h4 className="mt-0 mb-3" style={{display:'inline', marginLeft:'35%'}}>{product.category}</h4>
+                    <div style={{marginTop:'0.5rem'}}>
+                        <Tag value={product.starRating} severity={getSeverity(product)}></Tag>
+                    </div>
                     <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
                         <Button icon="pi pi-search" className="p-button p-button-rounded" />
                         <Button icon="pi pi-star-fill" className="p-button-success p-button-rounded" />
@@ -99,7 +135,7 @@ const FirstPage = () => {
         <>
             <div className="card">
                 <Fieldset legend={legendTemplate}>
-                    <Carousel value={products} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} className="custom-carousel" circular
+                    <Carousel value={ebookList} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} className="custom-carousel" circular
                         autoplayInterval={3000} itemTemplate={productTemplate} />
                 </Fieldset>
             
