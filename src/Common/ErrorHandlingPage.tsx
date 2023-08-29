@@ -63,6 +63,15 @@ const ErrorHandlingPage = () => {
         )
     }
 
+    const page503 = () => {
+        return (
+            <div>
+                <h1>죄송합니다. 서버에 문제가 발생했습니다</h1>
+                <h1>빠른 시일내에 문제를 해결하도록 하겠습니다.</h1>
+            </div>
+        )
+    }
+
     const errStatueCheck = (id: any) => {
         //에러 발생 시 코드에 따라 case를 추가하시고 위에 함수로 리턴 값을 만들어주시면 됩니다.
         switch (id) {
@@ -90,6 +99,9 @@ const ErrorHandlingPage = () => {
             case '408':
                 setErrMsg(page408);
                 break;
+            case '503':
+                setErrMsg(page503);
+                break;
         }
     }
 
@@ -98,7 +110,7 @@ const ErrorHandlingPage = () => {
     }, []);
 
     return (
-        <div>
+        <div className="card">
             {errMsg}
         </div>
     )

@@ -6,6 +6,7 @@ import axios from "axios";
 import { Fieldset } from "primereact/fieldset";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { errorHandle } from "../../Common/ErrorHandle";
 
 //최근 업로드 게시판 불러오기
 const LastBoard = () => {
@@ -21,8 +22,18 @@ const LastBoard = () => {
 
     /**최근 업로드 된 게시글 불러오기 */
     const getLastBoardList = async () => {
-        const res = await axios.get("/board/lastBoard");
-        setBoard(res.data);
+        try{
+            const res = await axios.get("/board/lastBoard");
+            setBoard(res.data);
+        }catch(error:any){
+            console.log(error);
+            // console.log(error.response.status)
+            const errCode = error.message ==='Network Error' ? '503' : errorHandle(error.response.status);
+            
+            navigate(`/ErrorPage/${errCode}`); //
+
+        }
+        
     }
 
     const legendTemplate = (
