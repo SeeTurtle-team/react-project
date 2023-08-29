@@ -22,6 +22,7 @@ import EbookState from "./views/Ebook/EbookState";
 import EbookEdit from "./views/Ebook/EbookEdit";
 import SearchPasswordReset from "./views/Login/SearchPasswordReset";
 import SmallTalkList from "./views/SmallTalk/SmallTalkList";
+import QnAList from "./views/QnA/QnAList";
 
 const BoardList = lazy(() => import("./views/Board/BoardList"));
 const BoardState = lazy(() => import("./views/Board/BoardState"));
@@ -57,6 +58,8 @@ const App = () => {
 
 	        <Route path='/smallTalk/:roomId' element={<SmallTalk/>} />
           <Route path='/smallTalkList' element={<SmallTalkList/>}/>
+
+          <Route path='/QnAList' element={<QnAList/>}/>
         </Routes>
       </ActiveIndexProvider>
       </UserLoginProvider>

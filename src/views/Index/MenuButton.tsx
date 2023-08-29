@@ -23,7 +23,7 @@ const MenuButton = () => {
             </div>
             <div style={{marginTop:'1rem'}}>
                 <Button label="즐거운 게시글을 보고 싶다면??" style={{ width: '49%', height: '13.5rem' }} severity="info" onClick={() => navigate('/BoardList')}/>
-                <Button label="운영자에게 질문이 있다면??" style={{ width: '49%', height: '13.5rem',marginLeft:'1%'  }} severity="secondary" onClick={() => {}}/>
+                <Button label="운영자에게 질문이 있다면??" style={{ width: '49%', height: '13.5rem',marginLeft:'1%'  }} severity="secondary" onClick={() => navigate('/QnAList')}/>
             </div>
            
         </>

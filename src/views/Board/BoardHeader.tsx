@@ -16,7 +16,7 @@ function BoardHeader() {
     { label: "Home", icon: "pi pi-fw pi-home", command: () => navigate("/") },
     { label: "Board", icon: "pi pi-fw pi-calendar", command: () => navigate("/BoardList") },
     { label: "EBook", icon: "pi pi-fw pi-calendar", command: () => navigate("/EbookList") },
-    { label: "QnA", icon: "pi pi-fw pi-calendar", command: () => navigate("/QnA") },
+    { label: "QnA", icon: "pi pi-fw pi-calendar", command: () => navigate("/QnAList") },
     { label: "SmallTalk", icon: "pi pi-fw pi-calendar", command: () => navigate("/smallTalkList") },
     (isLogin)
       ? {
