@@ -103,14 +103,17 @@ const FirstPage = () => {
 
     const productTemplate = (product: GetEbookListDto) => {
         return (
-            <div >
-                <div className="mb-3">
+            <div style={{marginLeft:'25%'}}>
+                <div className="mb-3" >
                     <img src={`https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5875129.png`} alt={product.title} className="w-6 shadow-2" />
                 </div>
                 <div>
-                    <h3 className="mb-1">{product.title}</h3>
-                    <h6 className="mt-0 mb-3">${product.starRating}</h6>
-                    <Tag value={product.starRating} severity={getSeverity(product)}></Tag>
+                    <h2 className="mb-1">{product.title}</h2>
+                    <h4 className="mt-0 mb-3" style={{display:'inline'}}>{product.nickname}</h4>
+                    <h4 className="mt-0 mb-3" style={{display:'inline', marginLeft:'35%'}}>{product.category}</h4>
+                    <div style={{marginTop:'0.5rem'}}>
+                        <Tag value={product.starRating} severity={getSeverity(product)}></Tag>
+                    </div>
                     <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
                         <Button icon="pi pi-search" className="p-button p-button-rounded" />
                         <Button icon="pi pi-star-fill" className="p-button-success p-button-rounded" />
