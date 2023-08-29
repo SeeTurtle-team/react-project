@@ -42,7 +42,7 @@ const LastBoard = () => {
             <span className="font-bold text-lg">최근 게시글</span>
         </div>
     );
-
+ 
     const boardState = (event: any) => {
         console.log(event.data);
         const index = event.data.id;
