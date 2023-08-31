@@ -135,7 +135,7 @@ const SmallTalkList = () => {
     };
 
     const randomDialogFooterTemplate = () => {
-        return <Button label="참여하기" icon="pi pi-check" onClick={() => {}} />;
+        return <Button label="참여하기" icon="pi pi-check" onClick={() => {navigate('/')}} />;
     };
 
     const getImgUrl = async (e: any) => {
