@@ -32,6 +32,7 @@ const SmallTalkList = () => {
     const accessToken = cookies.id;
     const headers = { Authorization: 'Bearer ' + accessToken }
     const [dialogVisible, setDialogVisible] = useState<boolean>(false); //create dialog flag
+    const [randomDialogVisible, setRandomDialogVisible] = useState<boolean>(false); //random dialog flag
 
     const [SubImgUrl, setSubImgUrl] = useState<string>('');
     axios.defaults.baseURL = "http://localhost:5000";
@@ -133,6 +134,10 @@ const SmallTalkList = () => {
         return <Button label="Create" icon="pi pi-check" onClick={() => createSub()} />;
     };
 
+    const randomDialogFooterTemplate = () => {
+        return <Button label="참여하기" icon="pi pi-check" onClick={() => {}} />;
+    };
+
     const getImgUrl = async (e: any) => {
 
         const imgurl = await HandleFileInput(e, headers);
@@ -229,6 +234,7 @@ const SmallTalkList = () => {
                     <Button
                         label='Random'
                         style={{marginLeft:'0.5rem'}}
+                        onClick={()=> setRandomDialogVisible(true)}
                     />
                 </span>
             </div>
@@ -250,6 +256,21 @@ const SmallTalkList = () => {
                 </div>
 
                 <input type="file" onChange={(e) => getImgUrl(e)} />
+
+            </Dialog>
+
+            <Dialog header="Random Small Talk" visible={randomDialogVisible} style={{ width: '30vw' }} maximizable
+                modal contentStyle={{ height: '300px' }} onHide={() => setRandomDialogVisible(false)} footer={randomDialogFooterTemplate}>
+                <div className="login-box-id" style={{ width: '32rem', marginLeft:'9%' }}>
+                    <h1>랜덤 토론은 랜덤으로 만난 상대와 하는 토론입니다.</h1>
+                    <br/>
+                    <h1>주제 역시 랜덤으로 주어지며 버튼을 누르면 상대를 찾습니다</h1>
+                </div>
+
+           
+              
+
+                {/* <input type="file" onChange={(e) => getImgUrl(e)} /> */}
 
             </Dialog>
         </div>
