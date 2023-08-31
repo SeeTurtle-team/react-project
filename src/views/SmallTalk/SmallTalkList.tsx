@@ -31,7 +31,8 @@ const SmallTalkList = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["id"]);
     const accessToken = cookies.id;
     const headers = { Authorization: 'Bearer ' + accessToken }
-    const [dialogVisible, setDialogVisible] = useState<boolean>(false);
+    const [dialogVisible, setDialogVisible] = useState<boolean>(false); //create dialog flag
+
     const [SubImgUrl, setSubImgUrl] = useState<string>('');
     axios.defaults.baseURL = "http://localhost:5000";
 
@@ -224,6 +225,10 @@ const SmallTalkList = () => {
                     <Button
                         label="Create"
                         onClick={() => setDialogVisible(true)}
+                    />
+                    <Button
+                        label='Random'
+                        style={{marginLeft:'0.5rem'}}
                     />
                 </span>
             </div>
