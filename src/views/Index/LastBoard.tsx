@@ -50,11 +50,11 @@ const LastBoard = () => {
     };
 
     return (
-        <div style={{display:'inline-flex',width:'100%'}}>
-            <Fieldset legend={legendTemplate} style={{display:'inline-block'}}>
+        <div style={{display:'inline-flex',width:'80%'}}>
+            <Fieldset legend={legendTemplate} style={{width:'50%'}}>
                 <DataTable
                     value={board}
-                    tableStyle={{ minWidth: "50rem" }}
+                    tableStyle={{ minWidth: "50%" }}
                     rows={5}
                     resizableColumns columnResizeMode="fit"
                     onRowClick={boardState}

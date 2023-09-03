@@ -115,7 +115,7 @@ const FirstPage = () => {
                         <Tag value={product.starRating} severity={getSeverity(product)}></Tag>
                     </div>
                     <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
-                        <Button icon="pi pi-search" className="p-button p-button-rounded" />
+                        <Button icon="pi pi-search" className="p-button p-button-rounded" onClick = {()=>{navigate(`/EbookState/${product.id}`)}}/>
                         <Button icon="pi pi-star-fill" className="p-button-success p-button-rounded" />
                     </div>
                 </div>
