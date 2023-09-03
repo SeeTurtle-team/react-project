@@ -104,7 +104,7 @@ const FirstPage = () => {
     const productTemplate = (product: GetEbookListDto) => {
         return (
             <div style={{marginLeft:'25%'}}>
-                <div className="mb-3" >
+                <div className="mb-3" onClick = {()=>{navigate(`/EbookState/${product.id}`)}}>
                     <img src={`https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5875129.png`} alt={product.title} className="w-6 shadow-2" />
                 </div>
                 <div>
