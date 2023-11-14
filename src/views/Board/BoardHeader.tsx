@@ -18,6 +18,7 @@ function BoardHeader() {
     { label: "EBook", icon: "pi pi-fw pi-calendar", command: () => navigate("/EbookList") },
     { label: "QnA", icon: "pi pi-fw pi-calendar", command: () => navigate("/QnAList") },
     { label: "SmallTalk", icon: "pi pi-fw pi-calendar", command: () => navigate("/smallTalkList") },
+    { label: "MyPage", icon: "pi pi-fw pi-user", command: () => navigate("/MyPage") },
     (isLogin)
       ? {
         label: "Logout", icon: "pi pi-sign-out", command: () => {
