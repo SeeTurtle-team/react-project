@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext } from "react";
 import { TabMenu } from "primereact/tabmenu";
-import { Toast } from "primereact/toast";
 import { MenuItem } from "primereact/menuitem";
 // import { UserLoginContext } from "../context/UserLoginContext";
 import { ActiveIndexContext } from "../../context/ActiveIndexContext";
@@ -12,11 +11,6 @@ function BoardHeader() {
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const navigate = useNavigate();
-  const toast = useRef<Toast>(null);
-
-  const show = () => {
-    toast?.current?.show({ severity: 'info', summary: 'Info', detail: 'Message Content' });
-  }
 
   const loginedMenu = [
     { label: "Home", icon: "pi pi-fw pi-home", command: () => navigate("/") },
@@ -40,16 +34,11 @@ function BoardHeader() {
     { label: "EBook", icon: "pi pi-fw pi-calendar", command: () => navigate("/EbookList") },
     { label: "QnA", icon: "pi pi-fw pi-calendar", command: () => navigate("/QnAList") },
     { label: "SmallTalk", icon: "pi pi-fw pi-calendar", command: () => navigate("/smallTalkList") },
-    {
-      label: "Login", icon: "pi pi-sign-in", command: () => {
-        navigate("/Login");
-      }
-    }
+    { label: "Login", icon: "pi pi-sign-in", command: () => navigate("/Login") }
   ]
 
   return (
     <>
-      <Toast ref={toast} />
       <TabMenu
         model={cookies.id? loginedMenu : notLoginedMenu}
         style={{ marginBottom: "1rem" }}
