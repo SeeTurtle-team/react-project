@@ -5,4 +5,5 @@ export interface GetEbookListDto {
     category : string;
     nickname : string;
     starRating : string;
+    coalesce: string;
 }
