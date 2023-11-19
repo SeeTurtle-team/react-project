@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { TabMenu } from "primereact/tabmenu";
+import { Toast } from "primereact/toast";
 import { MenuItem } from "primereact/menuitem";
 // import { UserLoginContext } from "../context/UserLoginContext";
 import { ActiveIndexContext } from "../../context/ActiveIndexContext";
@@ -10,53 +11,55 @@ import { useNavigate } from "react-router-dom";
 function BoardHeader() {
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
-  const [isLogin, setIsLogin] = useState<boolean>(false);
   const navigate = useNavigate();
-  const items: MenuItem[] = [
+  const toast = useRef<Toast>(null);
+
+  const show = () => {
+    toast?.current?.show({ severity: 'info', summary: 'Info', detail: 'Message Content' });
+  }
+
+  const loginedMenu = [
     { label: "Home", icon: "pi pi-fw pi-home", command: () => navigate("/") },
     { label: "Board", icon: "pi pi-fw pi-calendar", command: () => navigate("/BoardList") },
     { label: "EBook", icon: "pi pi-fw pi-calendar", command: () => navigate("/EbookList") },
     { label: "QnA", icon: "pi pi-fw pi-calendar", command: () => navigate("/QnAList") },
     { label: "SmallTalk", icon: "pi pi-fw pi-calendar", command: () => navigate("/smallTalkList") },
-    { label: "MyPage", icon: "pi pi-fw pi-user", command: () => navigate("/MyPage") },
-    (isLogin)
-      ? {
-        label: "Logout", icon: "pi pi-sign-out", command: () => {
-          setIsLogin(false);
-          removeCookie("id");
-          alert("로그아웃 되었습니다");
-          navigate("/");
-        }
+    { label: "MyPage", icon: "pi pi-fw pi-user", command: () => navigate("/MyPage") }, 
+    {
+      label: "Logout", icon: "pi pi-sign-out", command: () => {
+        removeCookie("id");
+        alert("로그아웃 되었습니다");
+        navigate("/");
       }
-      : {
-        label: "Login", icon: "pi pi-sign-in", command: () => {
-          setIsLogin(true);
-          navigate("/Login");
-        }
-      }
+    }
   ];
 
-  useEffect(() => {
-    if (cookies.id != undefined) {
-      setIsLogin(true);
+  const notLoginedMenu = [
+    { label: "Home", icon: "pi pi-fw pi-home", command: () => navigate("/") },
+    { label: "Board", icon: "pi pi-fw pi-calendar", command: () => navigate("/BoardList") },
+    { label: "EBook", icon: "pi pi-fw pi-calendar", command: () => navigate("/EbookList") },
+    { label: "QnA", icon: "pi pi-fw pi-calendar", command: () => navigate("/QnAList") },
+    { label: "SmallTalk", icon: "pi pi-fw pi-calendar", command: () => navigate("/smallTalkList") },
+    {
+      label: "Login", icon: "pi pi-sign-in", command: () => {
+        navigate("/Login");
+      }
     }
-    if (activeIndex === 5 && isLogin === true) {
-      setIsLogin(false);
-      removeCookie("id");
-      alert("로그아웃 되었습니다");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-
+  ]
 
   return (
-    <TabMenu
-      model={items}
-      style={{ marginBottom: "1rem" }}
-      activeIndex={activeIndex}
-      onTabChange={(e) => setActiveIndex(e.index)}
-    />
+    <>
+      <Toast ref={toast} />
+      <TabMenu
+        model={cookies.id? loginedMenu : notLoginedMenu}
+        style={{ marginBottom: "1rem" }}
+        activeIndex={activeIndex}
+        onTabChange={(e) => {
+          console.log(e.index);
+          setActiveIndex(e.index)
+        }}
+      />
+    </>
   );
 }
 
