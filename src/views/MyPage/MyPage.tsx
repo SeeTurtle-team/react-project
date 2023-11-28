@@ -141,17 +141,19 @@ const MyPage = () => {
   return (
     <>
       <Dialog visible={visible} onHide={() => setVisible(false)} style={{ width: '40vw' }} maximizable contentStyle={{ height: '300px'}}>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <Avatar 
-            image={userImage}
-            size="xlarge"
-            shape="circle"
-          />
-          <input type="file" onChange={(e) => getImgUrl(e)} />
-          <button onClick={() => mutate(SubImgUrl)}>저장</button>
+        <div style={{ display: "flex", height: "100%", flexDirection: "column", alignItems: "center", justifyContent: "space-around" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
+            <Avatar 
+              image={userImage}
+              size="xlarge"
+              shape="circle"
+            />
+            <input type="file" onChange={(e) => getImgUrl(e)} />
+          </div>
+          <Button onClick={() => mutate(SubImgUrl)} >저장</Button>
         </div>
       </Dialog>
-      
+
       <div className="card" style={{ width:'60%', justifyContent:'center', marginLeft:'20%' }}>
         <div className="mt-4 mb-4">
           <div className="flex text-gray-900">
@@ -174,10 +176,10 @@ const MyPage = () => {
         </div>
 
         <TabView>
-          <TabPanel header="내가 열람한 ebook" pt={tabPanelPt} contentStyle={{ display: "flex" }}>
+          <TabPanel header="내가 열람한 ebook" pt={tabPanelPt} contentStyle={{ display: "flex", width: "100%", whiteSpace: "nowrap", overflowX: "auto" }}>
             {!ebookHistoryList?.length && <NoData />}
             {ebookHistoryList?.map(ebookHistory => (
-              <div key={ebookHistory.id} style={{ width: 150, height: 150, border: "1px solid lightgray", display: "flex", justifyContent: "center", alignItems: "center", marginRight: "8px" }}>
+              <div key={ebookHistory.id} style={{ minWidth: 150, height: 150, border: "1px solid lightgray", display: "flex", justifyContent: "center", alignItems: "center", marginRight: "8px" }}>
                 {ebookHistory.coalesce === "noUrl" ?(
                   <span key={ebookHistory.id}>No Image</span>
                 ):(
@@ -186,10 +188,10 @@ const MyPage = () => {
               </div>
             ))}
           </TabPanel>
-          <TabPanel header="내가 작성한 ebook" pt={tabPanelPt} contentStyle={{ display: "flex" }}>
+          <TabPanel header="내가 작성한 ebook" pt={tabPanelPt} contentStyle={{ display: "flex", width: "100%", whiteSpace: "nowrap", overflowX: "auto" }}>
             {!ebookList?.length && <NoData />}
             {ebookList?.map(ebook => (
-              <div style={{ width: 150, height: 150, border: "1px solid lightgray", display: "flex", justifyContent: "center", alignItems: "center", marginRight: "8px" }}>
+              <div key={ebook.id} style={{ minWidth: 150, height: 150, border: "1px solid lightgray", display: "flex", justifyContent: "center", alignItems: "center", marginRight: "8px" }}>
                 {ebook.coalesce === "noUrl" ?(
                   <span key={ebook.id}>No Image</span>
                 ):(
