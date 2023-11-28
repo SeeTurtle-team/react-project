@@ -29,11 +29,6 @@ const Login = () => {
     const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps = useContext(ActiveIndexContext);
     axios.defaults.baseURL = "http://localhost:5000";
 
-    useEffect(() => {
-        setActiveIndex(3);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
     const handleUserCreate = () => {
         navigate("/UserCreate");
     };
