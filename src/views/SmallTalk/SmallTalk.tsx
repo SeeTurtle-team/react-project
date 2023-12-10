@@ -146,7 +146,7 @@ const SmallTalk = () => {
           <label htmlFor="의견 제시하기" style={{ display: 'block' }}>의견 제시하기</label>
           <InputTextarea
             // inputid="description"
-            style={{ display: 'block', marginTop: '0.5rem' }}
+            style={{ display: 'block', marginTop: '0.5rem',width:'98%' }}
             name="description"
             rows={4}
             cols={100}

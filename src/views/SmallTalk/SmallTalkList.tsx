@@ -63,7 +63,7 @@ const SmallTalkList = () => {
                 <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
                     <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={setImg(smallTalkSub.imgUrl)} alt={smallTalkSub.name} />
                     <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                        <div className="flex flex-column align-items-center sm:align-items-start gap-3">
+                        <div className="flex flex-column align-items-center sm:align-items-start gap-3" style={{width:'80%'}}>
                             <div className="text-2xl font-bold text-900">{smallTalkSub.title}</div>
                             {/* <Rating value={smallTalkSub.rating} readOnly cancel={false}></Rating> */}
                             <h3>{smallTalkSub.detail}</h3>
@@ -76,7 +76,7 @@ const SmallTalkList = () => {
                                 {/* <Tag value={smallTalkSub.inventoryStatus} severity={getSeverity(smallTalkSub)}></Tag> */}
                             </div>
                         </div>
-                        <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                        <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2" style={{marginLeft:'1rem'}}>
                             {/* <span className="text-2xl font-semibold">${smallTalkSub.price}</span> */}
                             <Button onClick={() => { navigate(`/smalltalk/${smallTalkSub.id}`) }}>입장</Button>
                         </div>
@@ -97,11 +97,11 @@ const SmallTalkList = () => {
                         </div>
                         {/* <Tag value={smallTalkSub.inventoryStatus} severity={getSeverity(smallTalkSub)}></Tag> */}
                     </div>
-                    <div className="flex flex-column align-items-center gap-3 py-5">
+                    <div className="flex flex-column align-items-center gap-3 py-5" style={{width:'70%'}}>
                         <img className="w-9 shadow-2 border-round" src={setImg(smallTalkSub.imgUrl)} alt={smallTalkSub.name} />
                         <div className="text-2xl font-bold">{smallTalkSub.name}</div>
                         {/* <Rating value={smallTalkSub.rating} readOnly cancel={false}></Rating> */}
-                        <span>{smallTalkSub.detail}</span>
+                        <span >{smallTalkSub.detail}</span>
 
                     </div>
                     <div className="flex align-items-center justify-content-between">
@@ -208,7 +208,7 @@ const SmallTalkList = () => {
     }
  
     return (
-        <div className="card" style={{width:'60%',justifyContent:'center',marginLeft:'20%'}}>
+        <div className="card" style={{width:'70%',justifyContent:'center',marginLeft:'20%'}}>
             <div>
                 <span className="p-input-icon-left">
                     <i className="pi pi-search" />
