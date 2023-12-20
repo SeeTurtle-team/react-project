@@ -8,6 +8,7 @@ import { errorHandle } from "../../Common/ErrorHandle";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import { BoardCategoryDto } from "../../interface/BoardCategoryDto";
 import { useCookies } from "react-cookie";
+import { useMutation, useQueryClient } from "react-query";
 
 const BoardCreate = () => {
   const [value, setValue] = useState<string>("");
@@ -19,6 +20,25 @@ const BoardCreate = () => {
   const accessToken = cookies.id;
   const headers = { Authorization: 'Bearer ' + accessToken }
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const mutaton = useMutation({
+    mutationFn: () => 
+      axios
+        .post("/board/create", {
+          title: value,
+          contents: text,
+          boardCategoryId: selectBoardCategory?.id,
+        }, {
+          headers: headers
+        })
+        .then((res) => res.data.body)
+        .then((res) => {
+          console.log(res)
+          alert('등록이 완료 되었습니다');
+          navigate("/BoardList");
+        }),
+    onSuccess: () => queryClient.invalidateQueries(["getBoardList"])
+  })
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -179,7 +199,7 @@ const BoardCreate = () => {
       <Button
         label="Submit"
         disabled={!isBoardCategory}
-        onClick={handleSubmit}
+        onClick={() => mutaton.mutate()}
       />
     </div>
   );
