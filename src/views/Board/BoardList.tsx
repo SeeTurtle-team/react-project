@@ -18,25 +18,24 @@ import { useCookies } from "react-cookie";
 import { useQuery, useMutation } from "react-query";
 import "../../css/BoardList.css";
 
+const searchOptions: SearchOptioninterface[] = [
+  { name: "Title", code: "t" },
+  { name: "User", code: "u" },
+];
+
 const BoardList = () => {
   const [board, setBoard] = useState<Board[]>([]);
   const [boardCategory, setBoardCategory] = useState<BoardCategoryDto[]>([]);
   const navigate = useNavigate();
   const [inputSearch, setInputSearch] = useState<string>("");
   const [selectedSearchOption, setSelectedSearchOption] =
-    useState<SearchOptioninterface>();
+    useState<SearchOptioninterface>(searchOptions?.[0]);
   const { activeIndex, setActiveIndex }: ActiveIndexContextProviderProps =
     useContext(ActiveIndexContext);
   const [cookies, setCookie, removeCookie] = useCookies(["id"]);
   const accessToken = cookies.id;
   const headers = {Authorization:'Bearer '+accessToken}
   axios.defaults.baseURL = "http://localhost:5000";
-
-
-  const searchOptions = [
-    { name: "Title", code: "t" },
-    { name: "User", code: "u" },
-  ];
 
   const { isSuccess, isError, isLoading, isFetching, data, error } = useQuery(
     'getBoardList',
@@ -142,8 +141,35 @@ const BoardList = () => {
     }
   };
 
+  const pressEnter = (key: string) => {
+    if (key === "Enter") {
+      handleSearchButton();
+    }
+  }
+
   const handleSearchButton = () => {
-    
+    if (selectedSearchOption.name === "Title") {
+      return searchTitle();
+    }
+    searchUser();
+  }
+
+  const searchTitle = () => {
+    axios.get("/board/searchTitle", { headers, params: { keyword: inputSearch } })
+      .then(res => setBoard(res.data.items))
+      .catch(error => {
+        const errCode = errorHandle(error.response.status);
+        navigate(`/ErrorPage/${errCode}`);
+      });
+  }
+
+  const searchUser = () => {
+    axios.get("/board/searchContent", { headers, params: { keyword: inputSearch } })
+    .then(res => setBoard(res.data.items))
+    .catch(error => {
+      const errCode = errorHandle(error.response.status);
+      navigate(`/ErrorPage/${errCode}`);
+    });
   }
 
   return (
@@ -165,6 +191,7 @@ const BoardList = () => {
           placeholder="Search"
           onInput={handleSearch}
           value={inputSearch}
+          onKeyDown={(e) => pressEnter(e.key)}
         />
       </span>
       <span style={{marginLeft:'1rem'}}>
