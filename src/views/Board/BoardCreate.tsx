@@ -195,7 +195,7 @@ const BoardCreate = () => {
         headerTemplate={header}
       />
 
-      <input type="file" onChange={handleFileInput} />
+      <input type="file" accept="image/*" onChange={handleFileInput} />
       <Button
         label="Submit"
         disabled={!isBoardCategory}
